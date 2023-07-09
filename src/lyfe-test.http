@@ -1,0 +1,69 @@
+### Send Auth Code
+POST http://localhost:3000/api/auth
+Content-Type: application/json
+
+{
+  "phoneNumber": "+8201049119038"
+}
+
+### Verification Auth Code
+PUT http://localhost:3000/api/auth
+Content-Type: application/json
+
+{
+  "phoneNumber": "+8201049119038",
+  "authCode": "851561"
+}
+
+
+### GET Users
+GET http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+}
+
+### GET User
+GET http://localhost:3000/api/users/649ce793f331996dcc3cddab
+Content-Type: application/json
+
+{
+}
+
+### SignUp User
+POST http://localhost:3000/api/auth/sign-up
+Content-Type: application/json
+
+{
+  "nickname": "archepro84",
+  "phoneNumber": "+8201049119038"
+}
+
+### Update User
+PUT http://localhost:3000/api/users/649ce793f331996dcc3cddab
+Content-Type: application/json
+
+{
+  "name": "User 1 Modified",
+  "description": "User 1 description Modified",
+  "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbMYtO04lCaKL7vkN_v_D9IlxkD2t0wc80lnI8QRA6DQ&s",
+  "price": 2000
+}
+
+### Delete User
+DELETE http://localhost:3000/api/users/649ce793f331996dcc3cddab
+Content-Type: application/json
+
+{
+}
+
+### SignOut User
+POST http://localhost:3000/api/auth/sign-out
+Content-Type: application/json
+
+{
+}
+
+
+
+
