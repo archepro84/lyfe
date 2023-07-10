@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:18
 LABEL version='1.0.0'
 
 USER root
@@ -19,4 +19,4 @@ RUN npm install -g pnpm
 RUN pnpm install
 
 # Docker start script
-CMD npm run start:test
+CMD NODE_ENV=test node dist/main.js
