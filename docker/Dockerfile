@@ -19,4 +19,4 @@ RUN npm install -g pnpm
 RUN pnpm install
 
 # Docker start script
-CMD npm run start:dev
+CMD npm run start:test
