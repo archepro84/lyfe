@@ -29,11 +29,11 @@
 ## Installation
 
 ```bash
-# Install Docker
-$ docker compose up -d
-
 # Install Pnpm Package Modules
 $ pnpm install
+
+# Install Docker
+$ pnpm run docker-compose:local
 
 ```
 
