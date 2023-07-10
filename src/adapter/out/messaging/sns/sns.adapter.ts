@@ -1,15 +1,21 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { SendVerificationPort } from '@application/port/out/auth/send-verification.port';
 import { SNSClient, PublishCommand } from '@aws-sdk/client-sns';
+import { EnvironmentConfigService } from "@common/config/environment-config.service";
 
 // docs: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/preview/client/sns/command/PublishCommand/
 @Injectable()
 export class SnsAdapter implements SendVerificationPort, OnModuleInit {
   snsClient: SNSClient;
 
+  constructor(private readonly environmentConfigService: EnvironmentConfigService) {
+  }
+
   async onModuleInit() {
+    const snsRegion = this.environmentConfigService.getAwsSnsRegion();
+
     this.snsClient = new SNSClient({
-      region: 'ap-northeast-1', // Tokyo
+      region: snsRegion,
     });
   }
 

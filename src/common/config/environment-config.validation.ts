@@ -17,13 +17,10 @@ class EnvironmentVariables {
   SERVICE_NAME: string;
 
   @IsString()
-  DATABASE_URL: string;
+  AWS_SNS_REGION: string;
 
   @IsString()
-  JWT_SECRET_KEY: string;
-
-  @IsNumber()
-  JWT_EXPIRATION_TIME: number;
+  DATABASE_URL: string;
 
   @IsString()
   JWT_REFRESH_SECRET_KEY: string;

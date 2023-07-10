@@ -10,9 +10,9 @@ import { JwtAdapter } from '@adapter/security/jwt/jwt.adapter';
       imports: [EnvironmentConfigModule],
       inject: [EnvironmentConfigService],
       useFactory: (configService: EnvironmentConfigService) => ({
-        secret: configService.getJwtSecretKey(),
+        secret: configService.getJwtRefreshSecretKey(),
         signOptions: {
-          expiresIn: configService.getJwtExpirationTime() + 's',
+          expiresIn: configService.getJwtRefreshExpirationTime() + 's',
         },
       }),
     }),
@@ -20,4 +20,5 @@ import { JwtAdapter } from '@adapter/security/jwt/jwt.adapter';
   providers: [JwtAdapter],
   exports: [JwtAdapter],
 })
-export class JwtModule {}
+export class JwtModule {
+}
