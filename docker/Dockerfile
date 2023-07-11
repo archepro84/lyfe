@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:18-alpine
 LABEL version='1.0.0'
 
 USER root
@@ -11,15 +11,6 @@ COPY . /app
 
 # Move work directory
 WORKDIR /app
-
-## Install pnpm package manage
-#RUN npm install -g pnpm
-#
-## Install project dependencies
-#RUN pnpm install
-#
-## Build project
-#RUN pnpm run build
 
 # Docker start script
 CMD NODE_ENV=test node dist/main.js
