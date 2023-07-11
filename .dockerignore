@@ -4,8 +4,8 @@
 terraform
 test
 #src
-dist
-node_modules
+#dist
+#node_modules
 
 **/.git
 **/README.md

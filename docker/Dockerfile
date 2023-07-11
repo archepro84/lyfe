@@ -12,11 +12,14 @@ COPY . /app
 # Move work directory
 WORKDIR /app
 
-# Install pnpm package manage
-RUN npm install -g pnpm
-
-# Install project dependencies
-RUN pnpm install
+## Install pnpm package manage
+#RUN npm install -g pnpm
+#
+## Install project dependencies
+#RUN pnpm install
+#
+## Build project
+#RUN pnpm run build
 
 # Docker start script
 CMD NODE_ENV=test node dist/main.js
