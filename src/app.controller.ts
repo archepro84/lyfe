@@ -5,7 +5,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 @ApiTags('ping')
 @ApiResponse({ status: 500, description: 'Internal error' })
 export class AppController {
-  @Get()
+  @Get('ping')
   @ApiOperation({ summary: 'Ping' })
   @ApiResponse({
     status: 200,
