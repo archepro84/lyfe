@@ -1,4 +1,4 @@
-export class RefreshToken {
+export class AuthToken {
   token: string;
 
   createdAt: Date;

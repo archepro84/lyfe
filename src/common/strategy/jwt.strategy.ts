@@ -10,7 +10,7 @@ import {
 import { EnvironmentConfigService } from '@common/config/environment-config.service';
 import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
 import { NotFoundException } from '@common/exception/not-found.exception';
-import { RefreshToken } from '@domain/user/refresh-token';
+import { AuthToken } from '@domain/user/auth-token';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -32,9 +32,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(request: Request, payload: JwtServicePayload) {
-    const refreshToken = request.cookies?.Refresh;
+    const authToken = request.cookies?.Refresh;
     const user = await this.tokenUsecase.getUserIfRefreshTokenMatches(
-      new RefreshToken(refreshToken),
+      new AuthToken(authToken),
       payload,
     );
 

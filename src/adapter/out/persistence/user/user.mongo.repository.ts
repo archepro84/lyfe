@@ -7,7 +7,7 @@ import { Injectable } from '@nestjs/common';
 import { UserMapper } from '@adapter/out/persistence/user/mapper/user.mapper';
 import { UserEntity } from '@adapter/out/persistence/user/schema/user.schema';
 import { SignUpCommand } from '@application/port/in/auth/command/auth.command';
-import { RefreshToken } from '@domain/user/refresh-token';
+import { AuthToken } from '@domain/user/auth-token';
 
 @Injectable()
 export class UserMongoRepository implements UserRepository {
@@ -50,11 +50,11 @@ export class UserMongoRepository implements UserRepository {
 
   async updateRefreshToken(
     userId: string,
-    refreshToken: RefreshToken,
+    authToken: AuthToken,
   ): Promise<User> {
     return UserMapper.toDomain(
       await this.userModel.findByIdAndUpdate(userId, {
-        token: refreshToken,
+        token: authToken,
       }),
     );
   }

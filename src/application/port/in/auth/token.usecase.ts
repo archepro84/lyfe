@@ -1,19 +1,19 @@
 import { User } from '@domain/user/user';
-import { RefreshToken } from '@domain/user/refresh-token';
+import { AuthToken } from '@domain/user/auth-token';
 import { JwtServicePayload } from '@application/port/security/jwt/jwt.port';
 
 export interface TokenUsecase {
-  getJwtRefreshToken(payload: JwtServicePayload): Promise<RefreshToken>;
+  getJwtRefreshToken(payload: JwtServicePayload): Promise<AuthToken>;
 
-  parseCookieByJwtRefreshToken(refreshToken: RefreshToken): Promise<string>;
+  parseCookieByJwtRefreshToken(authToken: AuthToken): Promise<string>;
 
   setCurrentRefreshToken(
-    refreshToken: RefreshToken,
+    authToken: AuthToken,
     payload: JwtServicePayload,
   ): Promise<void>;
 
   getUserIfRefreshTokenMatches(
-    refreshToken: RefreshToken,
+    authToken: AuthToken,
     payload: JwtServicePayload,
   ): Promise<User>;
 }

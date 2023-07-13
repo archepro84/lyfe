@@ -1,5 +1,5 @@
 import { Geometry } from './geometry';
-import { RefreshToken } from '@domain/user/refresh-token';
+import { AuthToken } from '@domain/user/auth-token';
 
 export class User {
   readonly id?: string;
@@ -14,7 +14,7 @@ export class User {
 
   verifiedAt?: Date;
 
-  token?: RefreshToken;
+  authToken?: AuthToken;
 
   readonly createdAt: Date;
 
@@ -29,7 +29,7 @@ export class User {
     location: Geometry = null,
     locationUpdatedAt = null,
     verifiedAt: Date = null,
-    token: RefreshToken = null,
+    authToken: AuthToken = null,
     createdAt: Date,
     updatedAt: Date,
     deletedAt: Date = null,
@@ -40,7 +40,7 @@ export class User {
     this.location = location;
     this.locationUpdatedAt = locationUpdatedAt;
     this.verifiedAt = verifiedAt;
-    this.token = token;
+    this.authToken = authToken;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.deletedAt = deletedAt;
@@ -55,7 +55,7 @@ export class User {
     this.verifiedAt = date;
   }
 
-  setToken(token: RefreshToken) {
-    this.token = token;
+  setToken(authToken: AuthToken) {
+    this.authToken = authToken;
   }
 }

@@ -12,7 +12,7 @@ export class UserMapper {
       userEntity.location,
       userEntity.locationUpdatedAt,
       userEntity.verifiedAt,
-      userEntity.token,
+      userEntity.authToken,
       userEntity.createdAt,
       userEntity.updatedAt,
     );
@@ -32,7 +32,7 @@ export class UserMapper {
       user.location,
       user.locationUpdatedAt,
       user.verifiedAt,
-      user.token,
+      user.authToken,
       user.createdAt,
       user.updatedAt,
     );

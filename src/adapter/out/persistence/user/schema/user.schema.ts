@@ -1,7 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Geometry } from '@domain/user/geometry';
 import { Document } from 'mongoose';
-import { RefreshToken } from '@domain/user/refresh-token';
+import { AuthToken } from '@domain/user/auth-token';
 
 export class UserEntity extends Document {
   _id: string;
@@ -16,7 +16,7 @@ export class UserEntity extends Document {
 
   verifiedAt?: Date;
 
-  token?: RefreshToken;
+  authToken?: AuthToken;
 
   createdAt: Date;
 
@@ -29,7 +29,7 @@ export class UserEntity extends Document {
     location: Geometry = null,
     locationUpdatedAt = null,
     verifiedAt: Date = null,
-    token: RefreshToken = null,
+    authToken: AuthToken = null,
     createdAt: Date,
     updatedAt: Date,
   ) {
@@ -41,7 +41,7 @@ export class UserEntity extends Document {
     this.location = location;
     this.locationUpdatedAt = locationUpdatedAt;
     this.verifiedAt = verifiedAt;
-    this.token = token;
+    this.authToken = authToken;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
@@ -65,7 +65,7 @@ export class UserMongoSchema {
   verified: Date;
 
   @Prop({ select: true })
-  token: RefreshToken;
+  authToken: AuthToken;
 
   @Prop({ required: true, default: Date.now, select: false })
   createdAt: Date;

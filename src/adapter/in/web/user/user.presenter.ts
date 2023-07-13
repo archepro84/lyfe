@@ -42,6 +42,6 @@ export class UserPresenter {
     this.nickname = user.nickname;
     this.phoneNumber = user.phoneNumber;
     this.createdAt = user.createdAt;
-    this.token = user.token.token;
+    this.token = user.authToken.token;
   }
 }

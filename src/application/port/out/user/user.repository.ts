@@ -1,7 +1,7 @@
 import { User } from '@domain/user/user';
 import { UpdateUserProfileCommand } from '@application/port/in/user/command/user.command';
 import { SignUpCommand } from '@application/port/in/auth/command/auth.command';
-import { RefreshToken } from '@domain/user/refresh-token';
+import { AuthToken } from '@domain/user/auth-token';
 
 export interface UserRepository {
   getUser(userId: string): Promise<User | null>;
@@ -17,5 +17,5 @@ export interface UserRepository {
     updateUserProfileCommand: UpdateUserProfileCommand,
   ): Promise<User>;
 
-  updateRefreshToken(userId: string, refreshToken: RefreshToken): Promise<User>;
+  updateRefreshToken(userId: string, refreshToken: AuthToken): Promise<User>;
 }

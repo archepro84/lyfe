@@ -6,7 +6,7 @@ import {
   JwtPort,
   JwtServicePayload,
 } from '@application/port/security/jwt/jwt.port';
-import { RefreshToken } from '@domain/user/refresh-token';
+import { AuthToken } from '@domain/user/auth-token';
 import { BcryptPort } from '@application/port/security/bcrypt/bcrypt.port';
 
 export class TokenService implements TokenUsecase {
@@ -17,10 +17,10 @@ export class TokenService implements TokenUsecase {
     private readonly bcryptPort: BcryptPort,
   ) {}
 
-  async getJwtRefreshToken(payload: JwtServicePayload): Promise<RefreshToken> {
+  async getJwtRefreshToken(payload: JwtServicePayload): Promise<AuthToken> {
     const secret = this.jwtConfig.getJwtRefreshSecretKey();
     const expiresIn = this.jwtConfig.getJwtRefreshExpirationTime() + 's';
-    const token = new RefreshToken(
+    const token = new AuthToken(
       this.jwtPort.createToken(payload, secret, expiresIn),
     );
 
@@ -30,7 +30,7 @@ export class TokenService implements TokenUsecase {
   }
 
   async parseCookieByJwtRefreshToken(
-    refreshToken: RefreshToken,
+    refreshToken: AuthToken,
   ): Promise<string> {
     return `Refresh=${
       refreshToken.token
@@ -48,7 +48,7 @@ export class TokenService implements TokenUsecase {
    * Value: { 기기명, 기기종류, 토큰 생성 날짜 등 ...}
    * **/
   async getUserIfRefreshTokenMatches(
-    refreshToken: RefreshToken,
+    refreshToken: AuthToken,
     payload: JwtServicePayload,
   ): Promise<User> {
     const user = await this.userRepository.getUser(payload.userId);
@@ -56,7 +56,7 @@ export class TokenService implements TokenUsecase {
 
     const isRefreshTokenMatching = await this.bcryptPort.compare(
       refreshToken.token,
-      user.token.token,
+      user.authToken.token,
     );
     if (isRefreshTokenMatching) return user;
 
@@ -64,14 +64,14 @@ export class TokenService implements TokenUsecase {
   }
 
   async setCurrentRefreshToken(
-    refreshToken: RefreshToken,
+    refreshToken: AuthToken,
     payload: JwtServicePayload,
   ): Promise<void> {
     const hashedRefreshToken = await this.bcryptPort.hash(refreshToken.token);
 
     await this.userRepository.updateRefreshToken(
       payload.userId,
-      new RefreshToken(hashedRefreshToken),
+      new AuthToken(hashedRefreshToken),
     );
   }
 }
