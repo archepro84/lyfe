@@ -4,6 +4,7 @@ import { AuthRepository } from '@application/port/out/auth/auth.repository';
 import { AuthSendLogRepository } from '@application/port/out/auth/auth-send-log.repository';
 import { VerificationLimitExceededException } from '@application/service/auth/exception/verification-limit-exceeded.exception';
 import { BcryptPort } from '@application/port/security/bcrypt/bcrypt.port';
+import { LoggerPort } from '@application/port/common/logger/logger.port';
 
 const VERIFICATION_LIMIT = 3;
 
@@ -13,6 +14,7 @@ export class SendVerificationService implements SendVerificationUsecase {
     private readonly authSendLogRepository: AuthSendLogRepository,
     private readonly sendVerificationPort: SendVerificationPort,
     private readonly bcryptPort: BcryptPort,
+    private readonly loggerPort: LoggerPort,
   ) {}
 
   async sendVerification(phoneNumber: string): Promise<void> {
@@ -33,9 +35,10 @@ export class SendVerificationService implements SendVerificationUsecase {
     }
 
     await this.authSendLogRepository.createAuthSendLog(auth, phoneNumber);
-
-    console.log(authCode);
-    throw new Error();
+    this.loggerPort.debug(
+      'SendVerificationService',
+      `phoneNumber: ${phoneNumber}, authCode: ${authCode}`,
+    );
 
     return this.sendVerificationPort.sendVerification(phoneNumber, authCode);
   }

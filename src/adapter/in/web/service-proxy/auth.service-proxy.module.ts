@@ -22,6 +22,8 @@ import { EnvironmentConfigModule } from '@common/config/environment-config.modul
 import { JwtModule } from '@adapter/security/jwt/jwt.module';
 import { SIGN_IN_USECASE } from '@application/port/in/auth/sign-in.usecase';
 import { SignInService } from '@application/service/auth/sign-in.service';
+import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
+import { LoggerModule } from '@adapter/common/logger/logger.module';
 
 @Module({
   imports: [
@@ -30,6 +32,7 @@ import { SignInService } from '@application/service/auth/sign-in.service';
     SnsModule,
     EnvironmentConfigModule,
     JwtModule,
+    LoggerModule,
   ],
 })
 export class AuthServiceProxyModule {
@@ -72,6 +75,7 @@ export class AuthServiceProxyModule {
             AuthSendLogMongoRepository,
             SnsAdapter,
             BcryptAdapter,
+            LoggerAdapter,
           ],
           provide: SEND_VERIFICATION_USECASE,
           useFactory: (
@@ -79,12 +83,14 @@ export class AuthServiceProxyModule {
             authSendLogRepository: AuthSendLogMongoRepository,
             snsAdapter: SnsAdapter,
             bcryptAdapter: BcryptAdapter,
+            loggerAdapter: LoggerAdapter,
           ) =>
             new SendVerificationService(
               authRepository,
               authSendLogRepository,
               snsAdapter,
               bcryptAdapter,
+              loggerAdapter,
             ),
         },
         {
