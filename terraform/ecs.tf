@@ -38,8 +38,39 @@ data "aws_iam_policy_document" "secrets_manager_read_all" {
 }
 
 resource "aws_iam_policy" "secrets_manager_read" {
-  name   = "${var.service_name}-SecretsManagerRead"
+  name   = "${var.service_name}-SecretsManagerReadPolicy"
   policy = data.aws_iam_policy_document.secrets_manager_read_all.json
+}
+
+data "aws_iam_policy_document" "private_registry_authentication" {
+  version = "2012-10-17"
+  statement {
+    sid       = ""
+    effect    = "Allow"
+    actions   = ["kms:Decrypt"]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "private_registry_authentication" {
+  name   = "${var.service_name}-PrivateRegistryAuthenticationPolicy"
+  policy = data.aws_iam_policy_document.private_registry_authentication.json
+}
+
+data "aws_iam_policy_document" "sns_publish" {
+  version = "2012-10-17"
+  statement {
+    sid     = ""
+    effect  = "Allow"
+    actions = ["sns:Publish"]
+
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "sns_publish" {
+  name   = "${var.service_name}-SNSPublishPolicy"
+  policy = data.aws_iam_policy_document.sns_publish.json
 }
 
 
@@ -50,6 +81,8 @@ resource "aws_iam_role" "ecs_instance_role" {
     data.aws_iam_policy.AmazonEC2ContainerServiceforEC2Role.arn,
     data.aws_iam_policy.AmazonECSTaskExecutionRolePolicy.arn,
     aws_iam_policy.secrets_manager_read.arn,
+    aws_iam_policy.private_registry_authentication.arn,
+    aws_iam_policy.sns_publish.arn,
   ]
 }
 
