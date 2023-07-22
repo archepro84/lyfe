@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '@domain/user/user';
-import { IsString } from 'class-validator';
+import { IsObject, IsString } from 'class-validator';
+import { UserInfo } from '@domain/user/user-info';
 
 export class UserPresenter {
   @ApiProperty({
@@ -10,11 +11,21 @@ export class UserPresenter {
   id?: string;
 
   @ApiProperty({
-    example: 'lyLY',
-    description: '유저의 닉네임',
+    example: {
+      nickname: 'lyLY',
+      gender: 'MAN',
+      birth: '1991-07-22',
+      region: {
+        id: '649ce895f331996dcc3cddb6',
+        city: '서울특별시',
+        district: '강남구',
+        neighborhood: '삼성동',
+      },
+    },
+    description: '유저의 정보',
   })
-  @IsString()
-  nickname: string;
+  @IsObject()
+  userInfo: UserInfo;
 
   @ApiProperty({
     example: '+8201017778484',
@@ -39,9 +50,9 @@ export class UserPresenter {
 
   constructor(user: User) {
     this.id = user.id;
-    this.nickname = user.nickname;
+    this.userInfo = user.userInfo;
     this.phoneNumber = user.phoneNumber;
     this.createdAt = user.createdAt;
-    this.token = user.authToken.token;
+    this.token = user.getAuthToken().token;
   }
 }

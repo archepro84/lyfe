@@ -8,14 +8,17 @@ export class UserMapper {
     const user = new User(
       userEntity._id,
       userEntity.nickname,
+      userEntity.userInfo,
       userEntity.phoneNumber,
-      userEntity.location,
-      userEntity.locationUpdatedAt,
-      userEntity.verifiedAt,
-      userEntity.authToken,
       userEntity.createdAt,
       userEntity.updatedAt,
+
+      userEntity.authToken,
     );
+    user.setLocation(userEntity.location);
+    user.setLocationUpdatedAt(userEntity.locationUpdatedAt);
+    user.setVerifiedAt(userEntity.verifiedAt);
+    user.setDeletedAt(userEntity.deletedAt);
 
     return user;
   }
@@ -25,18 +28,19 @@ export class UserMapper {
   }
 
   public static toPersistence(user: User): UserEntity {
-    const userEntity = new UserEntity(
+    return new UserEntity(
       user.id,
       user.nickname,
+      user.userInfo,
       user.phoneNumber,
-      user.location,
-      user.locationUpdatedAt,
-      user.verifiedAt,
-      user.authToken,
       user.createdAt,
       user.updatedAt,
-    );
 
-    return userEntity;
+      user.getLocation(),
+      user.getLocationUpdatedAt(),
+      user.getVerifiedAt(),
+      user.getAuthToken(),
+      user.getDeletedAt(),
+    );
   }
 }

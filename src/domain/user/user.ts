@@ -1,61 +1,81 @@
 import { Geometry } from './geometry';
 import { AuthToken } from '@domain/user/auth-token';
+import { UserInfo } from '@domain/user/user-info';
+import { InvalidPhoneNumberFormatException } from '@domain/user/exception/invalid-phone-number-format.exception';
 
 export class User {
   readonly id?: string;
-
   readonly nickname: string;
-
+  readonly userInfo: UserInfo;
   readonly phoneNumber: string;
-
-  location?: Geometry;
-
-  locationUpdatedAt?: Date;
-
-  verifiedAt?: Date;
-
-  authToken?: AuthToken;
-
   readonly createdAt: Date;
-
   readonly updatedAt: Date;
 
-  deletedAt?: Date;
+  private location: Geometry = null;
+  private locationUpdatedAt?: Date = new Date();
+  private verifiedAt: Date = new Date();
+  private authToken?: AuthToken;
+  private deletedAt: Date = new Date();
 
   constructor(
     id: string,
     nickname: string,
+    userInfo: UserInfo,
     phoneNumber: string,
-    location: Geometry = null,
-    locationUpdatedAt = null,
-    verifiedAt: Date = null,
-    authToken: AuthToken = null,
     createdAt: Date,
     updatedAt: Date,
-    deletedAt: Date = null,
+    authToken: AuthToken = null,
   ) {
     this.id = id;
     this.nickname = nickname;
-    this.phoneNumber = phoneNumber;
-    this.location = location;
-    this.locationUpdatedAt = locationUpdatedAt;
-    this.verifiedAt = verifiedAt;
-    this.authToken = authToken;
+    this.userInfo = userInfo;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-    this.deletedAt = deletedAt;
+
+    this.authToken = authToken;
+
+    if (!phoneNumber.match(/^\+\d{1,3}\d{1,15}$/))
+      throw new InvalidPhoneNumberFormatException();
+    this.phoneNumber = phoneNumber;
   }
 
   setLocation(location: Geometry) {
     this.location = location;
-    this.locationUpdatedAt = new Date();
   }
 
-  setVerifiedAt(date: Date) {
-    this.verifiedAt = date;
+  getLocation(): Geometry {
+    return this.location;
   }
 
-  setToken(authToken: AuthToken) {
+  setLocationUpdatedAt(locationUpdatedAt: Date) {
+    this.locationUpdatedAt = locationUpdatedAt;
+  }
+
+  getLocationUpdatedAt(): Date {
+    return this.locationUpdatedAt;
+  }
+
+  setVerifiedAt(verifiedAt: Date) {
+    this.verifiedAt = verifiedAt;
+  }
+
+  getVerifiedAt(): Date {
+    return this.verifiedAt;
+  }
+
+  setAuthToken(authToken: AuthToken) {
     this.authToken = authToken;
+  }
+
+  getAuthToken(): AuthToken {
+    return this.authToken;
+  }
+
+  setDeletedAt(deletedAt: Date) {
+    this.deletedAt = deletedAt;
+  }
+
+  getDeletedAt(): Date {
+    return this.deletedAt;
   }
 }

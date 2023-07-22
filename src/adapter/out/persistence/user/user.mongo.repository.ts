@@ -44,6 +44,7 @@ export class UserMongoRepository implements UserRepository {
     return UserMapper.toDomain(
       await this.userModel.create({
         ...userSignUpCommand,
+        userInfo: {},
       }),
     );
   }
