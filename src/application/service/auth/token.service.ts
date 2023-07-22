@@ -29,9 +29,7 @@ export class TokenService implements TokenUsecase {
     return token;
   }
 
-  async parseCookieByJwtRefreshToken(
-    refreshToken: AuthToken,
-  ): Promise<string> {
+  async parseCookieByJwtRefreshToken(refreshToken: AuthToken): Promise<string> {
     return `Refresh=${
       refreshToken.token
     }; HttpOnly; Path=/; Max-Age=${this.jwtConfig.getJwtRefreshExpirationTime()}`;
@@ -56,7 +54,7 @@ export class TokenService implements TokenUsecase {
 
     const isRefreshTokenMatching = await this.bcryptPort.compare(
       refreshToken.token,
-      user.authToken.token,
+      user.getAuthToken().token,
     );
     if (isRefreshTokenMatching) return user;
 

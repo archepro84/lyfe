@@ -19,7 +19,6 @@ export class SignInService implements SignInUsecase {
     const user = await this.userRepository.getUserByPhoneNumber(
       signInCommand.phoneNumber,
     );
-
     if (!user)
       throw new NotFoundException('해당하는 사용자가 존재하지 않습니다.');
 
@@ -29,7 +28,7 @@ export class SignInService implements SignInUsecase {
     const cookieWithRefreshToken =
       await this.tokenUsecase.parseCookieByJwtRefreshToken(refreshToken);
 
-    user.setToken(refreshToken);
+    user.setAuthToken(refreshToken);
 
     return new AuthVerificationResponseCommand(user, cookieWithRefreshToken);
   }

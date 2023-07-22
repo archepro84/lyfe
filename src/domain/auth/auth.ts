@@ -1,13 +1,13 @@
 export class Auth {
-  id?: string;
+  readonly id: string;
 
-  phoneNumber: string;
+  readonly phoneNumber: string;
 
-  authCode: string;
+  readonly authCode: string;
 
-  createdAt: Date;
+  readonly createdAt: Date;
 
-  verified?: boolean;
+  verified: boolean;
 
   verifiedAt?: Date;
 
@@ -24,6 +24,7 @@ export class Auth {
     this.authCode = authCode;
     this.createdAt = createdAt;
     this.verified = verified;
+
     this.verifiedAt = verifiedAt;
   }
 }
