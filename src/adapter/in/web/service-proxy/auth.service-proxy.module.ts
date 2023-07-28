@@ -24,6 +24,7 @@ import { SIGN_IN_USECASE } from '@application/port/in/auth/sign-in.usecase';
 import { SignInService } from '@application/service/auth/sign-in.service';
 import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
 import { LoggerModule } from '@adapter/common/logger/logger.module';
+import { AdminMongoRepository } from '@adapter/out/persistence/admin/admin.mongo.repository';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ export class AuthServiceProxyModule {
         {
           inject: [
             UserMongoRepository,
+            AdminMongoRepository,
             EnvironmentConfigService,
             JwtAdapter,
             BcryptAdapter,
@@ -50,12 +52,14 @@ export class AuthServiceProxyModule {
           provide: TOKEN_USECASE,
           useFactory: (
             userRepository: UserMongoRepository,
+            adminRepository: AdminMongoRepository,
             environmentConfigService: EnvironmentConfigService,
             jwtAdapter: JwtAdapter,
             bcryptAdapter: BcryptAdapter,
           ) =>
             new TokenService(
               userRepository,
+              adminRepository,
               environmentConfigService,
               jwtAdapter,
               bcryptAdapter,

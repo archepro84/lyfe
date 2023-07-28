@@ -8,10 +8,12 @@ import {
 } from '@application/port/security/jwt/jwt.port';
 import { AuthToken } from '@domain/user/auth-token';
 import { BcryptPort } from '@application/port/security/bcrypt/bcrypt.port';
+import { AdminRepository } from '@application/port/out/admin/admin.repository';
 
 export class TokenService implements TokenUsecase {
   constructor(
     private readonly userRepository: UserRepository,
+    private readonly adminRepository: AdminRepository,
     private readonly jwtConfig: JwtConfig,
     private readonly jwtPort: JwtPort,
     private readonly bcryptPort: BcryptPort,
