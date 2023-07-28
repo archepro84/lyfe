@@ -23,11 +23,33 @@ export class InvitationMongoRepository implements InvitationRepository {
     return InvitationMapper.toDomain(invitation);
   }
 
+  async getInvitationByInvitationCode(
+    invitationCode: string,
+  ): Promise<Invitation | null> {
+    const invitation = await this.invitationModel
+      .findOne({
+        invitationCode,
+      })
+      .exec();
+
+    return InvitationMapper.toDomain(invitation);
+  }
+
   async issueInvitation(invitation: Invitation): Promise<Invitation> {
     return InvitationMapper.toDomain(
       await this.invitationModel.create({
         ...invitation,
       }),
+    );
+  }
+  async updateInvitation(invitation: Invitation): Promise<void> {
+    await this.invitationModel.updateOne(
+      {
+        id: invitation.id,
+      },
+      {
+        ...invitation,
+      },
     );
   }
 }

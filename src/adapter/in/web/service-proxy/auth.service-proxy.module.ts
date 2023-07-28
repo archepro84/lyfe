@@ -25,6 +25,7 @@ import { SignInService } from '@application/service/auth/sign-in.service';
 import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
 import { LoggerModule } from '@adapter/common/logger/logger.module';
 import { AdminMongoRepository } from '@adapter/out/persistence/admin/admin.mongo.repository';
+import { InvitationMongoRepository } from '@adapter/out/persistence/auth/invitation/invitation.mongo.repository';
 
 @Module({
   imports: [
@@ -125,19 +126,22 @@ export class AuthServiceProxyModule {
           inject: [
             UserMongoRepository,
             AuthMongoRepository,
+            InvitationMongoRepository,
             TOKEN_USECASE,
             SIGN_IN_USECASE,
           ],
           provide: SIGN_UP_USECASE,
           useFactory: (
             userRepository: UserMongoRepository,
-            authRepository: AuthRepository,
+            authRepository: AuthMongoRepository,
+            invitationRepository: InvitationMongoRepository,
             tokenUsecase: TokenService,
             signInUsecase: SignInService,
           ) =>
             new SignUpService(
               userRepository,
               authRepository,
+              invitationRepository,
               tokenUsecase,
               signInUsecase,
             ),
