@@ -15,7 +15,7 @@ export class UserMongoRepository implements UserRepository {
     @InjectModel('User') private readonly userModel: Model<UserEntity>,
   ) {}
 
-  async getUser(userId: string): Promise<User | null> {
+  async getById(userId: string): Promise<User | null> {
     return UserMapper.toDomain(await this.userModel.findById(userId).exec());
   }
 
@@ -55,7 +55,7 @@ export class UserMongoRepository implements UserRepository {
   ): Promise<User> {
     return UserMapper.toDomain(
       await this.userModel.findByIdAndUpdate(userId, {
-        token: authToken,
+        authToken: authToken,
       }),
     );
   }

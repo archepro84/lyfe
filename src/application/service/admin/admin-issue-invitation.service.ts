@@ -19,7 +19,7 @@ export class AdminIssueInvitationService
     adminIssueInvitationCommand: AdminIssueInvitationCommand,
   ): Promise<Invitation> {
     const { adminId, inviteePhoneNumber } = adminIssueInvitationCommand;
-    const admin = await this.adminRepository.getAdminById(adminId);
+    const admin = await this.adminRepository.getById(adminId);
     if (!admin)
       throw new NotFoundException('해당하는 Id의 어드민이 존재하지 않습니다.');
 

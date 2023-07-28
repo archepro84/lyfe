@@ -1,5 +1,5 @@
 export interface JwtServicePayload {
-  userId: string;
+  id: string;
 }
 
 export interface JwtPort {

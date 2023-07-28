@@ -4,7 +4,7 @@ import { SignUpCommand } from '@application/port/in/auth/command/auth.command';
 import { AuthToken } from '@domain/user/auth-token';
 
 export interface UserRepository {
-  getUser(userId: string): Promise<User | null>;
+  getById(userId: string): Promise<User | null>;
 
   getUserByPhoneNumber(phoneNumber: string): Promise<User | null>;
 

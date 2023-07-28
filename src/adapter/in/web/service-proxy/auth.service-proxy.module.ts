@@ -44,22 +44,19 @@ export class AuthServiceProxyModule {
         {
           inject: [
             UserMongoRepository,
-            AdminMongoRepository,
             EnvironmentConfigService,
             JwtAdapter,
             BcryptAdapter,
           ],
           provide: TOKEN_USECASE,
           useFactory: (
-            userRepository: UserMongoRepository,
-            adminRepository: AdminMongoRepository,
+            tokenRepository: UserMongoRepository,
             environmentConfigService: EnvironmentConfigService,
             jwtAdapter: JwtAdapter,
             bcryptAdapter: BcryptAdapter,
           ) =>
             new TokenService(
-              userRepository,
-              adminRepository,
+              tokenRepository,
               environmentConfigService,
               jwtAdapter,
               bcryptAdapter,

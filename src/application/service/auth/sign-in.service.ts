@@ -24,7 +24,7 @@ export class SignInService implements SignInUsecase {
       throw new NotFoundException('해당하는 사용자가 존재하지 않습니다.');
 
     const refreshToken = await this.tokenUsecase.getJwtRefreshToken({
-      userId: user.id,
+      id: user.id,
     });
     const cookieWithRefreshToken =
       await this.tokenUsecase.parseCookieByJwtRefreshToken(refreshToken);
