@@ -33,7 +33,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(request: Request, payload: JwtServicePayload) {
     const authToken = request.cookies?.Refresh;
-    const user = await this.tokenUsecase.getUserIfRefreshTokenMatches(
+    const user = await this.tokenUsecase.getAccountableIfRefreshTokenMatches(
       new AuthToken(authToken),
       payload,
     );

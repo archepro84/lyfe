@@ -77,7 +77,7 @@ export class UserMongoSchema {
   @Prop({ select: false })
   verified: Date;
 
-  @Prop({ select: true })
+  @Prop({ type: AuthToken, select: true })
   authToken: AuthToken;
 
   @Prop({ required: true, default: Date.now, select: false })
