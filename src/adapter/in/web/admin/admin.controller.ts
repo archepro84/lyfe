@@ -1,7 +1,9 @@
 import { Body, Controller, Inject, Post, Request } from '@nestjs/common';
 import {
+  ApiBody,
   ApiExtraModels,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -58,6 +60,19 @@ export class AdminController {
 
   @Post('issue-invitation')
   @ApiOperation({ summary: 'Issue Invitation' })
+  @ApiBody({
+    description: '초대할 사용자의 핸드폰 번호',
+    type: String,
+    schema: {
+      type: 'object',
+      properties: {
+        inviteePhoneNumber: {
+          type: 'string',
+          example: '+8201017778484',
+        },
+      },
+    },
+  })
   @ApiResponse({
     status: 201,
     description: 'Return success',
@@ -67,7 +82,7 @@ export class AdminController {
     @Body('inviteePhoneNumber') inviteePhoneNumber: string,
   ) {
     await this.adminIssueInvitationUsecase.exec({
-      adminId: '64c37df1e564c37df1e55842f8ec39a4865842f8ec39a486',
+      adminId: '64c37df1e55842f8ec39a486',
       inviteePhoneNumber,
     });
 
