@@ -20,5 +20,4 @@ import { JwtAdapter } from '@adapter/security/jwt/jwt.adapter';
   providers: [JwtAdapter],
   exports: [JwtAdapter],
 })
-export class JwtModule {
-}
+export class JwtModule {}
