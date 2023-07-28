@@ -59,3 +59,12 @@ export class SignInUserDto {
   @IsString()
   readonly phoneNumber: string;
 }
+
+export class InvitationResponseDto {
+  @ApiProperty({
+    example: 'H10QYC',
+    description: '초대장 번호',
+  })
+  @IsString()
+  readonly invitationCode: string;
+}

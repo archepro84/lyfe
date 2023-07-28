@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Inject,
   Post,
   Put,
@@ -12,6 +13,7 @@ import {
   SendVerificationUsecase,
 } from '@application/port/in/auth/send-verification.usecase';
 import {
+  InvitationResponseDto,
   SendAuthCodeDto,
   SignUpUserDto,
   VerifyAuthCodeDto,
@@ -34,6 +36,10 @@ import {
   SignUpUsecase,
 } from '@application/port/in/auth/sign-up.usecase';
 import { JwtAuthGuard } from '@common/guard/jwt-auth.guard';
+import {
+  GET_INVITATION_QUERY,
+  GetInvitationQuery,
+} from '@application/port/in/user/invitation/get-invitation.query';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -47,6 +53,8 @@ export class AuthController {
     private readonly sendVerificationUsecase: SendVerificationUsecase,
     @Inject(VERIFICATION_AUTH_CODE_USECASE)
     private readonly verificationAuthCodeUsecase: VerificationAuthCodeUsecase,
+    @Inject(GET_INVITATION_QUERY)
+    private readonly getInvitationQuery: GetInvitationQuery,
   ) {}
 
   @Post()
@@ -83,6 +91,7 @@ export class AuthController {
       );
     if (!authVerificationResponseCommand) return null;
 
+    // 사용자 정보가 존재할 때, 쿠키와 함께 사용자 정보를 반환한다.
     req.res.setHeader('Set-Cookie', [
       authVerificationResponseCommand.cookieWithRefreshToken,
     ]);
@@ -116,5 +125,18 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   async signOut() {
     console.log('Hello world');
+  }
+
+  @Get('invitation')
+  @UseGuards(JwtAuthGuard)
+  async getInvitation(
+    @Request() req: any,
+  ): Promise<InvitationResponseDto | null> {
+    const invitation = await this.getInvitationQuery.exec(req.user.phoneNumber);
+    if (!invitation) return null;
+
+    return {
+      invitationCode: invitation.invitationCode,
+    };
   }
 }
