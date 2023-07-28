@@ -10,7 +10,7 @@ export enum InvitationStatus {
 }
 
 export class Invitation {
-  readonly id: string;
+  id: string;
   readonly invitationType: InvitationType;
   readonly inviterId: string;
   readonly invitationCode: string;
@@ -19,13 +19,12 @@ export class Invitation {
   private invitationStatus: InvitationStatus = InvitationStatus.PENDING;
 
   constructor(
-    id: string,
     invitationType: InvitationType,
     inviterId: string,
     invitationCode: string,
     inviteePhoneNumber: string,
   ) {
-    this.id = id;
+    this.id = null;
     this.invitationType = invitationType;
     this.inviterId = inviterId;
     this.invitationCode = invitationCode;

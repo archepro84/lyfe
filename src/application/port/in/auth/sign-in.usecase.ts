@@ -9,4 +9,4 @@ export interface SignInUsecase {
   ): Promise<AuthVerificationResponseCommand>;
 }
 
-export const SIGN_IN_USECASE = Symbol('SignInCommand');
+export const SIGN_IN_USECASE = Symbol('SignInUsecase');
