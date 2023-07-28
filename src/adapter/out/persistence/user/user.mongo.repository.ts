@@ -6,7 +6,7 @@ import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { UserMapper } from '@adapter/out/persistence/user/mapper/user.mapper';
 import { UserEntity } from '@adapter/out/persistence/user/schema/user.schema';
-import { SignUpCommand } from '@application/port/in/auth/command/auth.command';
+import { SignUpDetails } from '@application/port/in/auth/command/auth.command';
 import { AuthToken } from '@domain/user/auth-token';
 
 @Injectable()
@@ -32,7 +32,7 @@ export class UserMongoRepository implements UserRepository {
   async updateUserProfile(
     userId: string,
     updateUserProfileCommand: UpdateUserProfileCommand,
-  ): Promise<User> {
+  ): Promise<void> {
     return Promise.resolve(undefined);
   }
 
@@ -40,10 +40,10 @@ export class UserMongoRepository implements UserRepository {
     return Promise.resolve(undefined);
   }
 
-  async userSignUp(userSignUpCommand: SignUpCommand): Promise<User> {
+  async userSignUp(signUpDetails: SignUpDetails): Promise<User> {
     return UserMapper.toDomain(
       await this.userModel.create({
-        ...userSignUpCommand,
+        ...signUpDetails,
         userInfo: {},
       }),
     );

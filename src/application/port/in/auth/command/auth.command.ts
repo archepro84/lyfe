@@ -1,10 +1,11 @@
 import { Geometry } from '@domain/user/geometry';
-import { User } from '@domain/user/user';
 
 export class SignUpCommand {
   nickname: string;
 
   phoneNumber: string;
+
+  invitationCode: string;
 
   location?: Geometry;
 
@@ -13,14 +14,24 @@ export class SignUpCommand {
   constructor(
     nickname: string,
     phoneNumber: string,
+    invitationCode: string,
     location: Geometry = null,
     locationUpdatedAt = null,
   ) {
     this.nickname = nickname;
     this.phoneNumber = phoneNumber;
+    this.invitationCode = invitationCode;
     this.location = location;
     this.locationUpdatedAt = locationUpdatedAt;
   }
+}
+export class SignUpDetails {
+  constructor(
+    readonly nickname: string,
+    readonly phoneNumber: string,
+    readonly location?: Geometry,
+    readonly locationUpdatedAt?: Date,
+  ) {}
 }
 
 export class SignInCommand {

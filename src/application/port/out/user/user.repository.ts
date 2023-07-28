@@ -1,6 +1,6 @@
 import { User } from '@domain/user/user';
 import { UpdateUserProfileCommand } from '@application/port/in/user/command/user.command';
-import { SignUpCommand } from '@application/port/in/auth/command/auth.command';
+import { SignUpDetails } from '@application/port/in/auth/command/auth.command';
 import { AuthToken } from '@domain/user/auth-token';
 
 export interface UserRepository {
@@ -8,14 +8,14 @@ export interface UserRepository {
 
   getUserByPhoneNumber(phoneNumber: string): Promise<User | null>;
 
-  userSignUp(userSignUpCommand: SignUpCommand): Promise<User>;
+  userSignUp(signUpDetails: SignUpDetails): Promise<User>;
 
   userSignIn(phoneNumber: string): Promise<User>;
 
   updateUserProfile(
     userId: string,
     updateUserProfileCommand: UpdateUserProfileCommand,
-  ): Promise<User>;
+  ): Promise<void>;
 
   updateRefreshToken(userId: string, refreshToken: AuthToken): Promise<User>;
 }
