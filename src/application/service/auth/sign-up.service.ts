@@ -9,6 +9,7 @@ import {
 } from '@application/port/in/auth/command/auth.command';
 import { TokenUsecase } from '@application/port/in/auth/token/token.usecase';
 import { SignInUsecase } from '@application/port/in/auth/sign-in.usecase';
+import { User } from '@domain/user/user';
 
 export class SignUpService implements SignUpUsecase {
   constructor(
@@ -20,7 +21,7 @@ export class SignUpService implements SignUpUsecase {
 
   async signUp(
     signUpCommand: SignUpCommand,
-  ): Promise<AuthVerificationResponseCommand> {
+  ): Promise<AuthVerificationResponseCommand<User>> {
     const auth = await this.authRepository.getAuth(signUpCommand.phoneNumber);
     if (auth.verified === false) throw new UserNotVerifiedException();
 

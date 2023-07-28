@@ -9,6 +9,7 @@ import { AuthSendLog } from '@domain/auth/auth-send-log';
 import { TokenUsecase } from '@application/port/in/auth/token/token.usecase';
 import { AuthVerificationResponseCommand } from '@application/port/in/auth/command/auth.command';
 import { SignInUsecase } from '@application/port/in/auth/sign-in.usecase';
+import { User } from '@domain/user/user';
 
 const EXPIRED_MINUTES = 1880;
 
@@ -27,7 +28,7 @@ export class VerificationAuthCodeService
   async verifyAuthCode(
     phoneNumber: string,
     authCode: string,
-  ): Promise<AuthVerificationResponseCommand | null> {
+  ): Promise<AuthVerificationResponseCommand<User> | null> {
     const auth = await this.authRepository.getAuth(phoneNumber);
     const latestAuthSendLog =
       await this.authSendLogRepository.getLatestAuthSendLog(phoneNumber);

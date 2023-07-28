@@ -87,7 +87,7 @@ export class AuthController {
       authVerificationResponseCommand.cookieWithRefreshToken,
     ]);
 
-    return new UserPresenter(authVerificationResponseCommand.user);
+    return new UserPresenter(authVerificationResponseCommand.accountable);
   }
 
   @Post('sign-up')
@@ -101,7 +101,7 @@ export class AuthController {
     @Body() signUpUserDto: SignUpUserDto,
     @Request() req: any,
   ): Promise<UserPresenter> {
-    const { user, cookieWithRefreshToken } =
+    const { accountable, cookieWithRefreshToken } =
       await this.userSignUpUsecase.signUp({
         nickname: signUpUserDto.nickname,
         phoneNumber: signUpUserDto.phoneNumber,
@@ -109,7 +109,7 @@ export class AuthController {
 
     req.res.setHeader('Set-Cookie', [cookieWithRefreshToken]);
 
-    return new UserPresenter(user);
+    return new UserPresenter(accountable);
   }
 
   @Post('sign-out')

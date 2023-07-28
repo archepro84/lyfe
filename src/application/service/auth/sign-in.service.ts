@@ -6,6 +6,7 @@ import {
   SignInCommand,
 } from '@application/port/in/auth/command/auth.command';
 import { TokenUsecase } from '@application/port/in/auth/token/token.usecase';
+import { User } from '@domain/user/user';
 
 export class SignInService implements SignInUsecase {
   constructor(
@@ -15,7 +16,7 @@ export class SignInService implements SignInUsecase {
 
   async signIn(
     signInCommand: SignInCommand,
-  ): Promise<AuthVerificationResponseCommand> {
+  ): Promise<AuthVerificationResponseCommand<User>> {
     const user = await this.userRepository.getUserByPhoneNumber(
       signInCommand.phoneNumber,
     );

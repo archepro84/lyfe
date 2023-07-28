@@ -31,9 +31,9 @@ export class SignInCommand {
   }
 }
 
-export class AuthVerificationResponseCommand {
+export class AuthVerificationResponseCommand<T> {
   constructor(
-    readonly user: User,
+    readonly accountable: T,
     readonly cookieWithRefreshToken: string, // readonly cookieWithAccessToken: string,
   ) {}
 }
