@@ -6,7 +6,7 @@ import { JwtServicePayload } from '@application/port/security/jwt/jwt.port';
 import {
   TOKEN_USECASE,
   TokenUsecase,
-} from '@application/port/in/auth/token.usecase';
+} from '@application/port/in/auth/token/token.usecase';
 import { EnvironmentConfigService } from '@common/config/environment-config.service';
 import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
 import { NotFoundException } from '@common/exception/not-found.exception';

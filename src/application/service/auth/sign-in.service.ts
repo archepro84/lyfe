@@ -5,7 +5,7 @@ import {
   AuthVerificationResponseCommand,
   SignInCommand,
 } from '@application/port/in/auth/command/auth.command';
-import { TokenUsecase } from '@application/port/in/auth/token.usecase';
+import { TokenUsecase } from '@application/port/in/auth/token/token.usecase';
 
 export class SignInService implements SignInUsecase {
   constructor(

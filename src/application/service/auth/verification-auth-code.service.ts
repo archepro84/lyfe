@@ -6,7 +6,7 @@ import { VerificationCodeExpiredException } from '@application/service/auth/exce
 import { BcryptPort } from '@application/port/security/bcrypt/bcrypt.port';
 import { UserRepository } from '@application/port/out/user/user.repository';
 import { AuthSendLog } from '@domain/auth/auth-send-log';
-import { TokenUsecase } from '@application/port/in/auth/token.usecase';
+import { TokenUsecase } from '@application/port/in/auth/token/token.usecase';
 import { AuthVerificationResponseCommand } from '@application/port/in/auth/command/auth.command';
 import { SignInUsecase } from '@application/port/in/auth/sign-in.usecase';
 

@@ -1,6 +1,6 @@
 import { User } from '@domain/user/user';
 import { UserRepository } from '@application/port/out/user/user.repository';
-import { TokenUsecase } from '@application/port/in/auth/token.usecase';
+import { TokenUsecase } from '@application/port/in/auth/token/token.usecase';
 import { JwtConfig } from '@domain/config/jwt.config';
 import {
   JwtPort,
