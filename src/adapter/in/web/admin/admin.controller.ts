@@ -1,5 +1,10 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
-import { ApiExtraModels, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Inject, Post, Request } from '@nestjs/common';
+import {
+  ApiExtraModels,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import {
   ADMIN_ISSUE_INVITATION_USECASE,
   AdminIssueInvitationUsecase,
@@ -9,6 +14,11 @@ import {
   SignUpAdminUsecase,
 } from '@application/port/in/admin/sign-up-admin.usecase';
 import { AdminPresenter } from '@adapter/in/web/admin/admin.presenter';
+import { SignUpAdminDto } from '@adapter/in/web/admin/admin.dto';
+import {
+  SIGN_IN_ADMIN_USECASE,
+  SignInAdminUsecase,
+} from '@application/port/in/admin/sign-in-admin.usecase';
 
 @Controller('admin')
 @ApiTags('admin')
@@ -20,9 +30,39 @@ export class AdminController {
     private readonly adminIssueInvitationUsecase: AdminIssueInvitationUsecase,
     @Inject(SIGN_UP_ADMIN_USECASE)
     private readonly signUpAdminUsecase: SignUpAdminUsecase,
+    @Inject(SIGN_IN_ADMIN_USECASE)
+    private readonly signInAdminUsecase: SignInAdminUsecase,
   ) {}
 
+  @Post('sign-in')
+  @ApiOperation({ summary: 'SignIn Admin' })
+  @ApiResponse({
+    status: 201,
+    description: 'Return Admin',
+    type: [AdminPresenter],
+  })
+  async signInAdmin(
+    @Body() signUpAdminDto: SignUpAdminDto,
+    @Request() req: any,
+  ): Promise<AdminPresenter> {
+    const { accountable, cookieWithRefreshToken } =
+      await this.signInAdminUsecase.exec({
+        email: signUpAdminDto.email,
+        password: signUpAdminDto.password,
+      });
+
+    req.res.setHeader('Set-Cookie', [cookieWithRefreshToken]);
+
+    return new AdminPresenter(accountable);
+  }
+
   @Post('issue-invitation')
+  @ApiOperation({ summary: 'Issue Invitation' })
+  @ApiResponse({
+    status: 201,
+    description: 'Return success',
+    type: 'success',
+  })
   async adminIssueInvitation(
     @Body('inviteePhoneNumber') inviteePhoneNumber: string,
   ) {

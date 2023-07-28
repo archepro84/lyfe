@@ -11,6 +11,7 @@ export class AdminMapper {
       adminEntity.password,
       adminEntity.createdAt,
       adminEntity.updatedAt,
+      adminEntity.authToken,
     );
 
     return admin;
@@ -23,6 +24,7 @@ export class AdminMapper {
       admin.password,
       admin.createdAt,
       admin.updatedAt,
+      admin.getAuthToken(),
     );
 
     return adminEntity;

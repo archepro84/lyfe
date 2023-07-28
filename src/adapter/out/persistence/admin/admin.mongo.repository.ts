@@ -5,6 +5,7 @@ import { AdminRepository } from '@application/port/out/admin/admin.repository';
 import { AdminEntity } from '@adapter/out/persistence/admin/schema/admin.schema';
 import { Admin } from '@domain/admin/admin';
 import { AdminMapper } from '@adapter/out/persistence/admin/mapper/admin.mapper';
+import { AuthToken } from '@domain/user/auth-token';
 
 @Injectable()
 export class AdminMongoRepository implements AdminRepository {
@@ -22,6 +23,10 @@ export class AdminMongoRepository implements AdminRepository {
     );
   }
 
+  async getById(adminId: string): Promise<Admin | null> {
+    return AdminMapper.toDomain(await this.adminModel.findById(adminId).exec());
+  }
+
   async getAdminByEmail(email: string): Promise<Admin | null> {
     return AdminMapper.toDomain(
       await this.adminModel
@@ -32,7 +37,14 @@ export class AdminMongoRepository implements AdminRepository {
     );
   }
 
-  async getAdminById(adminId: string): Promise<Admin | null> {
-    return AdminMapper.toDomain(await this.adminModel.findById(adminId).exec());
+  async updateRefreshToken(
+    adminId: string,
+    authToken: AuthToken,
+  ): Promise<Admin> {
+    return AdminMapper.toDomain(
+      await this.adminModel.findByIdAndUpdate(adminId, {
+        authToken: authToken,
+      }),
+    );
   }
 }
