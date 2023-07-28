@@ -12,7 +12,7 @@ Content-Type: application/json
 
 {
   "phoneNumber": "+8201049119038",
-  "authCode": "851561"
+  "authCode": "980880"
 }
 
 
@@ -36,7 +36,8 @@ Content-Type: application/json
 
 {
   "nickname": "archepro84",
-  "phoneNumber": "+8201049119038"
+  "phoneNumber": "+8201049119038",
+  "invitationCode": "H10QYC"
 }
 
 ### Update User
@@ -64,6 +65,17 @@ Content-Type: application/json
 {
 }
 
+### GET Invitation Code
+GET http://localhost:3000/api/auth/invitation/+8201049119038
+Content-Type: application/json
 
+{
+}
 
+### Admin Send Invitation
+POST http://localhost:3000/api/admin/issue-invitation
+Content-Type: application/json
 
+{
+  "inviteePhoneNumber": "+8201049119038"
+}

@@ -49,6 +49,13 @@ export class SignUpUserDto {
   })
   @IsString()
   readonly phoneNumber: string;
+
+  @ApiProperty({
+    example: 'H10QYC',
+    description: '초대장 번호',
+  })
+  @IsString()
+  readonly invitationCode: string;
 }
 
 export class SignInUserDto {
@@ -61,6 +68,24 @@ export class SignInUserDto {
 }
 
 export class InvitationResponseDto {
+  @ApiProperty({
+    example: 'H10QYC',
+    description: '초대장 번호',
+  })
+  @IsString()
+  readonly invitationCode: string;
+}
+
+export class VerifyInvitationDto {
+  @ApiProperty({
+    example: 'H10QYC',
+    description: '초대장 번호',
+  })
+  @IsString()
+  readonly invitationCode: string;
+}
+
+export class VerifyInvitationResponseDto {
   @ApiProperty({
     example: 'H10QYC',
     description: '초대장 번호',

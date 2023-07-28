@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Inject,
+  Param,
   Post,
   Put,
   Request,
@@ -18,10 +19,13 @@ import {
   SignUpUserDto,
   VerifyAuthCodeDto,
   VerifyAuthCodeResponseDto,
+  VerifyInvitationDto,
+  VerifyInvitationResponseDto,
 } from '@adapter/in/web/auth/auth.dto';
 import {
   ApiExtraModels,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -82,12 +86,10 @@ export class AuthController {
     @Body() verifyAuthCodeDto: VerifyAuthCodeDto,
     @Request() req: any,
   ): Promise<UserPresenter> {
-    const { phoneNumber, authCode } = verifyAuthCodeDto;
-
     const authVerificationResponseCommand =
       await this.verificationAuthCodeUsecase.verifyAuthCode(
-        phoneNumber,
-        authCode,
+        verifyAuthCodeDto.phoneNumber,
+        verifyAuthCodeDto.authCode,
       );
     if (!authVerificationResponseCommand) return null;
 
@@ -114,6 +116,7 @@ export class AuthController {
       await this.userSignUpUsecase.signUp({
         nickname: signUpUserDto.nickname,
         phoneNumber: signUpUserDto.phoneNumber,
+        invitationCode: signUpUserDto.invitationCode,
       });
 
     req.res.setHeader('Set-Cookie', [cookieWithRefreshToken]);
@@ -127,12 +130,23 @@ export class AuthController {
     console.log('Hello world');
   }
 
-  @Get('invitation')
-  @UseGuards(JwtAuthGuard)
+  @Get('invitation/:phoneNumber')
+  @ApiOperation({ summary: 'Get Invitation Code' })
+  @ApiParam({
+    name: 'phoneNumber',
+    description: '핸드폰 번호',
+    type: String,
+    example: '+8201017778484',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Return InvitationCode',
+    type: [InvitationResponseDto],
+  })
   async getInvitation(
-    @Request() req: any,
+    @Param('phoneNumber') phoneNumber: string,
   ): Promise<InvitationResponseDto | null> {
-    const invitation = await this.getInvitationQuery.exec(req.user.phoneNumber);
+    const invitation = await this.getInvitationQuery.exec(phoneNumber);
     if (!invitation) return null;
 
     return {
