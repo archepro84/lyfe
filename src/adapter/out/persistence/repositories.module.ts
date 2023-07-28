@@ -8,6 +8,10 @@ import { AuthMongoRepository } from '@adapter/out/persistence/auth/auth.mongo.re
 import { AuthSendLogMongoRepository } from '@adapter/out/persistence/auth/auth-send-log.mongo.repository';
 import { EnvironmentConfigModule } from '@common/config/environment-config.module';
 import { EnvironmentConfigService } from '@common/config/environment-config.service';
+import { InvitationSchema } from '@adapter/out/persistence/auth/invitation/schema/invitation.schema';
+import { AdminSchema } from '@adapter/out/persistence/admin/schema/admin.schema';
+import { AdminMongoRepository } from '@adapter/out/persistence/admin/admin.mongo.repository';
+import { InvitationMongoRepository } from '@adapter/out/persistence/auth/invitation/invitation.mongo.repository';
 
 @Module({
   imports: [
@@ -22,17 +26,23 @@ import { EnvironmentConfigService } from '@common/config/environment-config.serv
       { name: 'User', schema: UserSchema },
       { name: 'Auth', schema: AuthSchema },
       { name: 'AuthSendLog', schema: AuthSendLogSchema },
+      { name: 'Admin', schema: AdminSchema },
+      { name: 'Invitation', schema: InvitationSchema },
     ]),
   ],
   providers: [
     UserMongoRepository,
     AuthMongoRepository,
     AuthSendLogMongoRepository,
+    InvitationMongoRepository,
+    AdminMongoRepository,
   ],
   exports: [
     UserMongoRepository,
     AuthMongoRepository,
     AuthSendLogMongoRepository,
+    InvitationMongoRepository,
+    AdminMongoRepository,
   ],
 })
 export class RepositoriesModule {}

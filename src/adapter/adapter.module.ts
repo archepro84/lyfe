@@ -5,6 +5,7 @@ import { RepositoriesModule } from 'src/adapter/out/persistence/repositories.mod
 import { SnsModule } from '@adapter/out/messaging/sns/sns.module';
 import { AuthController } from '@adapter/in/web/auth/auth.controller';
 import { ServiceProxyModule } from '@adapter/in/web/service-proxy/service-proxy.module';
+import { AdminController } from '@adapter/in/web/admin/admin.controller';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { ServiceProxyModule } from '@adapter/in/web/service-proxy/service-proxy.
     RepositoriesModule,
     ServiceProxyModule,
   ],
-  controllers: [AuthController, UserController],
+  controllers: [AuthController, UserController, AdminController],
   providers: [],
   exports: [ServiceProxyModule],
 })
