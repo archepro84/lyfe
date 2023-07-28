@@ -75,7 +75,7 @@ export class UserMongoSchema {
   locationUpdatedAt: Date;
 
   @Prop({ select: false })
-  verified: Date;
+  verifiedAt: Date;
 
   @Prop({ type: AuthToken, select: true })
   authToken: AuthToken;
