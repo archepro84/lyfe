@@ -1,9 +1,9 @@
 import { Controller, Get, Inject, Param } from '@nestjs/common';
 import { UserPresenter } from '@adapter/in/web/user/user.presenter';
 import {
-  UPDATE_USER_PROFILE_USECASE,
-  UpdateUserProfileUsecase,
-} from '@application/port/in/user/update-user-profile.usecase';
+  UPDATE_USER_INFO_USECASE,
+  UpdateUserInfoUsecase,
+} from '@application/port/in/user/update-user-info.usecase';
 import {
   SIGN_IN_USECASE,
   SignInUsecase,
@@ -20,8 +20,8 @@ import { ApiExtraModels, ApiResponse, ApiTags } from '@nestjs/swagger';
 @ApiExtraModels(UserPresenter)
 export class UserController {
   constructor(
-    @Inject(UPDATE_USER_PROFILE_USECASE)
-    private readonly updateUserProfileUsecase: UpdateUserProfileUsecase,
+    @Inject(UPDATE_USER_INFO_USECASE)
+    private readonly updateUserProfileUsecase: UpdateUserInfoUsecase,
     @Inject(SIGN_IN_USECASE)
     private readonly userSignInUsecase: SignInUsecase,
     @Inject(GET_USER_QUERY)

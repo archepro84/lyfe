@@ -1,5 +1,5 @@
 import { UserRepository } from '@application/port/out/user/user.repository';
-import { UpdateUserProfileCommand } from '@application/port/in/user/command/user.command';
+import { UpdateUserInfoCommand } from '@application/port/in/user/command/update-user-info.command';
 import { User } from '@domain/user/user';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -31,7 +31,7 @@ export class UserMongoRepository implements UserRepository {
 
   async updateUserProfile(
     userId: string,
-    updateUserProfileCommand: UpdateUserProfileCommand,
+    updateUserInfoCommand: UpdateUserInfoCommand,
   ): Promise<void> {
     return Promise.resolve(undefined);
   }

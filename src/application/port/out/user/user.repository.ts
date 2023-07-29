@@ -1,5 +1,5 @@
 import { User } from '@domain/user/user';
-import { UpdateUserProfileCommand } from '@application/port/in/user/command/user.command';
+import { UpdateUserInfoCommand } from '@application/port/in/user/command/update-user-info.command';
 import { SignUpDetails } from '@application/port/in/auth/command/auth.command';
 import { AuthToken } from '@domain/user/auth-token';
 
@@ -14,7 +14,7 @@ export interface UserRepository {
 
   updateUserProfile(
     userId: string,
-    updateUserProfileCommand: UpdateUserProfileCommand,
+    updateUserInfoCommand: UpdateUserInfoCommand,
   ): Promise<void>;
 
   updateRefreshToken(userId: string, refreshToken: AuthToken): Promise<User>;
