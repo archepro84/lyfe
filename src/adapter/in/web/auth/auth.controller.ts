@@ -18,9 +18,6 @@ import {
   SendAuthCodeDto,
   SignUpUserDto,
   VerifyAuthCodeDto,
-  VerifyAuthCodeResponseDto,
-  VerifyInvitationDto,
-  VerifyInvitationResponseDto,
 } from '@adapter/in/web/auth/auth.dto';
 import {
   ApiExtraModels,
