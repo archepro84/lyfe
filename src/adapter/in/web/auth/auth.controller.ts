@@ -66,7 +66,7 @@ export class AuthController {
   @ApiResponse({
     status: 200,
     description: 'Return success',
-    type: 'success',
+    type: String,
   })
   async sendAuthCode(@Body() sendAuthCodeDto: SendAuthCodeDto) {
     const { phoneNumber } = sendAuthCodeDto;

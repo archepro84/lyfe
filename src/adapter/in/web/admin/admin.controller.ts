@@ -76,7 +76,7 @@ export class AdminController {
   @ApiResponse({
     status: 201,
     description: 'Return success',
-    type: 'success',
+    type: String,
   })
   async adminIssueInvitation(
     @Body('inviteePhoneNumber') inviteePhoneNumber: string,
