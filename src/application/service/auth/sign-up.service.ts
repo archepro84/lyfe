@@ -42,9 +42,13 @@ export class SignUpService implements SignUpUsecase {
     if (user) throw new UserAlreadyExistsException();
 
     invitation.setInvitationStatus(InvitationStatus.ACCEPTED);
+
     // TODO: 트랜잭션 도입
     await this.userRepository.userSignUp(signUpCommand);
-    await this.invitationRepository.updateInvitation(invitation);
+    await this.invitationRepository.updateInvitationStatus(
+      invitation.id,
+      invitation.getInvitationStatus(),
+    );
 
     return await this.signInUsecase.signIn({
       phoneNumber: signUpCommand.phoneNumber,

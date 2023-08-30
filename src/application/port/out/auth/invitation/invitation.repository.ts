@@ -1,4 +1,4 @@
-import { Invitation } from '@domain/auth/invitation';
+import { Invitation, InvitationStatus } from '@domain/auth/invitation';
 
 export interface InvitationRepository {
   getInvitation(inviteePhoneNumber: string): Promise<Invitation | null>;
@@ -9,5 +9,8 @@ export interface InvitationRepository {
 
   issueInvitation(invitation: Invitation): Promise<Invitation>;
 
-  updateInvitation(invitation: Invitation): Promise<void>;
+  updateInvitationStatus(
+    invitationId: string,
+    invitationStatus: InvitationStatus,
+  ): Promise<void>;
 }

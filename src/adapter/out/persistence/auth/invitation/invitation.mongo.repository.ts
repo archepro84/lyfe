@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { InvitationRepository } from '@application/port/out/auth/invitation/invitation.repository';
-import { Invitation } from '@domain/auth/invitation';
+import { Invitation, InvitationStatus } from '@domain/auth/invitation';
 import { InvitationEntity } from '@adapter/out/persistence/auth/invitation/schema/invitation.schema';
 import { InvitationMapper } from '@adapter/out/persistence/auth/invitation/mapper/invitation.mapper';
 
@@ -42,13 +42,17 @@ export class InvitationMongoRepository implements InvitationRepository {
       }),
     );
   }
-  async updateInvitation(invitation: Invitation): Promise<void> {
+
+  async updateInvitationStatus(
+    invitationId: string,
+    invitationStatus: InvitationStatus,
+  ): Promise<void> {
     await this.invitationModel.updateOne(
       {
-        id: invitation.id,
+        _id: invitationId,
       },
       {
-        ...invitation,
+        invitationStatus,
       },
     );
   }
