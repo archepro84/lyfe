@@ -1,18 +1,24 @@
-import { Controller, Get, Inject, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Inject,
+  Patch,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { UserPresenter } from '@adapter/in/web/user/user.presenter';
 import {
   UPDATE_USER_INFO_USECASE,
   UpdateUserInfoUsecase,
 } from '@application/port/in/user/update-user-info.usecase';
 import {
-  SIGN_IN_USECASE,
-  SignInUsecase,
-} from '@application/port/in/auth/sign-in.usecase';
-import {
-  GET_USER_QUERY,
-  GetUserQuery,
-} from '@application/port/in/user/get-user.query';
-import { ApiExtraModels, ApiResponse, ApiTags } from '@nestjs/swagger';
+  ApiExtraModels,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { UpdateUserInfoDto } from '@adapter/in/web/user/user.dto';
+import { JwtAuthGuard } from '@common/guard/jwt-auth.guard';
 
 @Controller('users')
 @ApiTags('users')
@@ -21,16 +27,26 @@ import { ApiExtraModels, ApiResponse, ApiTags } from '@nestjs/swagger';
 export class UserController {
   constructor(
     @Inject(UPDATE_USER_INFO_USECASE)
-    private readonly updateUserProfileUsecase: UpdateUserInfoUsecase,
-    @Inject(SIGN_IN_USECASE)
-    private readonly userSignInUsecase: SignInUsecase,
-    @Inject(GET_USER_QUERY)
-    private readonly getUserQuery: GetUserQuery,
+    private readonly updateUserInfoUsecase: UpdateUserInfoUsecase,
   ) {}
 
-  @Get(':id')
-  async getTest(@Param('id') userId: string) {
-    console.log('Hello world');
-    return 'Hello';
+  @Patch()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Update User Informations' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return success',
+    type: String,
+  })
+  async updateUserInfo(
+    @Request() req: any,
+    @Body() updateUserInfoDto: UpdateUserInfoDto,
+  ) {
+    await this.updateUserInfoUsecase.exec({
+      userId: req.user.id,
+      ...updateUserInfoDto,
+    });
+
+    return 'success';
   }
 }

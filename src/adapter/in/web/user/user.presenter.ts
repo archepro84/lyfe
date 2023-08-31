@@ -50,7 +50,7 @@ export class UserPresenter {
 
   constructor(user: User) {
     this.id = user.id;
-    this.userInfo = user.userInfo;
+    this.userInfo = user.getUserInfo();
     this.phoneNumber = user.phoneNumber;
     this.createdAt = user.createdAt;
     this.token = user.getAuthToken().token;

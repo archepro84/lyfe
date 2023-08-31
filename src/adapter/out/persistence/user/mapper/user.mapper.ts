@@ -1,5 +1,6 @@
 import { User } from '@domain/user/user';
 import { UserEntity } from '@adapter/out/persistence/user/schema/user.schema';
+import { UserInfo } from '@domain/user/user-info';
 
 export class UserMapper {
   public static toDomain(userEntity: UserEntity): User {
@@ -8,14 +9,13 @@ export class UserMapper {
     const user = new User(
       userEntity._id,
       userEntity.nickname,
-      userEntity.userInfo,
+      UserInfo.fromObject(userEntity.userInfo),
       userEntity.phoneNumber,
       userEntity.createdAt,
       userEntity.updatedAt,
 
       userEntity.authToken,
     );
-    user.setLocation(userEntity.location);
     user.setLocationUpdatedAt(userEntity.locationUpdatedAt);
     user.setVerifiedAt(userEntity.verifiedAt);
     user.setDeletedAt(userEntity.deletedAt);
@@ -30,8 +30,8 @@ export class UserMapper {
   public static toPersistence(user: User): UserEntity {
     return new UserEntity(
       user.id,
-      user.nickname,
-      user.userInfo,
+      user.getNickname(),
+      user.getUserInfo(),
       user.phoneNumber,
       user.createdAt,
       user.updatedAt,
