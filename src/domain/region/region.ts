@@ -4,13 +4,13 @@
  */
 export class Region {
   /**
-   *  @param {number} id - 지역의 고유 ID입니다.
+   *  @param {string} id - 지역의 고유 ID입니다.
    *  @param {string} city - 지역의 '시도'를 나타냅니다.
    *  @param {string} district - 지역의 '시군구'를 나타냅니다.
    *  @param {string} neighborhood - 지역의 '법정 읍면동'을 나타냅니다.
    */
   constructor(
-    public readonly id: number,
+    public readonly id: string,
     public readonly city: string,
     public readonly district: string,
     public readonly neighborhood: string,
