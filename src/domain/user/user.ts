@@ -5,12 +5,12 @@ import { InvalidPhoneNumberFormatException } from '@domain/user/exception/invali
 
 export class User {
   readonly id?: string;
-  readonly nickname: string;
-  readonly userInfo: UserInfo;
   readonly phoneNumber: string;
   readonly createdAt: Date;
   readonly updatedAt: Date;
 
+  private nickname: string;
+  private userInfo: UserInfo;
   private location: Geometry = null;
   private locationUpdatedAt?: Date = new Date();
   private verifiedAt: Date = new Date();
@@ -37,6 +37,22 @@ export class User {
     if (!phoneNumber.match(/^\+\d{1,3}\d{1,15}$/))
       throw new InvalidPhoneNumberFormatException();
     this.phoneNumber = phoneNumber;
+  }
+
+  setNickname(nickname: string) {
+    this.nickname = nickname;
+  }
+
+  getNickname(): string {
+    return this.nickname;
+  }
+
+  setUserInfo(userInfo: UserInfo) {
+    this.userInfo = userInfo;
+  }
+
+  getUserInfo(): UserInfo {
+    return this.userInfo;
   }
 
   setLocation(location: Geometry) {

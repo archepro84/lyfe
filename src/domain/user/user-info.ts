@@ -17,9 +17,9 @@ export class UserInfo {
     birth: string = null,
     region: Region = null,
   ) {
-    this.gender = gender;
+    this.setGender(gender);
     this.setBirth(birth);
-    this.region = region;
+    this.setRegion(region);
   }
 
   setGender(gender: Gender) {
@@ -31,6 +31,10 @@ export class UserInfo {
   }
 
   setBirth(birth: string) {
+    if (!birth) {
+      this.birth = null;
+      return;
+    }
     if (!birth.match(/^\d{4}-\d{2}-\d{2}$/))
       throw new InvalidBirthFormatException();
     this.birth = birth;
@@ -46,5 +50,9 @@ export class UserInfo {
 
   getRegion(): Region {
     return this.region;
+  }
+
+  static fromObject(obj: any): UserInfo {
+    return new UserInfo(obj.gender, obj.birth, obj.region);
   }
 }
