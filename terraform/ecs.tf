@@ -95,4 +95,43 @@ resource "aws_iam_role" "ecs_instance_role" {
 
 
 
+resource "aws_ecs_task_definition" "this" {
+  family                   = "${var.service_name}-task"
+  network_mode             = "awsvpc"
+  task_role_arn            = aws_iam_role.ecs_instance_role.arn
+  execution_role_arn       = aws_iam_role.ecs_instance_role.arn
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = var.container_cpu
+  memory                   = var.container_memory
+
+  container_definitions = <<TASK_DEFINITION
+[
+    {
+      "name": "${var.service_name}-container",
+      "image": "${local.ACCOUNT_ID}.dkr.ecr.${var.region}.amazonaws.com/${var.service_name}:latest",
+      "portMappings": [
+        {
+          "containerPort": ${var.container_port},
+          "hostPort": ${var.container_port},
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "entryPoint": [],
+      "command": [],
+      "environment": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/${var.service_name}-task",
+          "awslogs-region": "${var.region}",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+TASK_DEFINITION
+}
 
