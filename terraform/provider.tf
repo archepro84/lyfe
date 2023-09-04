@@ -7,6 +7,16 @@ terraform {
       version = "~> 3.0"
     }
   }
+
+  # FIXME: Cloud 도입
+  #  cloud {
+  #    hostname = "app.terraform.io"
+  #    organization = "lyfe"
+  #
+  #    workspaces {
+  #      name = "lyfe-terraform"
+  #    }
+  #  }
 }
 
 provider "aws" {

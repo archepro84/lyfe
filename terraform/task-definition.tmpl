@@ -1,5 +1,5 @@
 {
-  "family": "lyfe-task",
+  "family": "${SERVICE_NAME}-task",
   "networkMode": "awsvpc",
   "taskRoleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/ecsTaskExecutionRole",
   "executionRoleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/ecsTaskExecutionRole",
@@ -9,8 +9,8 @@
       "image": "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${AWS_ECR_REPOSITORY}:latest",
       "portMappings": [
         {
-          "containerPort": 3000,
-          "hostPort": 3000,
+          "containerPort": ${CONTAINER_PORT},
+          "hostPort": ${CONTAINER_PORT},
           "protocol": "tcp"
         }
       ],
@@ -23,8 +23,8 @@
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/lyfe-task",
-          "awslogs-region": "ap-northeast-2",
+          "awslogs-group": "/ecs/${SERVICE_NAME}-task",
+          "awslogs-region": "${AWS_REGION}",
           "awslogs-stream-prefix": "ecs"
         }
       }

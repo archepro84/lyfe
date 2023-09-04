@@ -21,6 +21,7 @@ env:
   ECS_SERVICE: ${{ secrets.ECS_SERVICE }}
   ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
   CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
+  CONTAINER_PORT: ${{ secrets.CONTAINER_PORT }}
 
 
 jobs:
