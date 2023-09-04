@@ -177,10 +177,8 @@ resource "aws_ecs_service" "this" {
   }
 
   network_configuration {
-    security_groups  = [aws_security_group.ecs.id]
-    subnets          = concat(
-      [for s in values(aws_subnet.privates) : s.id],
-    )
+    security_groups = [aws_security_group.ecs.id]
+    subnets         = [for s in values(aws_subnet.privates) : s.id]
   }
 
   load_balancer {
