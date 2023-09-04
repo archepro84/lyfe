@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "ecs_instance_role" {
+data "aws_iam_policy_document" "ecs_task_execution_role" {
   version = "2008-10-17"
   statement {
     sid     = ""
@@ -7,7 +7,7 @@ data "aws_iam_policy_document" "ecs_instance_role" {
 
     principals {
       type        = "Service"
-      identifiers = ["ec2.amazonaws.com"]
+      identifiers = ["ecs-tasks.amazonaws.com"]
     }
   }
 }
@@ -73,10 +73,9 @@ resource "aws_iam_policy" "sns_publish" {
   policy = data.aws_iam_policy_document.sns_publish.json
 }
 
-
-resource "aws_iam_role" "ecs_instance_role" {
-  name                = "${var.service_name}-ecsInstanceRole"
-  assume_role_policy  = data.aws_iam_policy_document.ecs_instance_role.json
+resource "aws_iam_role" "ecs_task_execution_role" {
+  name                = "${var.service_name}-ecsTaskExecutionRole"
+  assume_role_policy  = data.aws_iam_policy_document.ecs_task_execution_role.json
   managed_policy_arns = [
     data.aws_iam_policy.AmazonEC2ContainerServiceforEC2Role.arn,
     data.aws_iam_policy.AmazonECSTaskExecutionRolePolicy.arn,
@@ -86,20 +85,67 @@ resource "aws_iam_role" "ecs_instance_role" {
   ]
 }
 
+resource "aws_security_group" "ecs" {
+  name   = "${var.service_name}-ecs-sg"
+  vpc_id = aws_vpc.this.id
+
+  ingress {
+    description = "ecs-ssh"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "ecs-http"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "ecs-https"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "ecs-port"
+    from_port   = var.container_port
+    to_port     = var.container_port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    description = "ecs-egress-all"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
 
 
+resource "aws_ecs_cluster" "this" {
+  name = "${var.service_name}-cluster"
 
-
-
-
-
-
+  configuration {
+    execute_command_configuration {
+      logging = "DEFAULT"
+    }
+  }
+}
 
 resource "aws_ecs_task_definition" "this" {
   family                   = "${var.service_name}-task"
   network_mode             = "awsvpc"
-  task_role_arn            = aws_iam_role.ecs_instance_role.arn
-  execution_role_arn       = aws_iam_role.ecs_instance_role.arn
+  task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.container_cpu
   memory                   = var.container_memory
@@ -135,3 +181,44 @@ resource "aws_ecs_task_definition" "this" {
 TASK_DEFINITION
 }
 
+
+resource "aws_ecs_service" "this" {
+  name            = "${var.service_name}-service"
+  cluster         = aws_ecs_cluster.this.id
+  task_definition = aws_ecs_task_definition.this.arn
+  desired_count   = 1
+
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE"
+    base              = 0
+    weight            = 1
+  }
+
+  deployment_controller {
+    type = "ECS"
+  }
+
+  network_configuration {
+    assign_public_ip = true
+    security_groups  = [aws_security_group.ecs.id]
+    subnets          = concat(
+      #      [for s in values(aws_subnet.privates) : s.id],
+      [for s in values(aws_subnet.publics) : s.id]
+    )
+  }
+
+  # FIXME: ALB 및 Private Subnet 수정 필요
+  # load_balancer {
+  #   target_group_arn = aws_lb_target_group.this.arn
+  #   container_name   = "${var.service_name}-container"
+  #   container_port   = var.container_port
+  # }
+
+  timeouts {}
+
+  lifecycle {
+    ignore_changes = [
+      task_definition,
+    ]
+  }
+}
