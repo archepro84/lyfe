@@ -201,15 +201,12 @@ resource "aws_ecs_service" "this" {
   }
 
   network_configuration {
-    assign_public_ip = true
     security_groups  = [aws_security_group.ecs.id]
     subnets          = concat(
-      #      [for s in values(aws_subnet.privates) : s.id],
-      [for s in values(aws_subnet.publics) : s.id]
+      [for s in values(aws_subnet.privates) : s.id],
     )
   }
 
-  # FIXME: ALB 및 Private Subnet 수정 필요
   load_balancer {
     target_group_arn = aws_alb_target_group.this.arn
     container_name   = "${var.service_name}-container"
