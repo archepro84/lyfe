@@ -188,6 +188,8 @@ resource "aws_ecs_service" "this" {
   task_definition = aws_ecs_task_definition.this.arn
   desired_count   = 1
 
+  health_check_grace_period_seconds = 10
+
   capacity_provider_strategy {
     capacity_provider = "FARGATE"
     base              = 0
@@ -208,11 +210,16 @@ resource "aws_ecs_service" "this" {
   }
 
   # FIXME: ALB 및 Private Subnet 수정 필요
-  # load_balancer {
-  #   target_group_arn = aws_lb_target_group.this.arn
-  #   container_name   = "${var.service_name}-container"
-  #   container_port   = var.container_port
-  # }
+  load_balancer {
+    target_group_arn = aws_alb_target_group.this.arn
+    container_name   = "${var.service_name}-container"
+    container_port   = var.container_port
+  }
+
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = true
+  }
 
   timeouts {}
 
