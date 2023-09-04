@@ -11,9 +11,9 @@ resource "aws_security_group" "alb" {
   }
 
   ingress {
-    description = "alb-port"
-    from_port   = var.container_port
-    to_port     = var.container_port
+    description = "alb-https"
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -52,7 +52,7 @@ resource "aws_alb_target_group" "this" {
   health_check {
     path                = "/api/ping"
     healthy_threshold   = 5 # default
-    matcher             = "200" # matcher
+    matcher             = "200" # default
     timeout             = 5 # default
     unhealthy_threshold = 2 # default
   }
