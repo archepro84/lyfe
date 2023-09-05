@@ -45,7 +45,7 @@ export class VerificationAuthCodeService
     const user = await this.userRepository.getUserByPhoneNumber(phoneNumber);
     if (!user) return null;
 
-    return await this.signInUsecase.signIn({
+    return await this.signInUsecase.exec({
       phoneNumber: phoneNumber,
     });
   }

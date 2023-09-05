@@ -14,7 +14,7 @@ export class SignInService implements SignInUsecase {
     private readonly tokenUsecase: TokenUsecase,
   ) {}
 
-  async signIn(
+  async exec(
     signInCommand: SignInCommand,
   ): Promise<AuthVerificationResponseCommand<User>> {
     const user = await this.userRepository.getUserByPhoneNumber(

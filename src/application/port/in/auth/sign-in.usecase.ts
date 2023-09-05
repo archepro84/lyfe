@@ -5,7 +5,7 @@ import {
 import { User } from '@domain/user/user';
 
 export interface SignInUsecase {
-  signIn(
+  exec(
     signInCommand: SignInCommand,
   ): Promise<AuthVerificationResponseCommand<User>>;
 }

@@ -24,7 +24,7 @@ export class SignUpService implements SignUpUsecase {
     private readonly signInUsecase: SignInUsecase,
   ) {}
 
-  async signUp(
+  async exec(
     signUpCommand: SignUpCommand,
   ): Promise<AuthVerificationResponseCommand<User>> {
     const invitation = await this.validateInvitation(
@@ -42,7 +42,7 @@ export class SignUpService implements SignUpUsecase {
       invitation.getInvitationStatus(),
     );
 
-    return await this.signInUsecase.signIn({
+    return await this.signInUsecase.exec({
       phoneNumber: signUpCommand.phoneNumber,
     });
   }

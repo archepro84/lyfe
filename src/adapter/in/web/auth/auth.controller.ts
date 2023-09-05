@@ -110,7 +110,7 @@ export class AuthController {
     @Request() req: any,
   ): Promise<UserPresenter> {
     const { accountable, cookieWithRefreshToken } =
-      await this.userSignUpUsecase.signUp({
+      await this.userSignUpUsecase.exec({
         nickname: signUpUserDto.nickname,
         phoneNumber: signUpUserDto.phoneNumber,
         invitationCode: signUpUserDto.invitationCode,
