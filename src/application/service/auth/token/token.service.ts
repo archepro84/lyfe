@@ -1,5 +1,3 @@
-import { User } from '@domain/user/user';
-import { UserRepository } from '@application/port/out/user/user.repository';
 import { TokenUsecase } from '@application/port/in/auth/token/token.usecase';
 import { JwtConfig } from '@domain/config/jwt.config';
 import {
@@ -8,12 +6,12 @@ import {
 } from '@application/port/security/jwt/jwt.port';
 import { AuthToken } from '@domain/user/auth-token';
 import { BcryptPort } from '@application/port/security/bcrypt/bcrypt.port';
-import { AdminRepository } from '@application/port/out/admin/admin.repository';
-import { Admin } from '@domain/admin/admin';
+import { TokenRepository } from '@application/port/out/auth/token.repository';
+import { Accountable } from '@domain/auth/accountable';
 
-export class TokenService implements TokenUsecase {
+export class TokenService<T extends Accountable> implements TokenUsecase<T> {
   constructor(
-    private readonly tokenRepository: UserRepository | AdminRepository,
+    private readonly tokenRepository: TokenRepository<T>,
     private readonly jwtConfig: JwtConfig,
     private readonly jwtPort: JwtPort,
     private readonly bcryptPort: BcryptPort,
@@ -40,7 +38,7 @@ export class TokenService implements TokenUsecase {
   async getAccountableIfRefreshTokenMatches(
     refreshToken: AuthToken,
     payload: JwtServicePayload,
-  ): Promise<User | Admin> {
+  ): Promise<T> {
     const accountable = await this.tokenRepository.getById(payload.id);
     if (!accountable) return null;
 

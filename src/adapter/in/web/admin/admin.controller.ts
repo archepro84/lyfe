@@ -21,6 +21,7 @@ import {
   SignInAdminUsecase,
 } from '@application/port/in/admin/sign-in-admin.usecase';
 
+// TODO: Admin 도메인은 추후 별도의 서버리스 서비스로 분리될 예정.
 @Controller('admin')
 @ApiTags('admin')
 @ApiResponse({ status: 500, description: 'Internal error' })

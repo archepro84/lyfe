@@ -26,6 +26,8 @@ import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
 import { LoggerModule } from '@adapter/common/logger/logger.module';
 import { AdminMongoRepository } from '@adapter/out/persistence/admin/admin.mongo.repository';
 import { InvitationMongoRepository } from '@adapter/out/persistence/auth/invitation/invitation.mongo.repository';
+import { Admin } from '@domain/admin/admin';
+import { User } from '@domain/user/user';
 
 @Module({
   imports: [
@@ -68,7 +70,7 @@ export class AuthServiceProxyModule {
           provide: SIGN_IN_USECASE,
           useFactory: (
             userRepository: UserMongoRepository,
-            tokenUsecase: TokenService,
+            tokenUsecase: TokenService<User>,
           ) => new SignInService(userRepository, tokenUsecase),
         },
         {
@@ -110,8 +112,8 @@ export class AuthServiceProxyModule {
             authSendLogMongoRepository: AuthSendLogMongoRepository,
             userRepository: UserMongoRepository,
             bcryptAdapter: BcryptAdapter,
-            tokenUsecase: TokenService,
-            signInUsecase: SignInService,
+            tokenUsecase: TokenService<User>,
+            signInUsecase: SignInService<User>,
           ) =>
             new VerificationAuthCodeService(
               authRepository,
@@ -135,8 +137,8 @@ export class AuthServiceProxyModule {
             userRepository: UserMongoRepository,
             authRepository: AuthMongoRepository,
             invitationRepository: InvitationMongoRepository,
-            tokenUsecase: TokenService,
-            signInUsecase: SignInService,
+            tokenUsecase: TokenService<User>,
+            signInUsecase: SignInService<User>,
           ) =>
             new SignUpService(
               userRepository,

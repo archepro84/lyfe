@@ -20,6 +20,7 @@ import { EnvironmentConfigModule } from '@common/config/environment-config.modul
 import { JwtModule } from '@adapter/security/jwt/jwt.module';
 import { SIGN_IN_ADMIN_USECASE } from '@application/port/in/admin/sign-in-admin.usecase';
 import { SignInAdminService } from '@application/service/admin/sign-in-admin.service';
+import { Admin } from '@domain/admin/admin';
 
 @Module({
   imports: [
@@ -62,7 +63,7 @@ export class AdminServiceProxyModule {
           useFactory: (
             adminRepository: AdminMongoRepository,
             bcryptPort: BcryptPort,
-            tokenUsecase: TokenService,
+            tokenUsecase: TokenService<Admin>,
           ) =>
             new SignInAdminService(adminRepository, bcryptPort, tokenUsecase),
         },
