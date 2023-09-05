@@ -2,8 +2,9 @@ import { Geometry } from './geometry';
 import { AuthToken } from '@domain/user/auth-token';
 import { UserInfo } from '@domain/user/user-info';
 import { InvalidPhoneNumberFormatException } from '@domain/user/exception/invalid-phone-number-format.exception';
+import { Accountable } from '@domain/auth/accountable';
 
-export class User {
+export class User implements Accountable {
   readonly id?: string;
   readonly phoneNumber: string;
   readonly createdAt: Date;

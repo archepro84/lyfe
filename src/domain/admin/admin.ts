@@ -1,6 +1,7 @@
 import { AuthToken } from '@domain/user/auth-token';
+import { Accountable } from '@domain/auth/accountable';
 
-export class Admin {
+export class Admin implements Accountable {
   public readonly id: string;
   public readonly email: string;
   public readonly password: string;
