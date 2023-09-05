@@ -7,9 +7,12 @@ import { UserMapper } from '@adapter/out/persistence/user/mapper/user.mapper';
 import { UserEntity } from '@adapter/out/persistence/user/schema/user.schema';
 import { SignUpDetails } from '@application/port/in/auth/command/auth.command';
 import { AuthToken } from '@domain/user/auth-token';
+import { TokenRepository } from '@application/port/out/auth/token.repository';
 
 @Injectable()
-export class UserMongoRepository implements UserRepository {
+export class UserMongoRepository
+  implements UserRepository, TokenRepository<User>
+{
   constructor(
     @InjectModel('User') private readonly userModel: Model<UserEntity>,
   ) {}

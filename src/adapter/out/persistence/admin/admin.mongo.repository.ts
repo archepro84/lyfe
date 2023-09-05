@@ -6,9 +6,12 @@ import { AdminEntity } from '@adapter/out/persistence/admin/schema/admin.schema'
 import { Admin } from '@domain/admin/admin';
 import { AdminMapper } from '@adapter/out/persistence/admin/mapper/admin.mapper';
 import { AuthToken } from '@domain/user/auth-token';
+import { TokenRepository } from '@application/port/out/auth/token.repository';
 
 @Injectable()
-export class AdminMongoRepository implements AdminRepository {
+export class AdminMongoRepository
+  implements AdminRepository, TokenRepository<Admin>
+{
   constructor(
     @InjectModel('Admin')
     private readonly adminModel: Model<AdminEntity>,
