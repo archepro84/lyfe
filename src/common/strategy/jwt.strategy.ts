@@ -11,12 +11,13 @@ import { EnvironmentConfigService } from '@common/config/environment-config.serv
 import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
 import { NotFoundException } from '@common/exception/not-found.exception';
 import { AuthToken } from '@domain/user/auth-token';
+import { User } from '@domain/user/user';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     @Inject(TOKEN_USECASE)
-    private readonly tokenUsecase: TokenUsecase,
+    private readonly tokenUsecase: TokenUsecase<User>,
     private readonly configService: EnvironmentConfigService,
     private readonly logger: LoggerAdapter,
   ) {
