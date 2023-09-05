@@ -21,7 +21,7 @@ export class VerificationAuthCodeService
     private readonly authSendLogRepository: AuthSendLogRepository,
     private readonly userRepository: UserRepository,
     private readonly bcryptPort: BcryptPort,
-    private readonly tokenUsecase: TokenUsecase,
+    private readonly tokenUsecase: TokenUsecase<User>,
     private readonly signInUsecase: SignInUsecase,
   ) {}
 

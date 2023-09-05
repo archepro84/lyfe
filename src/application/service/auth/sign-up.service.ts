@@ -15,12 +15,12 @@ import { NotFoundException } from '@common/exception/not-found.exception';
 import { Invitation, InvitationStatus } from '@domain/auth/invitation';
 import { Auth } from '@domain/auth/auth';
 
-export class SignUpService implements SignUpUsecase {
+export class SignUpService<T> implements SignUpUsecase {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly authRepository: AuthRepository,
     private readonly invitationRepository: InvitationRepository,
-    private readonly tokenUsecase: TokenUsecase,
+    private readonly tokenUsecase: TokenUsecase<T>,
     private readonly signInUsecase: SignInUsecase,
   ) {}
 

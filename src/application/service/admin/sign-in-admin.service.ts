@@ -11,7 +11,7 @@ export class SignInAdminService implements SignInAdminUsecase {
   constructor(
     private readonly adminRepository: AdminRepository,
     private readonly bcryptPort: BcryptPort,
-    private readonly tokenUsecase: TokenUsecase,
+    private readonly tokenUsecase: TokenUsecase<Admin>,
   ) {}
 
   async exec(

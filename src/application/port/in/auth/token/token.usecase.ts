@@ -3,7 +3,7 @@ import { AuthToken } from '@domain/user/auth-token';
 import { JwtServicePayload } from '@application/port/security/jwt/jwt.port';
 import { Admin } from '@domain/admin/admin';
 
-export interface TokenUsecase {
+export interface TokenUsecase<T> {
   getJwtRefreshToken(payload: JwtServicePayload): Promise<AuthToken>;
 
   parseCookieByJwtRefreshToken(authToken: AuthToken): Promise<string>;
@@ -16,7 +16,7 @@ export interface TokenUsecase {
   getAccountableIfRefreshTokenMatches(
     authToken: AuthToken,
     payload: JwtServicePayload,
-  ): Promise<User | Admin>;
+  ): Promise<T>;
 }
 
 export const TOKEN_USECASE = Symbol('TokenUsecase');

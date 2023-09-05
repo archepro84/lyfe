@@ -8,10 +8,10 @@ import {
 import { TokenUsecase } from '@application/port/in/auth/token/token.usecase';
 import { User } from '@domain/user/user';
 
-export class SignInService implements SignInUsecase {
+export class SignInService<T> implements SignInUsecase {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly tokenUsecase: TokenUsecase,
+    private readonly tokenUsecase: TokenUsecase<T>,
   ) {}
 
   async exec(
