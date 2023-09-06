@@ -1,6 +1,5 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { RepositoriesModule } from '@adapter/out/persistence/repositories.module';
-import { UserMongoRepository } from '@adapter/out/persistence/user/user.mongo.repository';
 import { AdminMongoRepository } from '@adapter/out/persistence/admin/admin.mongo.repository';
 import { IssueInvitationService } from '@application/service/auth/invitation/issue-invitation.service';
 import { ISSUE_INVITATION_USECASE } from '@application/port/in/auth/invitation/issue-invitation.usecase';
@@ -76,20 +75,14 @@ export class AdminServiceProxyModule {
           ) => new SignUpAdminService(adminRepository, bcryptPort),
         },
         {
-          inject: [
-            AdminMongoRepository,
-            UserMongoRepository,
-            ISSUE_INVITATION_USECASE,
-          ],
+          inject: [AdminMongoRepository, ISSUE_INVITATION_USECASE],
           provide: ADMIN_ISSUE_INVITATION_USECASE,
           useFactory: (
             adminRepository: AdminMongoRepository,
-            userRepository: UserMongoRepository,
             issueInvitationUsecase: IssueInvitationService,
           ) =>
             new AdminIssueInvitationService(
               adminRepository,
-              userRepository,
               issueInvitationUsecase,
             ),
         },
