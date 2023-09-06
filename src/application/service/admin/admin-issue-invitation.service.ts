@@ -19,20 +19,31 @@ export class AdminIssueInvitationService
     adminIssueInvitationCommand: AdminIssueInvitationCommand,
   ): Promise<Invitation> {
     const { adminId, inviteePhoneNumber } = adminIssueInvitationCommand;
+
+    await this.validateAdmin(adminId);
+    await this.validateInviteePhoneNumber(inviteePhoneNumber);
+
+    return await this.issueInvitationUsecase.exec({
+      invitationType: InvitationType.ADMIN,
+      inviterId: adminId,
+      inviteePhoneNumber: inviteePhoneNumber,
+    });
+  }
+
+  private async validateAdmin(adminId: string): Promise<void> {
     const admin = await this.adminRepository.getById(adminId);
     if (!admin)
       throw new NotFoundException('해당하는 Id의 어드민이 존재하지 않습니다.');
+  }
 
+  private async validateInviteePhoneNumber(
+    inviteePhoneNumber?: string,
+  ): Promise<void> {
+    if (!inviteePhoneNumber) return;
     const invitee = await this.userRepository.getUserByPhoneNumber(
       inviteePhoneNumber,
     );
     if (!invitee)
       throw new NotFoundException('초대 대상의 유저가 존재하지 않습니다.');
-
-    return await this.issueInvitationUsecase.exec({
-      invitationType: InvitationType.ADMIN,
-      inviterId: admin.id,
-      inviteePhoneNumber: invitee.phoneNumber,
-    });
   }
 }
