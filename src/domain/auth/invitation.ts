@@ -14,7 +14,7 @@ export class Invitation {
   readonly invitationType: InvitationType;
   readonly inviterId: string;
   readonly invitationCode: string;
-  readonly inviteePhoneNumber: string;
+  readonly inviteePhoneNumber?: string;
 
   private invitationStatus: InvitationStatus = InvitationStatus.PENDING;
 
@@ -22,7 +22,7 @@ export class Invitation {
     invitationType: InvitationType,
     inviterId: string,
     invitationCode: string,
-    inviteePhoneNumber: string,
+    inviteePhoneNumber: string = null,
   ) {
     this.id = null;
     this.invitationType = invitationType;

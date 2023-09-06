@@ -79,7 +79,7 @@ export class AdminController {
     type: String,
   })
   async adminIssueInvitation(
-    @Body('inviteePhoneNumber') inviteePhoneNumber: string,
+    @Body('inviteePhoneNumber') inviteePhoneNumber?: string,
   ) {
     await this.adminIssueInvitationUsecase.exec({
       adminId: '64c37df1e55842f8ec39a486',

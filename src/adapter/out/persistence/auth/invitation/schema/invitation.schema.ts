@@ -11,7 +11,7 @@ export class InvitationEntity extends Document {
 
   invitationCode: string;
 
-  inviteePhoneNumber: string;
+  inviteePhoneNumber?: string;
 
   invitationStatus: InvitationStatus;
 
@@ -20,7 +20,7 @@ export class InvitationEntity extends Document {
     invitationType: InvitationType,
     inviterId: string,
     invitationCode: string,
-    inviteePhoneNumber: string,
+    inviteePhoneNumber: string = null,
     invitationStatus: InvitationStatus,
   ) {
     super();
@@ -42,10 +42,10 @@ export class InvitationMongoSchema {
   @Prop({ type: Types.ObjectId, required: true })
   inviterId: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, unique: true, required: true })
   invitationCode: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, unique: true, required: false })
   inviteePhoneNumber: string;
 
   @Prop({
