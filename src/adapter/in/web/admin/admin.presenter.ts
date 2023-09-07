@@ -34,13 +34,13 @@ export class AdminPresenter {
     description: '인증 토큰',
   })
   @IsString()
-  token: string;
+  RefreshToken: string;
 
   constructor(admin: Admin) {
     this.id = admin.id;
     this.email = admin.email;
     this.createdAt = admin.createdAt;
     this.updatedAt = admin.updatedAt;
-    this.token = admin.getAuthToken().token;
+    this.RefreshToken = admin.getAuthToken().token;
   }
 }
