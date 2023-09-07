@@ -20,7 +20,7 @@ export class TokenService<T extends Accountable> implements TokenUsecase<T> {
   async getJwtRefreshToken(payload: JwtServicePayload): Promise<AuthToken> {
     const secret = this.jwtConfig.getJwtRefreshSecretKey();
     const expiresIn = this.jwtConfig.getJwtRefreshExpirationTime() + 's';
-    const token = new AuthToken(
+    const token = AuthToken.newInstance(
       this.jwtPort.createToken(payload, secret, expiresIn),
     );
 
@@ -59,7 +59,7 @@ export class TokenService<T extends Accountable> implements TokenUsecase<T> {
 
     await this.tokenRepository.updateRefreshToken(
       payload.id,
-      new AuthToken(hashedRefreshToken),
+      AuthToken.newInstance(hashedRefreshToken),
     );
   }
 }

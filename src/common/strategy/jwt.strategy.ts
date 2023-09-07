@@ -1,4 +1,4 @@
-import { Inject, Injectable, LoggerService } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
@@ -35,7 +35,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(request: Request, payload: JwtServicePayload) {
     const authToken = request.cookies?.Refresh;
     const user = await this.tokenUsecase.getAccountableIfRefreshTokenMatches(
-      new AuthToken(authToken),
+      AuthToken.newInstance(authToken),
       payload,
     );
 
