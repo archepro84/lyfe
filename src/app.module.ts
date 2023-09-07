@@ -9,6 +9,9 @@ import { JwtModule } from '@adapter/security/jwt/jwt.module';
 import { JwtStrategy } from '@common/strategy/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { LoggerModule } from '@adapter/common/logger/logger.module';
+import { JwtAdminStrategy } from '@common/strategy/jwt-admin.strategy';
+import { JwtRefreshStrategy } from '@common/strategy/jwt-refresh.strategy';
+import { JwtAdminRefreshStrategy } from '@common/strategy/jwt-admin-refresh.strategy';
 
 @Module({
   imports: [
@@ -22,6 +25,11 @@ import { LoggerModule } from '@adapter/common/logger/logger.module';
     AdapterModule,
   ],
   controllers: [AppController],
-  providers: [JwtStrategy],
+  providers: [
+    JwtStrategy,
+    JwtRefreshStrategy,
+    JwtAdminStrategy,
+    JwtAdminRefreshStrategy,
+  ],
 })
 export class AppModule {}
