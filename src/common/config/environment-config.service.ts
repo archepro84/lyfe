@@ -19,12 +19,20 @@ export class EnvironmentConfigService
     return this.configService.get<string>('DATABASE_URL');
   }
 
-  getJwtRefreshExpirationTime(): number {
-    return this.configService.get<number>('JWT_REFRESH_EXPIRATION_TIME');
+  getJwtSecret(): string {
+    return this.configService.get<string>('JWT_SECRET_KEY');
+  }
+
+  getJwtExpirationTime(): number {
+    return this.configService.get<number>('JWT_EXPIRATION_TIME');
   }
 
   getJwtRefreshSecretKey(): string {
     return this.configService.get<string>('JWT_REFRESH_SECRET_KEY');
+  }
+
+  getJwtRefreshExpirationTime(): number {
+    return this.configService.get<number>('JWT_REFRESH_EXPIRATION_TIME');
   }
 
   getAwsSnsRegion(): string {
