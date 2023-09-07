@@ -2,6 +2,12 @@ import { AuthToken } from '@domain/user/auth-token';
 import { JwtServicePayload } from '@application/port/security/jwt/jwt.port';
 
 export interface TokenUsecase<T> {
+  getAccountable(payload: JwtServicePayload): Promise<T>;
+
+  getJwtAccessToken(payload: JwtServicePayload): Promise<AuthToken>;
+
+  parseCookieByJwtAccessToken(authToken: AuthToken): Promise<string>;
+
   getJwtRefreshToken(payload: JwtServicePayload): Promise<AuthToken>;
 
   parseCookieByJwtRefreshToken(authToken: AuthToken): Promise<string>;

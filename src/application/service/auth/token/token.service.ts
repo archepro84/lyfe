@@ -17,20 +17,38 @@ export class TokenService<T extends Accountable> implements TokenUsecase<T> {
     private readonly bcryptPort: BcryptPort,
   ) {}
 
+  async getAccountable(payload: JwtServicePayload): Promise<T | null> {
+    return await this.tokenRepository.getById(payload.id);
+  }
+
+  async getJwtAccessToken(payload: JwtServicePayload): Promise<AuthToken> {
+    const secret = this.jwtConfig.getJwtSecret();
+    const expiresIn = this.jwtConfig.getJwtExpirationTime() + 's';
+    return AuthToken.newInstance(
+      this.jwtPort.createToken(payload, secret, expiresIn),
+    );
+  }
+
+  async parseCookieByJwtAccessToken(refreshToken: AuthToken): Promise<string> {
+    return `AccessToken=${
+      refreshToken.token
+    }; HttpOnly; Path=/; Max-Age=${this.jwtConfig.getJwtExpirationTime()}`;
+  }
+
   async getJwtRefreshToken(payload: JwtServicePayload): Promise<AuthToken> {
     const secret = this.jwtConfig.getJwtRefreshSecretKey();
     const expiresIn = this.jwtConfig.getJwtRefreshExpirationTime() + 's';
-    const token = AuthToken.newInstance(
+    const refreshToken = AuthToken.newInstance(
       this.jwtPort.createToken(payload, secret, expiresIn),
     );
 
-    await this.setCurrentRefreshToken(token, payload);
+    await this.setCurrentRefreshToken(refreshToken, payload);
 
-    return token;
+    return refreshToken;
   }
 
   async parseCookieByJwtRefreshToken(refreshToken: AuthToken): Promise<string> {
-    return `Refresh=${
+    return `RefreshToken=${
       refreshToken.token
     }; HttpOnly; Path=/; Max-Age=${this.jwtConfig.getJwtRefreshExpirationTime()}`;
   }
@@ -39,7 +57,7 @@ export class TokenService<T extends Accountable> implements TokenUsecase<T> {
     refreshToken: AuthToken,
     payload: JwtServicePayload,
   ): Promise<T> {
-    const accountable = await this.tokenRepository.getById(payload.id);
+    const accountable = await this.getAccountable(payload);
     if (!accountable) return null;
 
     const isRefreshTokenMatching = await this.bcryptPort.compare(
