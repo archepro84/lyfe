@@ -1,4 +1,5 @@
 import { Geometry } from '@domain/user/geometry';
+import { AuthToken } from '@domain/user/auth-token';
 
 export class SignUpCommand {
   nickname: string;
@@ -25,6 +26,7 @@ export class SignUpCommand {
     this.locationUpdatedAt = locationUpdatedAt;
   }
 }
+
 export class SignUpDetails {
   constructor(
     readonly nickname: string,
@@ -45,6 +47,7 @@ export class SignInCommand {
 export class AuthVerificationResponseCommand<T> {
   constructor(
     readonly accountable: T,
-    readonly cookieWithRefreshToken: string, // readonly cookieWithAccessToken: string,
+    readonly accessToken: AuthToken,
+    readonly refreshToken: AuthToken,
   ) {}
 }

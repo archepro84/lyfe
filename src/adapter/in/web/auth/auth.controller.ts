@@ -41,6 +41,11 @@ import {
   GET_INVITATION_QUERY,
   GetInvitationQuery,
 } from '@application/port/in/user/invitation/get-invitation.query';
+import {
+  TOKEN_USECASE,
+  TokenUsecase,
+} from '@application/port/in/auth/token/token.usecase';
+import { User } from '@domain/user/user';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -56,6 +61,8 @@ export class AuthController {
     private readonly verificationAuthCodeUsecase: VerificationAuthCodeUsecase,
     @Inject(GET_INVITATION_QUERY)
     private readonly getInvitationQuery: GetInvitationQuery,
+    @Inject(TOKEN_USECASE)
+    private readonly tokenUsecase: TokenUsecase<User>,
   ) {}
 
   @Post()
@@ -90,9 +97,11 @@ export class AuthController {
       );
     if (!authVerificationResponseCommand) return null;
 
+    const { accessToken, refreshToken } = authVerificationResponseCommand;
     // 사용자 정보가 존재할 때, 쿠키와 함께 사용자 정보를 반환한다.
     req.res.setHeader('Set-Cookie', [
-      authVerificationResponseCommand.cookieWithRefreshToken,
+      await this.tokenUsecase.parseCookieByJwtAccessToken(accessToken),
+      await this.tokenUsecase.parseCookieByJwtRefreshToken(refreshToken),
     ]);
 
     return new UserPresenter(authVerificationResponseCommand.accountable);
@@ -103,20 +112,23 @@ export class AuthController {
   @ApiResponse({
     status: 200,
     description: 'Return user',
-    type: [UserPresenter],
+    type: UserPresenter,
   })
   async signUp(
     @Body() signUpUserDto: SignUpUserDto,
     @Request() req: any,
   ): Promise<UserPresenter> {
-    const { accountable, cookieWithRefreshToken } =
+    const { accountable, accessToken, refreshToken } =
       await this.userSignUpUsecase.exec({
         nickname: signUpUserDto.nickname,
         phoneNumber: signUpUserDto.phoneNumber,
         invitationCode: signUpUserDto.invitationCode,
       });
 
-    req.res.setHeader('Set-Cookie', [cookieWithRefreshToken]);
+    req.res.setHeader('Set-Cookie', [
+      await this.tokenUsecase.parseCookieByJwtAccessToken(accessToken),
+      await this.tokenUsecase.parseCookieByJwtRefreshToken(refreshToken),
+    ]);
 
     return new UserPresenter(accountable);
   }

@@ -10,7 +10,6 @@ import { VERIFICATION_AUTH_CODE_USECASE } from '@application/port/in/auth/verifi
 import { VerificationAuthCodeService } from '@application/service/auth/verification-auth-code.service';
 import { SIGN_UP_USECASE } from '@application/port/in/auth/sign-up.usecase';
 import { UserMongoRepository } from '@adapter/out/persistence/user/user.mongo.repository';
-import { AuthRepository } from '@application/port/out/auth/auth.repository';
 import { SignUpService } from '@application/service/auth/sign-up.service';
 import { BcryptAdapter } from '@adapter/security/bcrypt/bcrypt.adapter';
 import { BcryptModule } from '@adapter/security/bcrypt/bcrypt.module';
@@ -24,9 +23,7 @@ import { SIGN_IN_USECASE } from '@application/port/in/auth/sign-in.usecase';
 import { SignInService } from '@application/service/auth/sign-in.service';
 import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
 import { LoggerModule } from '@adapter/common/logger/logger.module';
-import { AdminMongoRepository } from '@adapter/out/persistence/admin/admin.mongo.repository';
 import { InvitationMongoRepository } from '@adapter/out/persistence/auth/invitation/invitation.mongo.repository';
-import { Admin } from '@domain/admin/admin';
 import { User } from '@domain/user/user';
 
 @Module({
