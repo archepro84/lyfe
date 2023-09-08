@@ -9,9 +9,9 @@ import {
 } from '@application/port/in/auth/token/token.usecase';
 import { EnvironmentConfigService } from '@common/config/environment-config.service';
 import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
-import { NotFoundException } from '@common/exception/not-found.exception';
 import { AuthToken } from '@domain/user/auth-token';
 import { User } from '@domain/user/user';
+import { UnauthorizedException } from '@common/exception/unauthorized.exception';
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(
@@ -44,7 +44,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
 
     if (!user) {
       this.logger.warn('JwtStrategy', 'User not found or hash not correct.');
-      throw new NotFoundException(
+      throw new UnauthorizedException(
         '유저를 찾을 수 없거나, 인증에 실패하였습니다.',
       );
     }
