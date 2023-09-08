@@ -47,6 +47,8 @@ import {
 } from '@application/port/in/auth/token/token.usecase';
 import { User } from '@domain/user/user';
 import { JwtAuthRefreshGuard } from '@common/guard/jwt-auth-refresh.guard';
+import { AccessTokenHeader } from '@common/decorator/access-token-header.decorator';
+import { RefreshTokenHeader } from '@common/decorator/refresh-token-header.decorator';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -86,6 +88,11 @@ export class AuthController {
     status: 200,
     description: 'Return success',
     type: [UserPresenter],
+    headers: {
+      'Set-Cookie': {
+        description: "The 'AccessToken' and 'RefreshToken'",
+      },
+    },
   })
   async verifyAuthCode(
     @Body() verifyAuthCodeDto: VerifyAuthCodeDto,
@@ -114,6 +121,11 @@ export class AuthController {
     status: 200,
     description: 'Return user',
     type: UserPresenter,
+    headers: {
+      'Set-Cookie': {
+        description: "The 'AccessToken' and 'RefreshToken'",
+      },
+    },
   })
   async signUp(
     @Body() signUpUserDto: SignUpUserDto,
@@ -135,9 +147,11 @@ export class AuthController {
   }
 
   @Post('sign-out')
+  @ApiOperation({ summary: 'Sign Out User' })
+  @AccessTokenHeader()
   @UseGuards(JwtAuthGuard)
   async signOut() {
-    console.log('Hello world');
+    return 'success';
   }
 
   @Get('invitation/:phoneNumber')
@@ -166,6 +180,7 @@ export class AuthController {
 
   @Post('/refresh')
   @ApiOperation({ summary: 'Refresh Token' })
+  @RefreshTokenHeader()
   @ApiResponse({
     status: 200,
     description: 'Return success',
