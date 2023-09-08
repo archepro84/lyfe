@@ -1,4 +1,11 @@
-import { Body, Controller, Inject, Post, Request } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Inject,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBody,
   ApiExtraModels,
@@ -25,6 +32,7 @@ import {
   TokenUsecase,
 } from '@application/port/in/auth/token/token.usecase';
 import { Admin } from '@domain/admin/admin';
+import { JwtAdminRefreshGuard } from '@common/guard/jwt-admin-refresh.guard';
 
 // TODO: Admin 도메인은 추후 별도의 서버리스 서비스로 분리될 예정.
 @Controller('admin')
@@ -95,6 +103,26 @@ export class AdminController {
       adminId: '64c37df1e55842f8ec39a486',
       inviteePhoneNumber,
     });
+
+    return 'success';
+  }
+
+  @Post('/refresh')
+  @ApiOperation({ summary: 'Refresh Token' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return success',
+    type: String,
+  })
+  @UseGuards(JwtAdminRefreshGuard)
+  async refresh(@Request() req: any) {
+    const accessToken = await this.adminTokenUsecase.getJwtAccessToken({
+      id: req.user.adminId,
+    });
+
+    req.res.setHeader('Set-Cookie', [
+      await this.adminTokenUsecase.parseCookieByJwtAccessToken(accessToken),
+    ]);
 
     return 'success';
   }

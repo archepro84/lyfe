@@ -46,6 +46,7 @@ import {
   TokenUsecase,
 } from '@application/port/in/auth/token/token.usecase';
 import { User } from '@domain/user/user';
+import { JwtAuthRefreshGuard } from '@common/guard/jwt-auth-refresh.guard';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -161,5 +162,30 @@ export class AuthController {
     return {
       invitationCode: invitation.invitationCode,
     };
+  }
+
+  @Post('/refresh')
+  @ApiOperation({ summary: 'Refresh Token' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return success',
+    type: String,
+    headers: {
+      'Set-Cookie': {
+        description: "The 'AccessToken'",
+      },
+    },
+  })
+  @UseGuards(JwtAuthRefreshGuard)
+  async refresh(@Request() req: any) {
+    const accessToken = await this.tokenUsecase.getJwtAccessToken({
+      id: req.user.userId,
+    });
+
+    req.res.setHeader('Set-Cookie', [
+      await this.tokenUsecase.parseCookieByJwtAccessToken(accessToken),
+    ]);
+
+    return 'success';
   }
 }
