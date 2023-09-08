@@ -3,7 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AuthToken } from '@domain/user/auth-token';
 
 export class AdminEntity extends Document {
-  id?: string;
+  _id?: string;
 
   email: string;
 
@@ -16,7 +16,7 @@ export class AdminEntity extends Document {
   authToken?: AuthToken;
 
   constructor(
-    id: string,
+    _id: string,
     email: string,
     password: string,
     createdAt: Date,
@@ -25,7 +25,7 @@ export class AdminEntity extends Document {
   ) {
     super();
 
-    this.id = id;
+    this._id = _id;
     this.email = email;
     this.password = password;
     this.createdAt = createdAt;

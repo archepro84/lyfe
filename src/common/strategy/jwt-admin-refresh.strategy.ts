@@ -4,43 +4,52 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
 import { JwtServicePayload } from '@application/port/security/jwt/jwt.port';
 import {
-  TOKEN_USECASE,
+  ADMIN_TOKEN_USECASE,
   TokenUsecase,
 } from '@application/port/in/auth/token/token.usecase';
 import { EnvironmentConfigService } from '@common/config/environment-config.service';
 import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
-import { User } from '@domain/user/user';
+import { AuthToken } from '@domain/user/auth-token';
+import { Admin } from '@domain/admin/admin';
 import { UnauthorizedException } from '@common/exception/unauthorized.exception';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtAdminRefreshStrategy extends PassportStrategy(
+  Strategy,
+  'jwt-admin-refresh',
+) {
   constructor(
-    @Inject(TOKEN_USECASE)
-    private readonly tokenUsecase: TokenUsecase<User>,
+    @Inject(ADMIN_TOKEN_USECASE)
+    private readonly tokenUsecase: TokenUsecase<Admin>,
     private readonly configService: EnvironmentConfigService,
     private readonly logger: LoggerAdapter,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
-          return request?.cookies?.AccessToken;
+          return request?.cookies?.RefreshToken;
         },
       ]),
-      secretOrKey: configService.getJwtSecret(),
+      secretOrKey: configService.getJwtRefreshSecretKey(),
       passReqToCallback: true,
     });
   }
 
+  // FIXME: Admin Environment Key 추가하기
   async validate(request: Request, payload: JwtServicePayload) {
-    const user = await this.tokenUsecase.getAccountable(payload);
+    const refreshToken = request.cookies?.RefreshToken;
+    const admin = await this.tokenUsecase.getAccountableIfRefreshTokenMatches(
+      AuthToken.newInstance(refreshToken),
+      payload,
+    );
 
-    if (!user) {
-      this.logger.warn('JwtStrategy', 'User not found or hash not correct.');
+    if (!admin) {
+      this.logger.warn('JwtStrategy', 'Admin not found or hash not correct.');
       throw new UnauthorizedException(
-        '유저를 찾을 수 없거나, 인증에 실패하였습니다.',
+        '관리자를 찾을 수 없거나, 인증에 실패하였습니다.',
       );
     }
 
-    return user;
+    return admin;
   }
 }

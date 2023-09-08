@@ -37,10 +37,10 @@ export class UserPresenter {
   @ApiProperty({
     example:
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGE4MDIwNzI3ZmNiMWU5ZDc1YjRjMjUiLCJpYXQiOjE2ODg3MzI4NDAsImV4cCI6MTcyMDI2ODg0MH0.ESQ_fK3NP1uCOugFPQL-qeOJWcFWf9tNk6DECHYHhdY',
-    description: '유저의 토큰',
+    description: '유저의 리프레시 토큰',
   })
   @IsString()
-  token: string;
+  RefreshToken: string;
 
   @ApiProperty({
     example: new Date('2023-06-29T02:12:37.810Z'),
@@ -53,6 +53,6 @@ export class UserPresenter {
     this.userInfo = user.getUserInfo();
     this.phoneNumber = user.phoneNumber;
     this.createdAt = user.createdAt;
-    this.token = user.getAuthToken().token;
+    this.RefreshToken = user.getAuthToken().token;
   }
 }

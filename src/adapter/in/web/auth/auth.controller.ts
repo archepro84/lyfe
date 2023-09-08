@@ -41,6 +41,14 @@ import {
   GET_INVITATION_QUERY,
   GetInvitationQuery,
 } from '@application/port/in/user/invitation/get-invitation.query';
+import {
+  TOKEN_USECASE,
+  TokenUsecase,
+} from '@application/port/in/auth/token/token.usecase';
+import { User } from '@domain/user/user';
+import { JwtAuthRefreshGuard } from '@common/guard/jwt-auth-refresh.guard';
+import { AccessTokenHeader } from '@common/decorator/access-token-header.decorator';
+import { RefreshTokenHeader } from '@common/decorator/refresh-token-header.decorator';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -56,6 +64,8 @@ export class AuthController {
     private readonly verificationAuthCodeUsecase: VerificationAuthCodeUsecase,
     @Inject(GET_INVITATION_QUERY)
     private readonly getInvitationQuery: GetInvitationQuery,
+    @Inject(TOKEN_USECASE)
+    private readonly tokenUsecase: TokenUsecase<User>,
   ) {}
 
   @Post()
@@ -78,6 +88,11 @@ export class AuthController {
     status: 200,
     description: 'Return success',
     type: [UserPresenter],
+    headers: {
+      'Set-Cookie': {
+        description: "The 'AccessToken' and 'RefreshToken'",
+      },
+    },
   })
   async verifyAuthCode(
     @Body() verifyAuthCodeDto: VerifyAuthCodeDto,
@@ -90,9 +105,11 @@ export class AuthController {
       );
     if (!authVerificationResponseCommand) return null;
 
+    const { accessToken, refreshToken } = authVerificationResponseCommand;
     // 사용자 정보가 존재할 때, 쿠키와 함께 사용자 정보를 반환한다.
     req.res.setHeader('Set-Cookie', [
-      authVerificationResponseCommand.cookieWithRefreshToken,
+      await this.tokenUsecase.parseCookieByJwtAccessToken(accessToken),
+      await this.tokenUsecase.parseCookieByJwtRefreshToken(refreshToken),
     ]);
 
     return new UserPresenter(authVerificationResponseCommand.accountable);
@@ -103,28 +120,38 @@ export class AuthController {
   @ApiResponse({
     status: 200,
     description: 'Return user',
-    type: [UserPresenter],
+    type: UserPresenter,
+    headers: {
+      'Set-Cookie': {
+        description: "The 'AccessToken' and 'RefreshToken'",
+      },
+    },
   })
   async signUp(
     @Body() signUpUserDto: SignUpUserDto,
     @Request() req: any,
   ): Promise<UserPresenter> {
-    const { accountable, cookieWithRefreshToken } =
+    const { accountable, accessToken, refreshToken } =
       await this.userSignUpUsecase.exec({
         nickname: signUpUserDto.nickname,
         phoneNumber: signUpUserDto.phoneNumber,
         invitationCode: signUpUserDto.invitationCode,
       });
 
-    req.res.setHeader('Set-Cookie', [cookieWithRefreshToken]);
+    req.res.setHeader('Set-Cookie', [
+      await this.tokenUsecase.parseCookieByJwtAccessToken(accessToken),
+      await this.tokenUsecase.parseCookieByJwtRefreshToken(refreshToken),
+    ]);
 
     return new UserPresenter(accountable);
   }
 
   @Post('sign-out')
+  @ApiOperation({ summary: 'Sign Out User' })
+  @AccessTokenHeader()
   @UseGuards(JwtAuthGuard)
   async signOut() {
-    console.log('Hello world');
+    return 'success';
   }
 
   @Get('invitation/:phoneNumber')
@@ -149,5 +176,31 @@ export class AuthController {
     return {
       invitationCode: invitation.invitationCode,
     };
+  }
+
+  @Post('/refresh')
+  @ApiOperation({ summary: 'Refresh Token' })
+  @RefreshTokenHeader()
+  @ApiResponse({
+    status: 200,
+    description: 'Return success',
+    type: String,
+    headers: {
+      'Set-Cookie': {
+        description: "The 'AccessToken'",
+      },
+    },
+  })
+  @UseGuards(JwtAuthRefreshGuard)
+  async refresh(@Request() req: any) {
+    const accessToken = await this.tokenUsecase.getJwtAccessToken({
+      id: req.user.id,
+    });
+
+    req.res.setHeader('Set-Cookie', [
+      await this.tokenUsecase.parseCookieByJwtAccessToken(accessToken),
+    ]);
+
+    return 'success';
   }
 }

@@ -1,4 +1,11 @@
-import { Body, Controller, Inject, Post, Request } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Inject,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBody,
   ApiExtraModels,
@@ -20,6 +27,15 @@ import {
   SIGN_IN_ADMIN_USECASE,
   SignInAdminUsecase,
 } from '@application/port/in/admin/sign-in-admin.usecase';
+import {
+  ADMIN_TOKEN_USECASE,
+  TokenUsecase,
+} from '@application/port/in/auth/token/token.usecase';
+import { Admin } from '@domain/admin/admin';
+import { RefreshTokenHeader } from '@common/decorator/refresh-token-header.decorator';
+import { JwtAdminRefreshGuard } from '@common/guard/jwt-admin-refresh.guard';
+import { AccessTokenHeader } from '@common/decorator/access-token-header.decorator';
+import { JwtAdminGuard } from '@common/guard/jwt-admin.guard';
 
 // TODO: Admin 도메인은 추후 별도의 서버리스 서비스로 분리될 예정.
 @Controller('admin')
@@ -34,6 +50,8 @@ export class AdminController {
     private readonly signUpAdminUsecase: SignUpAdminUsecase,
     @Inject(SIGN_IN_ADMIN_USECASE)
     private readonly signInAdminUsecase: SignInAdminUsecase,
+    @Inject(ADMIN_TOKEN_USECASE)
+    private readonly adminTokenUsecase: TokenUsecase<Admin>,
   ) {}
 
   @Post('sign-in')
@@ -47,13 +65,16 @@ export class AdminController {
     @Body() signUpAdminDto: SignUpAdminDto,
     @Request() req: any,
   ): Promise<AdminPresenter> {
-    const { accountable, cookieWithRefreshToken } =
+    const { accountable, accessToken, refreshToken } =
       await this.signInAdminUsecase.exec({
         email: signUpAdminDto.email,
         password: signUpAdminDto.password,
       });
 
-    req.res.setHeader('Set-Cookie', [cookieWithRefreshToken]);
+    req.res.setHeader('Set-Cookie', [
+      await this.adminTokenUsecase.parseCookieByJwtAccessToken(accessToken),
+      await this.adminTokenUsecase.parseCookieByJwtRefreshToken(refreshToken),
+    ]);
 
     return new AdminPresenter(accountable);
   }
@@ -73,18 +94,42 @@ export class AdminController {
       },
     },
   })
+  @AccessTokenHeader()
   @ApiResponse({
     status: 201,
     description: 'Return success',
     type: String,
   })
+  @UseGuards(JwtAdminGuard)
   async adminIssueInvitation(
+    @Request() req: any,
     @Body('inviteePhoneNumber') inviteePhoneNumber?: string,
   ) {
     await this.adminIssueInvitationUsecase.exec({
-      adminId: '64c37df1e55842f8ec39a486',
+      adminId: req.user.id,
       inviteePhoneNumber,
     });
+
+    return 'success';
+  }
+
+  @Post('/refresh')
+  @ApiOperation({ summary: 'Refresh Token' })
+  @RefreshTokenHeader()
+  @ApiResponse({
+    status: 200,
+    description: 'Return success',
+    type: String,
+  })
+  @UseGuards(JwtAdminRefreshGuard)
+  async refresh(@Request() req: any) {
+    const accessToken = await this.adminTokenUsecase.getJwtAccessToken({
+      id: req.user.id,
+    });
+
+    req.res.setHeader('Set-Cookie', [
+      await this.adminTokenUsecase.parseCookieByJwtAccessToken(accessToken),
+    ]);
 
     return 'success';
   }

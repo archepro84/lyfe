@@ -9,11 +9,15 @@ import {
 } from '@application/port/in/auth/token/token.usecase';
 import { EnvironmentConfigService } from '@common/config/environment-config.service';
 import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
+import { AuthToken } from '@domain/user/auth-token';
 import { User } from '@domain/user/user';
 import { UnauthorizedException } from '@common/exception/unauthorized.exception';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtRefreshStrategy extends PassportStrategy(
+  Strategy,
+  'jwt-refresh',
+) {
   constructor(
     @Inject(TOKEN_USECASE)
     private readonly tokenUsecase: TokenUsecase<User>,
@@ -23,16 +27,20 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
-          return request?.cookies?.AccessToken;
+          return request?.cookies?.RefreshToken;
         },
       ]),
-      secretOrKey: configService.getJwtSecret(),
+      secretOrKey: configService.getJwtRefreshSecretKey(),
       passReqToCallback: true,
     });
   }
 
   async validate(request: Request, payload: JwtServicePayload) {
-    const user = await this.tokenUsecase.getAccountable(payload);
+    const authToken = request.cookies?.RefreshToken;
+    const user = await this.tokenUsecase.getAccountableIfRefreshTokenMatches(
+      AuthToken.newInstance(authToken),
+      payload,
+    );
 
     if (!user) {
       this.logger.warn('JwtStrategy', 'User not found or hash not correct.');

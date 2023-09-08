@@ -29,6 +29,7 @@ function initApplication(app: INestApplication): void {
     methods: ['*'],
     preflightContinue: false,
     optionsSuccessStatus: 204,
+    credentials: true,
   });
 
   // Base routing
@@ -52,6 +53,24 @@ function initSwagger(app: INestApplication): void {
   const config = new DocumentBuilder()
     .setTitle(`LYFE Test [${process.env.NODE_ENV}]`)
     .setVersion(process.env.packageVersion)
+    .addCookieAuth(
+      'AccessToken',
+      {
+        type: 'apiKey',
+        in: 'cookie',
+        scheme: 'basic',
+      },
+      'AccessToken',
+    )
+    .addCookieAuth(
+      'RefreshToken',
+      {
+        type: 'apiKey',
+        in: 'cookie',
+        scheme: 'basic',
+      },
+      'RefreshToken',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
