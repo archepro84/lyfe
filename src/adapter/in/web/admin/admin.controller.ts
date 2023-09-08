@@ -35,6 +35,7 @@ import { Admin } from '@domain/admin/admin';
 import { RefreshTokenHeader } from '@common/decorator/refresh-token-header.decorator';
 import { JwtAdminRefreshGuard } from '@common/guard/jwt-admin-refresh.guard';
 import { AccessTokenHeader } from '@common/decorator/access-token-header.decorator';
+import { JwtAdminGuard } from '@common/guard/jwt-admin.guard';
 
 // TODO: Admin 도메인은 추후 별도의 서버리스 서비스로 분리될 예정.
 @Controller('admin')
@@ -99,11 +100,13 @@ export class AdminController {
     description: 'Return success',
     type: String,
   })
+  @UseGuards(JwtAdminGuard)
   async adminIssueInvitation(
+    @Request() req: any,
     @Body('inviteePhoneNumber') inviteePhoneNumber?: string,
   ) {
     await this.adminIssueInvitationUsecase.exec({
-      adminId: '64c37df1e55842f8ec39a486',
+      adminId: req.user.id,
       inviteePhoneNumber,
     });
 
@@ -121,7 +124,7 @@ export class AdminController {
   @UseGuards(JwtAdminRefreshGuard)
   async refresh(@Request() req: any) {
     const accessToken = await this.adminTokenUsecase.getJwtAccessToken({
-      id: req.user.adminId,
+      id: req.user.id,
     });
 
     req.res.setHeader('Set-Cookie', [

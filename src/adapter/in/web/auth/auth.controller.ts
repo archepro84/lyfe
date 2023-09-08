@@ -194,7 +194,7 @@ export class AuthController {
   @UseGuards(JwtAuthRefreshGuard)
   async refresh(@Request() req: any) {
     const accessToken = await this.tokenUsecase.getJwtAccessToken({
-      id: req.user.userId,
+      id: req.user.id,
     });
 
     req.res.setHeader('Set-Cookie', [
