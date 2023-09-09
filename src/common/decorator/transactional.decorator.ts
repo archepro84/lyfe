@@ -18,9 +18,7 @@ export function Transactional() {
       }
 
       const session = await connection.startSession();
-      const session2 = await connection.startSession();
       transactionSessionStorage.setTransaction(session);
-      await session2.endSession();
 
       try {
         session.startTransaction();
