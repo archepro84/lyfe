@@ -1,7 +1,8 @@
 import { AuthToken } from '@domain/user/auth-token';
 import { Accountable } from '@domain/auth/accountable';
+import { Domain } from '@domain/domain';
 
-export class Admin implements Accountable {
+export class Admin extends Domain implements Accountable {
   public readonly id: string;
   public readonly email: string;
   public readonly password: string;
@@ -18,6 +19,8 @@ export class Admin implements Accountable {
     updatedAt: Date = new Date(),
     authToken: AuthToken = null,
   ) {
+    super();
+
     this.id = id;
     this.email = email;
     this.password = password;

@@ -1,3 +1,5 @@
+import { Domain } from '@domain/domain';
+
 export enum InvitationType {
   ADMIN = 'ADMIN',
   USER = 'USER',
@@ -9,7 +11,7 @@ export enum InvitationStatus {
   REJECTED = 'REJECTED',
 }
 
-export class Invitation {
+export class Invitation extends Domain {
   id: string;
   readonly invitationType: InvitationType;
   readonly inviterId: string;
@@ -24,6 +26,8 @@ export class Invitation {
     invitationCode: string,
     inviteePhoneNumber: string = null,
   ) {
+    super();
+
     this.id = null;
     this.invitationType = invitationType;
     this.inviterId = inviterId;
