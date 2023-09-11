@@ -6,13 +6,21 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AuthSendLogEntity } from '@adapter/out/persistence/auth/schema/auth-send-log.schema';
 import { AuthSendLogMapper } from '@adapter/out/persistence/auth/mapper/auth-send-log.mapper';
+import { Repository } from '@adapter/out/persistence/repository';
+import { transactionSessionStorage } from '@adapter/out/persistence/common/transaction/transaction.session.storage';
 
 @Injectable()
-export class AuthSendLogMongoRepository implements AuthSendLogRepository {
+export class AuthSendLogMongoRepository
+  extends Repository<AuthSendLogEntity, AuthSendLog>
+  implements AuthSendLogRepository
+{
   constructor(
     @InjectModel('AuthSendLog')
     private readonly authSendLogModel: Model<AuthSendLogEntity>,
-  ) {}
+    private readonly authSendLogMapper: AuthSendLogMapper,
+  ) {
+    super(authSendLogModel, authSendLogMapper, transactionSessionStorage);
+  }
 
   async createAuthSendLog(
     auth: Auth,
@@ -23,7 +31,7 @@ export class AuthSendLogMongoRepository implements AuthSendLogRepository {
       phoneNumber,
     });
 
-    return AuthSendLogMapper.toDomain(authSendLog);
+    return this.authSendLogMapper.toDomain(authSendLog);
   }
 
   async getAuthSendLogCount(phoneNumber: string): Promise<number> {
@@ -40,13 +48,18 @@ export class AuthSendLogMongoRepository implements AuthSendLogRepository {
           $lt: today,
         },
       })
+      .session(this.getSession())
       .exec();
   }
 
   async getLatestAuthSendLog(phoneNumber: string): Promise<AuthSendLog> {
-    return AuthSendLogMapper.toDomain(
+    return this.authSendLogMapper.toDomain(
       await this.authSendLogModel
-        .findOne({ phoneNumber }, {}, { sort: { sentAt: -1 } })
+        .findOne(
+          { phoneNumber },
+          {},
+          { sort: { sentAt: -1 }, session: this.getSession() },
+        )
         .exec(),
     );
   }

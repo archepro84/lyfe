@@ -5,12 +5,20 @@ import { AuthEntity } from '@adapter/out/persistence/auth/schema/auth.schema';
 import { AuthRepository } from '@application/port/out/auth/auth.repository';
 import { Auth } from '@domain/auth/auth';
 import { AuthMapper } from '@adapter/out/persistence/auth/mapper/auth.mapper';
+import { Repository } from '@adapter/out/persistence/repository';
+import { transactionSessionStorage } from '@adapter/out/persistence/common/transaction/transaction.session.storage';
 
 @Injectable()
-export class AuthMongoRepository implements AuthRepository {
+export class AuthMongoRepository
+  extends Repository<AuthEntity, Auth>
+  implements AuthRepository
+{
   constructor(
-    @InjectModel('Auth') private readonly authModel: Model<AuthEntity>,
-  ) {}
+    @InjectModel(Auth.name) private readonly authModel: Model<AuthEntity>,
+    private readonly authMapper: AuthMapper,
+  ) {
+    super(authModel, authMapper, transactionSessionStorage);
+  }
 
   async createAuth(phoneNumber: string, authCode: string): Promise<Auth> {
     const auth = await this.authModel.create({
@@ -18,11 +26,11 @@ export class AuthMongoRepository implements AuthRepository {
       authCode,
     });
 
-    return AuthMapper.toDomain(auth);
+    return this.authMapper.toDomain(auth);
   }
 
   async getAuth(phoneNumber: string): Promise<Auth> {
-    return AuthMapper.toDomain(
+    return this.authMapper.toDomain(
       await this.authModel.findOne({
         phoneNumber,
       }),
@@ -34,7 +42,7 @@ export class AuthMongoRepository implements AuthRepository {
   }
 
   async updateAuthCode(phoneNumber: string, authCode: string): Promise<Auth> {
-    return AuthMapper.toDomain(
+    return this.authMapper.toDomain(
       await this.authModel
         .findOneAndUpdate(
           { phoneNumber },
@@ -62,6 +70,6 @@ export class AuthMongoRepository implements AuthRepository {
       )
       .exec();
 
-    return AuthMapper.toDomain(auth);
+    return this.authMapper.toDomain(auth);
   }
 }

@@ -7,18 +7,24 @@ import { Admin } from '@domain/admin/admin';
 import { AdminMapper } from '@adapter/out/persistence/admin/mapper/admin.mapper';
 import { AuthToken } from '@domain/user/auth-token';
 import { TokenRepository } from '@application/port/out/auth/token.repository';
+import { Repository } from '@adapter/out/persistence/repository';
+import { transactionSessionStorage } from '@adapter/out/persistence/common/transaction/transaction.session.storage';
 
 @Injectable()
 export class AdminMongoRepository
+  extends Repository<AdminEntity, Admin>
   implements AdminRepository, TokenRepository<Admin>
 {
   constructor(
     @InjectModel('Admin')
     private readonly adminModel: Model<AdminEntity>,
-  ) {}
+    private readonly adminMapper: AdminMapper,
+  ) {
+    super(adminModel, adminMapper, transactionSessionStorage);
+  }
 
   async signUpAdmin(admin: Admin): Promise<Admin> {
-    return AdminMapper.toDomain(
+    return this.adminMapper.toDomain(
       await this.adminModel.create({
         email: admin.email,
         password: admin.password,
@@ -27,11 +33,13 @@ export class AdminMongoRepository
   }
 
   async getById(adminId: string): Promise<Admin | null> {
-    return AdminMapper.toDomain(await this.adminModel.findById(adminId).exec());
+    return this.adminMapper.toDomain(
+      await this.adminModel.findById(adminId).exec(),
+    );
   }
 
   async getAdminByEmail(email: string): Promise<Admin | null> {
-    return AdminMapper.toDomain(
+    return this.adminMapper.toDomain(
       await this.adminModel
         .findOne({
           email,
@@ -44,7 +52,7 @@ export class AdminMongoRepository
     adminId: string,
     authToken: AuthToken,
   ): Promise<Admin> {
-    return AdminMapper.toDomain(
+    return this.adminMapper.toDomain(
       await this.adminModel.findByIdAndUpdate(adminId, {
         authToken: authToken,
       }),

@@ -3,8 +3,9 @@ import { AuthToken } from '@domain/user/auth-token';
 import { UserInfo } from '@domain/user/user-info';
 import { InvalidPhoneNumberFormatException } from '@domain/user/exception/invalid-phone-number-format.exception';
 import { Accountable } from '@domain/auth/accountable';
+import { Domain } from '@domain/domain';
 
-export class User implements Accountable {
+export class User extends Domain implements Accountable {
   readonly id?: string;
   readonly phoneNumber: string;
   readonly createdAt: Date;
@@ -27,6 +28,8 @@ export class User implements Accountable {
     updatedAt: Date,
     authToken: AuthToken = null,
   ) {
+    super();
+
     this.id = id;
     this.nickname = nickname;
     this.userInfo = userInfo;

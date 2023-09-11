@@ -1,4 +1,6 @@
-export class Auth {
+import { Domain } from '@domain/domain';
+
+export class Auth extends Domain {
   readonly id: string;
 
   readonly phoneNumber: string;
@@ -19,6 +21,8 @@ export class Auth {
     verified = false,
     verifiedAt: Date,
   ) {
+    super();
+
     this.id = id;
     this.phoneNumber = phoneNumber;
     this.authCode = authCode;

@@ -1,8 +1,20 @@
 import { AuthSendLogEntity } from '@adapter/out/persistence/auth/schema/auth-send-log.schema';
 import { AuthSendLog } from '@domain/auth/auth-send-log';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { MapperPort } from '@application/port/out/mapper.port';
 
-export class AuthSendLogMapper {
-  public static toDomain(authSendLogEntity: AuthSendLogEntity): AuthSendLog {
+@Injectable()
+export class AuthSendLogMapper
+  implements MapperPort<AuthSendLogEntity, AuthSendLog>
+{
+  constructor(
+    @InjectModel(AuthSendLog.name)
+    private readonly model: Model<AuthSendLogEntity>,
+  ) {}
+
+  public toDomain(authSendLogEntity: AuthSendLogEntity): AuthSendLog {
     if (!authSendLogEntity) return null;
 
     const authSendLog = new AuthSendLog(
@@ -15,22 +27,18 @@ export class AuthSendLogMapper {
     return authSendLog;
   }
 
-  public static toDomains(
-    authSendLogEntities: AuthSendLogEntity[],
-  ): AuthSendLog[] {
+  public toDomains(authSendLogEntities: AuthSendLogEntity[]): AuthSendLog[] {
     return authSendLogEntities.map((authSendLogEntity) =>
       this.toDomain(authSendLogEntity),
     );
   }
 
-  public static toPersistence(authSendLog: AuthSendLog): AuthSendLogEntity {
-    const authSendLogEntity = new AuthSendLogEntity(
-      authSendLog.id,
-      authSendLog.authId,
-      authSendLog.phoneNumber,
-      authSendLog.sentAt,
-    );
-
-    return authSendLogEntity;
+  public toPersistence(authSendLog: AuthSendLog): AuthSendLogEntity {
+    return new this.model({
+      id: authSendLog.id,
+      authId: authSendLog.authId,
+      phoneNumber: authSendLog.phoneNumber,
+      sentAt: authSendLog.sentAt,
+    });
   }
 }

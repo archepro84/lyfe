@@ -1,8 +1,17 @@
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 import { AuthEntity } from '@adapter/out/persistence/auth/schema/auth.schema';
 import { Auth } from '@domain/auth/auth';
+import { MapperPort } from '@application/port/out/mapper.port';
+import { Injectable } from '@nestjs/common';
 
-export class AuthMapper {
-  public static toDomain(authEntity: AuthEntity): Auth {
+@Injectable()
+export class AuthMapper implements MapperPort<AuthEntity, Auth> {
+  constructor(
+    @InjectModel(Auth.name) private readonly model: Model<AuthEntity>,
+  ) {}
+
+  public toDomain(authEntity: AuthEntity): Auth {
     if (!authEntity) return null;
 
     const auth = new Auth(
@@ -17,20 +26,18 @@ export class AuthMapper {
     return auth;
   }
 
-  public static toDomains(authEntities: AuthEntity[]): Auth[] {
+  public toDomains(authEntities: AuthEntity[]): Auth[] {
     return authEntities.map((authEntity) => this.toDomain(authEntity));
   }
 
-  public static toPersistence(auth: Auth): AuthEntity {
-    const authEntity = new AuthEntity(
-      auth.id,
-      auth.phoneNumber,
-      auth.authCode,
-      auth.createdAt,
-      auth.verified,
-      auth.verifiedAt,
-    );
-
-    return authEntity;
+  public toPersistence(auth: Auth): AuthEntity {
+    return new this.model({
+      id: auth.id,
+      phoneNumber: auth.phoneNumber,
+      authCode: auth.authCode,
+      createdAt: auth.createdAt,
+      verified: auth.verified,
+      verifiedAt: auth.verifiedAt,
+    });
   }
 }
