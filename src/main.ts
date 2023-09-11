@@ -9,6 +9,7 @@ import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
 import { ResponseInterceptor } from '@common/interceptor/response.interceptor';
 import { EnvironmentStatus } from '@common/config/environment-config.validation';
 import { getConnectionToken } from '@nestjs/mongoose';
+import { Connection } from 'mongoose';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -50,8 +51,9 @@ function initInterceptors(app: INestApplication): void {
 }
 
 function initMongoose(app: INestApplication): void {
-  const connection = app.get(getConnectionToken());
-  connection.set('debug', true);
+  const connection: Connection = app.get(getConnectionToken());
+
+  if (process.env.NODE_ENV === 'development') connection.set('debug', true);
 }
 
 function initSwagger(app: INestApplication): void {
