@@ -1,8 +1,17 @@
 import { Admin } from '@domain/admin/admin';
 import { AdminEntity } from '@adapter/out/persistence/admin/schema/admin.schema';
+import { MapperPort } from '@application/port/out/mapper.port';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
-export class AdminMapper {
-  public static toDomain(adminEntity: AdminEntity): Admin {
+@Injectable()
+export class AdminMapper implements MapperPort<AdminEntity, Admin> {
+  constructor(
+    @InjectModel(Admin.name) private readonly model: Model<AdminEntity>,
+  ) {}
+
+  public toDomain(adminEntity: AdminEntity): Admin {
     if (!adminEntity) return null;
 
     const admin = new Admin(
@@ -17,16 +26,18 @@ export class AdminMapper {
     return admin;
   }
 
-  public static toPersistence(admin: Admin): AdminEntity {
-    const adminEntity = new AdminEntity(
-      admin.id,
-      admin.email,
-      admin.password,
-      admin.createdAt,
-      admin.updatedAt,
-      admin.getAuthToken(),
-    );
+  public toDomains(adminEntities: AdminEntity[]): Admin[] {
+    return adminEntities.map((adminEntity) => this.toDomain(adminEntity));
+  }
 
-    return adminEntity;
+  public toPersistence(admin: Admin): AdminEntity {
+    return new this.model({
+      id: admin.id,
+      email: admin.email,
+      password: admin.password,
+      createdAt: admin.createdAt,
+      updatedAt: admin.updatedAt,
+      authToken: admin.getAuthToken(),
+    });
   }
 }

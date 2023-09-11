@@ -12,6 +12,16 @@ import { InvitationSchema } from '@adapter/out/persistence/auth/invitation/schem
 import { AdminSchema } from '@adapter/out/persistence/admin/schema/admin.schema';
 import { AdminMongoRepository } from '@adapter/out/persistence/admin/admin.mongo.repository';
 import { InvitationMongoRepository } from '@adapter/out/persistence/auth/invitation/invitation.mongo.repository';
+import { UserMapper } from '@adapter/out/persistence/user/mapper/user.mapper';
+import { User } from '@domain/user/user';
+import { Auth } from '@domain/auth/auth';
+import { AuthSendLog } from '@domain/auth/auth-send-log';
+import { Admin } from '@domain/admin/admin';
+import { Invitation } from '@domain/auth/invitation';
+import { AuthMapper } from '@adapter/out/persistence/auth/mapper/auth.mapper';
+import { AuthSendLogMapper } from '@adapter/out/persistence/auth/mapper/auth-send-log.mapper';
+import { InvitationMapper } from '@adapter/out/persistence/auth/invitation/mapper/invitation.mapper';
+import { AdminMapper } from '@adapter/out/persistence/admin/mapper/admin.mapper';
 
 @Module({
   imports: [
@@ -23,18 +33,23 @@ import { InvitationMongoRepository } from '@adapter/out/persistence/auth/invitat
       }),
     }),
     MongooseModule.forFeature([
-      { name: 'User', schema: UserSchema },
-      { name: 'Auth', schema: AuthSchema },
-      { name: 'AuthSendLog', schema: AuthSendLogSchema },
-      { name: 'Admin', schema: AdminSchema },
-      { name: 'Invitation', schema: InvitationSchema },
+      { name: User.name, schema: UserSchema },
+      { name: Auth.name, schema: AuthSchema },
+      { name: AuthSendLog.name, schema: AuthSendLogSchema },
+      { name: Admin.name, schema: AdminSchema },
+      { name: Invitation.name, schema: InvitationSchema },
     ]),
   ],
   providers: [
+    UserMapper,
     UserMongoRepository,
+    AuthMapper,
     AuthMongoRepository,
+    AuthSendLogMapper,
     AuthSendLogMongoRepository,
+    InvitationMapper,
     InvitationMongoRepository,
+    AdminMapper,
     AdminMongoRepository,
   ],
   exports: [
