@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AuthSendLogRepository } from '@application/port/out/auth/auth-send-log.repository';
-import { AuthSendLog, AuthSendLogStatus } from '@domain/auth/auth-send-log';
+import { AuthSendLog } from '@domain/auth/auth-send-log';
 import { Auth } from '@domain/auth/auth';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
