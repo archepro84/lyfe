@@ -1,3 +1,4 @@
+// TODO: Custom Decorator가 Nest.js의 의존성을 가지고 있는 것은 Clean Architecutre의 의도에 부합하지 않음
 import { TransactionManager } from '@adapter/out/persistence/common/transaction/transaction.manager';
 import { transactionSessionStorage } from '@adapter/out/persistence/common/transaction/transaction.session.storage';
 

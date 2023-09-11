@@ -35,9 +35,9 @@ export interface RepositoryPort<DomainType extends Domain> {
     params: PaginatedQueryParams,
   ): Promise<Paginated<DomainType>>;
 
-  insert(DomainType: DomainType): Promise<void>;
+  insert(domain: DomainType): Promise<void>;
 
-  delete(DomainType: DomainType): Promise<boolean>;
+  delete(domain: DomainType): Promise<boolean>;
 
-  save(DomainType: DomainType): Promise<void>;
+  save(domain: DomainType): Promise<void>;
 }
