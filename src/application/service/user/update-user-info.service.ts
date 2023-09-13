@@ -21,7 +21,7 @@ export class UpdateUserInfoService implements UpdateUserInfoUsecase {
     if (!userInfo) userInfo = new UserInfo();
 
     if (command.nickname) user.setNickname(command.nickname);
-    if (command.region) userInfo.setRegion(command.region);
+    if (command.regionId) userInfo.setRegionId(command.regionId);
     if (command.gender) userInfo.setGender(command.gender);
     if (command.birth) userInfo.setBirth(command.birth);
 

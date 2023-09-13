@@ -1,5 +1,4 @@
 import { Gender } from '@domain/user/user-info';
-import { Region } from '@domain/region/region';
 
 export class UpdateUserInfoCommand {
   constructor(
@@ -7,6 +6,6 @@ export class UpdateUserInfoCommand {
     readonly nickname?: string,
     readonly gender?: Gender,
     readonly birth?: string,
-    readonly region?: Region,
+    readonly regionId?: string,
   ) {}
 }
