@@ -7,6 +7,7 @@ import { Region } from '@domain/region/region';
 import { RegionEntity } from '@adapter/out/persistence/region/schema/region.schema';
 import { RegionMapper } from '@adapter/out/persistence/region/mapper/region.mapper';
 import { RegionRepository } from '@application/port/out/region/region.repository';
+import { RegionProps } from '@application/port/out/region/region.types';
 
 @Injectable()
 export class RegionMongoRepository
@@ -18,5 +19,17 @@ export class RegionMongoRepository
     private readonly regionMapper: RegionMapper,
   ) {
     super(regionModel, regionMapper, transactionSessionStorage);
+  }
+
+  async find(props: RegionProps): Promise<Region> {
+    return this.regionMapper.toDomain(
+      await this.regionModel
+        .findOne({
+          city: props.city,
+          district: props.district,
+          neighborhood: props.neighborhood,
+        })
+        .exec(),
+    );
   }
 }
