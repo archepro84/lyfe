@@ -14,7 +14,7 @@ import { GetRegionDto } from '@adapter/in/web/region/region.dto';
 import { RegionPresenter } from '@adapter/in/web/region/region.presenter';
 
 @Controller('region')
-@ApiTags('users')
+@ApiTags('region')
 @ApiResponse({ status: 500, description: 'Internal error' })
 @ApiExtraModels(UserPresenter)
 export class RegionController {

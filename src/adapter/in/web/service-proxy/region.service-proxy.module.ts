@@ -3,6 +3,8 @@ import { CREATE_REGION_USECASE } from '@application/port/in/region/create-region
 import { RegionMongoRepository } from '@adapter/out/persistence/region/region.mongo.repository';
 import { RepositoriesModule } from '@adapter/out/persistence/repositories.module';
 import { CreateRegionService } from '@application/service/region/create-region.service';
+import { GET_REGION_EXACT_LOCATION_QUERY } from '@application/port/in/region/get-region-exact-location.query';
+import { GetRegionExactLocationService } from '@application/service/region/get-region-exact-location.service';
 
 @Module({
   imports: [RepositoriesModule],
@@ -18,8 +20,14 @@ export class RegionServiceProxyModule {
           useFactory: (regionMongoRepository: RegionMongoRepository) =>
             new CreateRegionService(regionMongoRepository),
         },
+        {
+          inject: [RegionMongoRepository],
+          provide: GET_REGION_EXACT_LOCATION_QUERY,
+          useFactory: (regionMongoRepository: RegionMongoRepository) =>
+            new GetRegionExactLocationService(regionMongoRepository),
+        },
       ],
-      exports: [CREATE_REGION_USECASE],
+      exports: [CREATE_REGION_USECASE, GET_REGION_EXACT_LOCATION_QUERY],
     };
   }
 }
