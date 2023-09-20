@@ -26,6 +26,7 @@ export class InvitationMongoRepository
       .findOne({
         inviteePhoneNumber,
       })
+      .session(this.getSession())
       .exec();
 
     return this.invitationMapper.toDomain(invitation);
@@ -38,6 +39,7 @@ export class InvitationMongoRepository
       .findOne({
         invitationCode,
       })
+      .session(this.getSession())
       .exec();
 
     return this.invitationMapper.toDomain(invitation);

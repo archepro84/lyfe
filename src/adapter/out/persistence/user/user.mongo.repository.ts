@@ -26,7 +26,7 @@ export class UserMongoRepository
 
   async getById(userId: string): Promise<User | null> {
     return this.userMapper.toDomain(
-      await this.userModel.findById(userId).exec(),
+      await this.userModel.findById(userId).session(this.getSession()).exec(),
     );
   }
 
@@ -36,6 +36,7 @@ export class UserMongoRepository
         .findOne({
           phoneNumber,
         })
+        .session(this.getSession())
         .exec(),
     );
   }

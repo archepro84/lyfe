@@ -29,6 +29,7 @@ export class RegionMongoRepository
           district: props.district,
           neighborhood: props.neighborhood,
         })
+        .session(this.getSession())
         .exec(),
     );
   }

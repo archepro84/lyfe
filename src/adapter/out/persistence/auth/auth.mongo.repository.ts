@@ -36,9 +36,11 @@ export class AuthMongoRepository
 
   async getAuth(phoneNumber: string): Promise<Auth> {
     return this.authMapper.toDomain(
-      await this.authModel.findOne({
-        phoneNumber,
-      }),
+      await this.authModel
+        .findOne({
+          phoneNumber,
+        })
+        .session(this.getSession()),
     );
   }
 

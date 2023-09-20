@@ -39,7 +39,7 @@ export class AdminMongoRepository
 
   async getById(adminId: string): Promise<Admin | null> {
     return this.adminMapper.toDomain(
-      await this.adminModel.findById(adminId).exec(),
+      await this.adminModel.findById(adminId).session(this.getSession()).exec(),
     );
   }
 
@@ -49,6 +49,7 @@ export class AdminMongoRepository
         .findOne({
           email,
         })
+        .session(this.getSession())
         .exec(),
     );
   }
