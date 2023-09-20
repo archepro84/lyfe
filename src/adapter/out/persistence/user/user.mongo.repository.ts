@@ -10,6 +10,7 @@ import { TokenRepository } from '@application/port/out/auth/token.repository';
 import { UserMapper } from '@adapter/out/persistence/user/mapper/user.mapper';
 import { Repository } from '@adapter/out/persistence/repository';
 import { transactionSessionStorage } from '@adapter/out/persistence/common/transaction/transaction.session.storage';
+import { UserInfo } from '@domain/user/user-info';
 
 @Injectable()
 export class UserMongoRepository
@@ -49,6 +50,7 @@ export class UserMongoRepository
           userInfo: user.getUserInfo(),
         },
       },
+      { session: this.getSession() },
     );
   }
 
@@ -57,12 +59,17 @@ export class UserMongoRepository
   }
 
   async userSignUp(signUpDetails: SignUpDetails): Promise<User> {
-    return this.userMapper.toDomain(
-      await this.userModel.create({
+    // Model.create 메서드는 2개 이상의 인자가 전달될 경우, 배열로 인식한다.
+    // create<DocContents = AnyKeys<TRawDocType>>(...docs: Array<TRawDocType | DocContents>): Promise<THydratedDocumentType[]>;
+    const createdUser = await this.userModel.create(
+      {
         ...signUpDetails,
-        userInfo: {},
-      }),
+        userInfo: new UserInfo(),
+      },
+      { session: this.getSession() },
     );
+
+    return this.userMapper.toDomains(createdUser)[0];
   }
 
   async updateRefreshToken(
@@ -70,9 +77,13 @@ export class UserMongoRepository
     authToken: AuthToken,
   ): Promise<User> {
     return this.userMapper.toDomain(
-      await this.userModel.findByIdAndUpdate(userId, {
-        authToken: authToken,
-      }),
+      await this.userModel.findByIdAndUpdate(
+        userId,
+        {
+          authToken: authToken,
+        },
+        { session: this.getSession() },
+      ),
     );
   }
 }

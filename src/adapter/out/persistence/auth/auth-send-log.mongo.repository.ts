@@ -26,12 +26,15 @@ export class AuthSendLogMongoRepository
     auth: Auth,
     phoneNumber: string,
   ): Promise<AuthSendLog> {
-    const authSendLog = await this.authSendLogModel.create({
-      authId: auth.id,
-      phoneNumber,
-    });
+    const createdAuthSendLog = await this.authSendLogModel.create(
+      {
+        authId: auth.id,
+        phoneNumber,
+      },
+      { session: this.getSession() },
+    );
 
-    return this.authSendLogMapper.toDomain(authSendLog);
+    return this.authSendLogMapper.toDomains(createdAuthSendLog)[0];
   }
 
   async getAuthSendLogCount(phoneNumber: string): Promise<number> {

@@ -44,11 +44,16 @@ export class InvitationMongoRepository
   }
 
   async issueInvitation(invitation: Invitation): Promise<Invitation> {
-    return this.invitationMapper.toDomain(
-      await this.invitationModel.create({
+    const createdInvitation = await this.invitationModel.create(
+      {
         ...invitation,
-      }),
+      },
+      {
+        session: this.getSession(),
+      },
     );
+
+    return this.invitationMapper.toDomains(createdInvitation)[0];
   }
 
   async updateInvitationStatus(
@@ -61,6 +66,9 @@ export class InvitationMongoRepository
       },
       {
         invitationStatus,
+      },
+      {
+        session: this.getSession(),
       },
     );
   }
