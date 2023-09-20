@@ -45,9 +45,11 @@ export class InvitationMongoRepository
 
   async issueInvitation(invitation: Invitation): Promise<Invitation> {
     const createdInvitation = await this.invitationModel.create(
-      {
-        ...invitation,
-      },
+      [
+        {
+          ...invitation,
+        },
+      ],
       {
         session: this.getSession(),
       },

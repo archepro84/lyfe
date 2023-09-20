@@ -22,10 +22,12 @@ export class AuthMongoRepository
 
   async createAuth(phoneNumber: string, authCode: string): Promise<Auth> {
     const createdAuth = await this.authModel.create(
-      {
-        phoneNumber,
-        authCode,
-      },
+      [
+        {
+          phoneNumber,
+          authCode,
+        },
+      ],
       { session: this.getSession() },
     );
 

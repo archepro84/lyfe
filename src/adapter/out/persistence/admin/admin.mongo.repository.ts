@@ -25,10 +25,12 @@ export class AdminMongoRepository
 
   async signUpAdmin(admin: Admin): Promise<Admin> {
     const createdAdmin = await this.adminModel.create(
-      {
-        email: admin.email,
-        password: admin.password,
-      },
+      [
+        {
+          email: admin.email,
+          password: admin.password,
+        },
+      ],
       { session: this.getSession() },
     );
 

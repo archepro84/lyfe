@@ -27,10 +27,12 @@ export class AuthSendLogMongoRepository
     phoneNumber: string,
   ): Promise<AuthSendLog> {
     const createdAuthSendLog = await this.authSendLogModel.create(
-      {
-        authId: auth.id,
-        phoneNumber,
-      },
+      [
+        {
+          authId: auth.id,
+          phoneNumber,
+        },
+      ],
       { session: this.getSession() },
     );
 
