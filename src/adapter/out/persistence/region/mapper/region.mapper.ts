@@ -31,9 +31,9 @@ export class RegionMapper implements MapperPort<RegionEntity, Region> {
   public toPersistence(region: Region): RegionEntity {
     return new this.model({
       id: region.id,
-      city: region.city,
-      district: region.district,
-      neighborhood: region.neighborhood,
+      city: region.getCity(),
+      district: region.getDistrict(),
+      neighborhood: region.getNeighborhood(),
     });
   }
 }

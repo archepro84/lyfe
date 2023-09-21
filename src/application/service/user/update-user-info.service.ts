@@ -34,5 +34,11 @@ export class UpdateUserInfoService implements UpdateUserInfoUsecase {
       throw new NotFoundException('해당하는 사용자가 존재하지 않습니다.');
 
     return user;
+  private async getRegion(regionProps: Region): Promise<Region> {
+    return await this.regionRepository.find({
+      city: regionProps.getCity(),
+      district: regionProps.getDistrict(),
+      neighborhood: regionProps.getNeighborhood(),
+    });
   }
 }
