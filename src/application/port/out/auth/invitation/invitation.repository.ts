@@ -1,6 +1,7 @@
 import { Invitation, InvitationStatus } from '@domain/auth/invitation';
+import { RepositoryPort } from '@application/port/out/repository.port';
 
-export interface InvitationRepository {
+export interface InvitationRepository extends RepositoryPort<Invitation> {
   getInvitation(inviteePhoneNumber: string): Promise<Invitation | null>;
 
   getInvitationByInvitationCode(

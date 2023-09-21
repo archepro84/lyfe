@@ -5,9 +5,13 @@ import { UPDATE_USER_INFO_USECASE } from '@application/port/in/user/update-user-
 import { UpdateUserInfoService } from '@application/service/user/update-user-info.service';
 import { GET_USER_QUERY } from '@application/port/in/user/get-user.query';
 import { GetUserService } from '@application/service/user/get-user.service';
+import { RegionMongoRepository } from '@adapter/out/persistence/region/region.mongo.repository';
+import { CREATE_REGION_USECASE } from '@application/port/in/region/create-region.usecase';
+import { CreateRegionService } from '@application/service/region/create-region.service';
+import { RegionServiceProxyModule } from '@adapter/in/web/service-proxy/region.service-proxy.module';
 
 @Module({
-  imports: [RepositoriesModule],
+  imports: [RepositoriesModule, RegionServiceProxyModule.register()],
 })
 export class UserServiceProxyModule {
   static register(): DynamicModule {
@@ -15,10 +19,22 @@ export class UserServiceProxyModule {
       module: UserServiceProxyModule,
       providers: [
         {
-          inject: [UserMongoRepository],
+          inject: [
+            UserMongoRepository,
+            RegionMongoRepository,
+            CREATE_REGION_USECASE,
+          ],
           provide: UPDATE_USER_INFO_USECASE,
-          useFactory: (userRepository: UserMongoRepository) =>
-            new UpdateUserInfoService(userRepository),
+          useFactory: (
+            userRepository: UserMongoRepository,
+            regionMongoRepository: RegionMongoRepository,
+            createRegionService: CreateRegionService,
+          ) =>
+            new UpdateUserInfoService(
+              userRepository,
+              regionMongoRepository,
+              createRegionService,
+            ),
         },
         {
           inject: [UserMongoRepository],

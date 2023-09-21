@@ -21,19 +21,26 @@ export class AuthMongoRepository
   }
 
   async createAuth(phoneNumber: string, authCode: string): Promise<Auth> {
-    const auth = await this.authModel.create({
-      phoneNumber,
-      authCode,
-    });
+    const createdAuth = await this.authModel.create(
+      [
+        {
+          phoneNumber,
+          authCode,
+        },
+      ],
+      { session: this.getSession() },
+    );
 
-    return this.authMapper.toDomain(auth);
+    return this.authMapper.toDomains(createdAuth)[0];
   }
 
   async getAuth(phoneNumber: string): Promise<Auth> {
     return this.authMapper.toDomain(
-      await this.authModel.findOne({
-        phoneNumber,
-      }),
+      await this.authModel
+        .findOne({
+          phoneNumber,
+        })
+        .session(this.getSession()),
     );
   }
 
@@ -51,6 +58,7 @@ export class AuthMongoRepository
               authCode,
             },
           },
+          { session: this.getSession() },
         )
         .exec(),
     );
@@ -67,6 +75,7 @@ export class AuthMongoRepository
             verifiedAt: new Date(),
           },
         },
+        { session: this.getSession() },
       )
       .exec();
 

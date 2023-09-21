@@ -1,5 +1,5 @@
-import { Region } from '@domain/region/region';
 import { InvalidBirthFormatException } from '@domain/user/exception/invalid-birth-format.exception';
+import { Region } from '@domain/region/region';
 
 export enum Gender {
   MALE = 'MALE',
@@ -53,6 +53,7 @@ export class UserInfo {
   }
 
   static fromObject(obj: any): UserInfo {
+    if (!obj) return new UserInfo();
     return new UserInfo(obj.gender, obj.birth, obj.region);
   }
 }

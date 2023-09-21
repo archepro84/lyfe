@@ -14,6 +14,7 @@ import { InvitationRepository } from '@application/port/out/auth/invitation/invi
 import { NotFoundException } from '@common/exception/not-found.exception';
 import { Invitation, InvitationStatus } from '@domain/auth/invitation';
 import { Auth } from '@domain/auth/auth';
+import { Transactional } from '@common/decorator/transactional.decorator';
 
 export class SignUpService<T> implements SignUpUsecase {
   constructor(
@@ -24,6 +25,7 @@ export class SignUpService<T> implements SignUpUsecase {
     private readonly signInUsecase: SignInUsecase,
   ) {}
 
+  @Transactional()
   async exec(
     signUpCommand: SignUpCommand,
   ): Promise<AuthVerificationResponseCommand<User>> {
@@ -35,7 +37,6 @@ export class SignUpService<T> implements SignUpUsecase {
 
     invitation.setInvitationStatus(InvitationStatus.ACCEPTED);
 
-    // TODO: 트랜잭션 도입
     await this.userRepository.userSignUp(signUpCommand);
     await this.invitationRepository.updateInvitationStatus(
       invitation.id,

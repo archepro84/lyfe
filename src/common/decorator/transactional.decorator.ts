@@ -15,7 +15,7 @@ export function Transactional() {
       const connection = transactionManager.getConnection();
 
       if (transactionSessionStorage.getTransaction()) {
-        await originalMethod.apply(this, args);
+        return await originalMethod.apply(this, args);
       }
 
       const session = await connection.startSession();
@@ -23,8 +23,9 @@ export function Transactional() {
 
       try {
         session.startTransaction();
-        await originalMethod.apply(this, args);
+        const result = await originalMethod.apply(this, args);
         await session.commitTransaction();
+        return result;
       } catch (err) {
         await session.abortTransaction();
         throw err;

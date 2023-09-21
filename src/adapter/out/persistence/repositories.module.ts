@@ -22,6 +22,11 @@ import { AuthMapper } from '@adapter/out/persistence/auth/mapper/auth.mapper';
 import { AuthSendLogMapper } from '@adapter/out/persistence/auth/mapper/auth-send-log.mapper';
 import { InvitationMapper } from '@adapter/out/persistence/auth/invitation/mapper/invitation.mapper';
 import { AdminMapper } from '@adapter/out/persistence/admin/mapper/admin.mapper';
+import { RegionMapper } from '@adapter/out/persistence/region/mapper/region.mapper';
+import { RegionMongoRepository } from '@adapter/out/persistence/region/region.mongo.repository';
+import { Region } from '@domain/region/region';
+import { RegionSchema } from '@adapter/out/persistence/region/schema/region.schema';
+import { TransactionManager } from '@adapter/out/persistence/common/transaction/transaction.manager';
 
 @Module({
   imports: [
@@ -38,9 +43,11 @@ import { AdminMapper } from '@adapter/out/persistence/admin/mapper/admin.mapper'
       { name: AuthSendLog.name, schema: AuthSendLogSchema },
       { name: Admin.name, schema: AdminSchema },
       { name: Invitation.name, schema: InvitationSchema },
+      { name: Region.name, schema: RegionSchema },
     ]),
   ],
   providers: [
+    TransactionManager,
     UserMapper,
     UserMongoRepository,
     AuthMapper,
@@ -51,6 +58,8 @@ import { AdminMapper } from '@adapter/out/persistence/admin/mapper/admin.mapper'
     InvitationMongoRepository,
     AdminMapper,
     AdminMongoRepository,
+    RegionMapper,
+    RegionMongoRepository,
   ],
   exports: [
     UserMongoRepository,
@@ -58,6 +67,7 @@ import { AdminMapper } from '@adapter/out/persistence/admin/mapper/admin.mapper'
     AuthSendLogMongoRepository,
     InvitationMongoRepository,
     AdminMongoRepository,
+    RegionMongoRepository,
   ],
 })
 export class RepositoriesModule {}

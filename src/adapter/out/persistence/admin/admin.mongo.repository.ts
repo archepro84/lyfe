@@ -24,17 +24,22 @@ export class AdminMongoRepository
   }
 
   async signUpAdmin(admin: Admin): Promise<Admin> {
-    return this.adminMapper.toDomain(
-      await this.adminModel.create({
-        email: admin.email,
-        password: admin.password,
-      }),
+    const createdAdmin = await this.adminModel.create(
+      [
+        {
+          email: admin.email,
+          password: admin.password,
+        },
+      ],
+      { session: this.getSession() },
     );
+
+    return this.adminMapper.toDomains(createdAdmin)[0];
   }
 
   async getById(adminId: string): Promise<Admin | null> {
     return this.adminMapper.toDomain(
-      await this.adminModel.findById(adminId).exec(),
+      await this.adminModel.findById(adminId).session(this.getSession()).exec(),
     );
   }
 
@@ -44,6 +49,7 @@ export class AdminMongoRepository
         .findOne({
           email,
         })
+        .session(this.getSession())
         .exec(),
     );
   }
@@ -53,9 +59,13 @@ export class AdminMongoRepository
     authToken: AuthToken,
   ): Promise<Admin> {
     return this.adminMapper.toDomain(
-      await this.adminModel.findByIdAndUpdate(adminId, {
-        authToken: authToken,
-      }),
+      await this.adminModel.findByIdAndUpdate(
+        adminId,
+        {
+          authToken: authToken,
+        },
+        { session: this.getSession() },
+      ),
     );
   }
 }
