@@ -35,6 +35,5 @@ export class UpdateUserInfoDto {
     description: '유저의 거주지역',
   })
   @IsOptional()
-  @IsEnum(Region)
   readonly region?: Region;
 }
