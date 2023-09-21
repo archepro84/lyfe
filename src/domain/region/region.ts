@@ -1,4 +1,5 @@
 import { Domain } from '@domain/domain';
+import { RegionNotLoadedException } from '@domain/region/exception/region-not-loaded.exception';
 
 /**
  * 대한민국의 특정 지역을 나타내는 클래스입니다.
@@ -40,6 +41,12 @@ export class Region extends Domain {
   getNeighborhood(): string {
     return this.neighborhood;
   }
+
+  checkLoaded(): boolean {
+    if (!this.loaded) throw new RegionNotLoadedException();
+    return this.loaded;
+  }
+
   static newInstance(id: string) {
     return new Region(id);
   }

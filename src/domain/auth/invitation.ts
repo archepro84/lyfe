@@ -1,4 +1,5 @@
 import { Domain } from '@domain/domain';
+import { InvalidInvitationStatusException } from '@domain/auth/exception/invalid-invitation-status.exception';
 
 export enum InvitationType {
   ADMIN = 'ADMIN',
@@ -41,5 +42,10 @@ export class Invitation extends Domain {
 
   getInvitationStatus(): InvitationStatus {
     return this.invitationStatus;
+  }
+
+  checkInvitationStatus(): void {
+    if (this.invitationStatus !== InvitationStatus.PENDING)
+      throw new InvalidInvitationStatusException();
   }
 }
