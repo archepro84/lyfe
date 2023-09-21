@@ -7,10 +7,12 @@ export class CreateRegionService implements CreateRegionUsecase {
   constructor(private readonly regionRepository: RegionRepository) {}
 
   async exec(createRegionCommand: CreateRegionCommand): Promise<void> {
-    const { city, district, neighborhood } = createRegionCommand;
-
-    await this.regionRepository.save(
-      Region.newInstance(city.trim(), district.trim(), neighborhood.trim()),
+    await this.regionRepository.insert(
+      Region.newInstanceWithDetails(
+        createRegionCommand.city,
+        createRegionCommand.district,
+        createRegionCommand.neighborhood,
+      ),
     );
   }
 }
