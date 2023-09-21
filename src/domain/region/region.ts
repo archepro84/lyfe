@@ -12,13 +12,33 @@ export class Region extends Domain {
    *  @param {string} neighborhood - 지역의 '법정 읍면동'을 나타냅니다.
    */
 
+  private readonly loaded: boolean = false;
+
   constructor(
-    public readonly id: string,
-    public readonly city: string,
-    public readonly district: string,
-    public readonly neighborhood: string,
+    readonly id: string,
+    private readonly city?: string,
+    private readonly district?: string,
+    private readonly neighborhood?: string,
   ) {
     super();
+
+    if (city) city.trim();
+    if (district) district.trim();
+    if (neighborhood) neighborhood.trim();
+
+    if (city && district && neighborhood) this.loaded = true;
+  }
+
+  getCity(): string {
+    return this.city;
+  }
+
+  getDistrict(): string {
+    return this.district;
+  }
+
+  getNeighborhood(): string {
+    return this.neighborhood;
   }
   static newInstance(id: string) {
     return new Region(id);

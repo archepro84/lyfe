@@ -1,4 +1,5 @@
 import { InvalidBirthFormatException } from '@domain/user/exception/invalid-birth-format.exception';
+import { Region } from '@domain/region/region';
 
 export enum Gender {
   MALE = 'MALE',
@@ -9,16 +10,16 @@ export enum Gender {
 export class UserInfo {
   private gender?: Gender;
   private birth?: string;
-  private regionId?: string;
+  private region?: Region;
 
   constructor(
     gender: Gender = null,
     birth: string = null,
-    regionId: string = null,
+    region: Region = null,
   ) {
     this.setGender(gender);
     this.setBirth(birth);
-    this.regionId = regionId;
+    this.setRegion(region);
   }
 
   setGender(gender: Gender) {
@@ -43,12 +44,12 @@ export class UserInfo {
     return this.birth;
   }
 
-  setRegionId(regionId: string) {
-    this.regionId = regionId;
+  setRegion(region: Region) {
+    this.region = region;
   }
 
-  getRegionId(): string {
-    return this.regionId;
+  getRegion(): Region {
+    return this.region;
   }
 
   static fromObject(obj: any): UserInfo {
