@@ -26,6 +26,7 @@ import { RegionMapper } from '@adapter/out/persistence/region/mapper/region.mapp
 import { RegionMongoRepository } from '@adapter/out/persistence/region/region.mongo.repository';
 import { Region } from '@domain/region/region';
 import { RegionSchema } from '@adapter/out/persistence/region/schema/region.schema';
+import { TransactionManager } from '@adapter/out/persistence/common/transaction/transaction.manager';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { RegionSchema } from '@adapter/out/persistence/region/schema/region.sche
     ]),
   ],
   providers: [
+    TransactionManager,
     UserMapper,
     UserMongoRepository,
     AuthMapper,
