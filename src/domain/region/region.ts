@@ -20,8 +20,23 @@ export class Region extends Domain {
   ) {
     super();
   }
+  static newInstance(id: string) {
+    return new Region(id);
+  }
 
-  static newInstance(city: string, district: string, neighborhood: string) {
+  static newInstanceWithDetails(
+    city: string,
+    district: string,
+    neighborhood: string,
+  ) {
     return new Region(null, city, district, neighborhood);
+  }
+
+  static fromObject(obj: any): Region {
+    return this.newInstanceWithDetails(
+      obj.city,
+      obj.district,
+      obj.neighborhood,
+    );
   }
 }

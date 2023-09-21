@@ -52,6 +52,7 @@ export class UserInfo {
   }
 
   static fromObject(obj: any): UserInfo {
+    if (!obj) return new UserInfo();
     return new UserInfo(obj.gender, obj.birth, obj.region);
   }
 }

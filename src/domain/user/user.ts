@@ -24,8 +24,8 @@ export class User extends Domain implements Accountable {
     nickname: string,
     userInfo: UserInfo,
     phoneNumber: string,
-    createdAt: Date,
-    updatedAt: Date,
+    createdAt: Date = new Date(),
+    updatedAt: Date = new Date(),
     authToken: AuthToken = null,
   ) {
     super();
@@ -97,5 +97,13 @@ export class User extends Domain implements Accountable {
 
   getDeletedAt(): Date {
     return this.deletedAt;
+  }
+
+  public static newInstance(
+    nickname: string,
+    userInfo: UserInfo,
+    phoneNumber: string,
+  ): User {
+    return new User(null, nickname, userInfo, phoneNumber);
   }
 }
