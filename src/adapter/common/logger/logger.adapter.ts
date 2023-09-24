@@ -24,4 +24,9 @@ export class LoggerAdapter extends Logger implements LoggerPort {
     if (process.env.NODE_ENV !== 'production')
       super.verbose(`[VERBOSE] ${message}`, context);
   }
+
+  test(context: string, message: string): void {
+    if (process.env.NODE_ENV === 'test')
+      super.verbose(`[TEST] ${message}`, context);
+  }
 }

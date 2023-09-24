@@ -8,4 +8,6 @@ export interface LoggerPort {
   warn(context: string, message: string): void;
 
   verbose(context: string, message: string): void;
+
+  test(context: string, message: string): void;
 }
