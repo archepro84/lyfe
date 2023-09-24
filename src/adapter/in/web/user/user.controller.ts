@@ -19,6 +19,7 @@ import {
 } from '@nestjs/swagger';
 import { UpdateUserInfoDto } from '@adapter/in/web/user/user.dto';
 import { JwtAuthGuard } from '@common/guard/jwt-auth.guard';
+import { AccessTokenHeader } from '@common/decorator/access-token-header.decorator';
 
 @Controller('users')
 @ApiTags('users')
@@ -32,6 +33,7 @@ export class UserController {
 
   @Patch()
   @UseGuards(JwtAuthGuard)
+  @AccessTokenHeader()
   @ApiOperation({ summary: 'Update User Informations' })
   @ApiResponse({
     status: 200,
