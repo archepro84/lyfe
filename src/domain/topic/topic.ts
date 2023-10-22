@@ -3,8 +3,17 @@ import { Geometry } from '@domain/user/geometry';
 import { Image } from '@domain/topic/image';
 import { Vote } from '@domain/topic/vote/vote';
 import { TooManyImageException } from '@domain/topic/exception/too-many-image.exception';
+import { Domain } from '@domain/domain';
 
-export enum TopicType {}
+const MAX_IMAGE_COUNT = 10;
+
+export enum Theme {
+  '일상생활' = '일상생활',
+  '식당/음식' = '식당/음식',
+  '연애/이성' = '연애/이성',
+  '리뷰/추천' = '리뷰/추천',
+  '오프라인' = '오프라인',
+}
 
 export type TopicRequiredProps = Readonly<
   Required<{
@@ -12,6 +21,7 @@ export type TopicRequiredProps = Readonly<
     title: string;
     content: string;
     user: User;
+    theme: Theme;
   }>
 >;
 
@@ -30,16 +40,15 @@ export type TopicOptionalProps = Readonly<
 >;
 
 export type TopicProps = TopicRequiredProps & TopicOptionalProps;
-const MAX_IMAGE_COUNT = 10;
 
-export class Topic {
+export class Topic extends Domain {
   readonly id: string;
   readonly createdAt: Date = new Date();
   readonly updatedAt: Date = new Date();
 
   private title: string;
   private content: string;
-  private topicType: TopicType;
+  private theme: Theme;
   private user: User;
 
   private images?: Image[];
@@ -52,12 +61,14 @@ export class Topic {
   private deletedAt: Date;
 
   constructor(topicProps: TopicProps) {
+    super();
+
     Object.assign(this, topicProps);
     this.checkImages();
   }
 
   private checkImages() {
-    if (this.images.length > MAX_IMAGE_COUNT) {
+    if (this.images && this.images.length > MAX_IMAGE_COUNT) {
       throw new TooManyImageException();
     }
   }
