@@ -20,6 +20,9 @@ export type TopicOptionalProps = Readonly<
     images: Image[];
     geometry: Geometry;
     vote: Vote;
+    viewCount: number;
+    likeCount: number;
+    commentCount: number;
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date;
@@ -43,6 +46,9 @@ export class Topic {
   private geometry?: Geometry;
   private vote?: Vote;
 
+  private viewCount = 0;
+  private likeCount = 0;
+  private commentCount = 0;
   private deletedAt: Date;
 
   constructor(topicProps: TopicProps) {
