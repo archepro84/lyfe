@@ -2,6 +2,7 @@ import { User } from '@domain/user/user';
 import { Geometry } from '@domain/user/geometry';
 import { Image } from '@domain/topic/image';
 import { Vote } from '@domain/topic/vote/vote';
+import { TooManyImageException } from '@domain/topic/exception/too-many-image.exception';
 
 export enum TopicType {}
 
@@ -26,6 +27,7 @@ export type TopicOptionalProps = Readonly<
 >;
 
 export type TopicProps = TopicRequiredProps & TopicOptionalProps;
+const MAX_IMAGE_COUNT = 10;
 
 export class Topic {
   readonly id: string;
@@ -45,6 +47,13 @@ export class Topic {
 
   constructor(topicProps: TopicProps) {
     Object.assign(this, topicProps);
+    this.checkImages();
+  }
+
+  private checkImages() {
+    if (this.images.length > MAX_IMAGE_COUNT) {
+      throw new TooManyImageException();
+    }
   }
 
   static newInstance(topicProps: TopicProps): Topic {
