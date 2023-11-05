@@ -1,7 +1,17 @@
+export type VoteItemProps = Readonly<
+  Required<{
+    id: string;
+    title: string;
+    index: number;
+  }>
+>;
+
 export class VoteItem {
-  constructor(
-    public readonly id: string,
-    public readonly title: string,
-    public readonly count: number,
-  ) {}
+  public readonly id: string;
+  public readonly title: string;
+  public readonly index: number;
+
+  constructor(props: VoteItemProps) {
+    Object.assign(this, props);
+  }
 }
