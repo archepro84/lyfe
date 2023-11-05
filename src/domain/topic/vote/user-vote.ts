@@ -5,6 +5,7 @@ export type UserVoteProps = Readonly<
     id: string;
     voteId: string;
     voteItemId: string;
+    userId: string;
   }>
 >;
 
@@ -12,14 +13,15 @@ export class UserVote extends Domain {
   public readonly id: string;
   public readonly voteId: string;
   public readonly voteItemId: string;
+  public readonly userId: string;
 
-  constructor(userVoteProps: UserVoteProps) {
+  constructor(props: UserVoteProps) {
     super();
 
-    Object.assign(this, userVoteProps);
+    Object.assign(this, props);
   }
 
-  static newInstance(userVoteProps: UserVoteProps): UserVote {
-    return new UserVote(userVoteProps);
+  static newInstance(props: UserVoteProps): UserVote {
+    return new UserVote(props);
   }
 }
