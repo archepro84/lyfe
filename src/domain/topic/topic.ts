@@ -46,19 +46,16 @@ export class Topic extends Domain {
   readonly createdAt: Date = new Date();
   readonly updatedAt: Date = new Date();
 
-  private title: string;
-  private content: string;
-  private theme: Theme;
-  private user: User;
+  readonly title: string;
+  readonly content: string;
+  readonly theme: Theme;
+  readonly user: User;
 
-  private images?: Image[];
-  private geometry?: Geometry;
-  private vote?: Vote;
+  readonly images?: Image[];
+  readonly geometry?: Geometry;
+  readonly vote?: Vote;
 
-  private viewCount = 0;
-  private likeCount = 0;
-  private commentCount = 0;
-  private deletedAt: Date;
+  readonly deletedAt: Date;
 
   constructor(topicProps: TopicProps) {
     super();

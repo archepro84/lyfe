@@ -1,3 +1,13 @@
+export type ImageProps = Readonly<
+  Required<{
+    url: string;
+  }>
+>;
+
 export class Image {
-  constructor(public readonly url: string) {}
+  public readonly url: string;
+
+  constructor(props: ImageProps) {
+    Object.assign(this, props);
+  }
 }
