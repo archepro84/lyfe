@@ -1,13 +1,36 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
 
 export class RegionEntity extends Document {
   id: string;
 
+  @ApiProperty({
+    required: true,
+    type: 'string',
+    description: "지역의 '시도'",
+    example: '서울특별시',
+  })
+  @IsString()
   city: string;
 
+  @ApiProperty({
+    required: true,
+    type: 'string',
+    description: "지역의 '시군구'",
+    example: '강남구',
+  })
+  @IsString()
   district: string;
 
+  @ApiProperty({
+    required: true,
+    type: 'string',
+    description: "지역의 '법정 읍면동'",
+    example: '삼성동',
+  })
+  @IsString()
   neighborhood: string;
 
   constructor(
