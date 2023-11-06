@@ -51,7 +51,6 @@ export class TopicEntity extends Document {
     type: () => [ImageEntity],
     description: '이미지 URL',
   })
-  @IsArray()
   @IsOptional()
   images?: Image[];
 
