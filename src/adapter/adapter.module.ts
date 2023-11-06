@@ -7,6 +7,7 @@ import { AuthController } from '@adapter/in/web/auth/auth.controller';
 import { ServiceProxyModule } from '@adapter/in/web/service-proxy/service-proxy.module';
 import { AdminController } from '@adapter/in/web/admin/admin.controller';
 import { RegionController } from '@adapter/in/web/region/region.controller';
+import { TopicController } from '@adapter/in/web/topic/topic.controller';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { RegionController } from '@adapter/in/web/region/region.controller';
     UserController,
     AdminController,
     RegionController,
+    TopicController,
   ],
   providers: [],
   exports: [ServiceProxyModule],
