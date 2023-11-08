@@ -34,10 +34,11 @@ export class TopicController {
     description: 'Return success',
     type: String,
   })
-  async updateUserInfo(@Request() req: any, @Body() dto: CreateTopicDto) {
+  async createTopic(@Request() req: any, @Body() dto: CreateTopicDto) {
     await this.createTopicUsecase.exec({
       ...dto,
       user: req.user as User,
+      geometry: dto.geometry,
     });
 
     return 'success';
