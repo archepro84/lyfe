@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
-import { Region } from '@domain/region/region';
 import { RegionEntity } from '@adapter/out/persistence/region/schema/region.schema';
 
 export class GeometryEntity {
