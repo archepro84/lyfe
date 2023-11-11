@@ -69,8 +69,10 @@ export class Topic extends Domain {
       throw new TooManyImageException();
     }
   }
+}
 
-  static newInstance(topicProps: TopicProps): Topic {
-    return new Topic(topicProps);
+export class TopicFactory {
+  static newInstance(props: TopicProps): Topic {
+    return new Topic(props);
   }
 }

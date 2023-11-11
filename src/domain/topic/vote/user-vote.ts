@@ -20,7 +20,9 @@ export class UserVote extends Domain {
 
     Object.assign(this, props);
   }
+}
 
+export class UserVoteFactory {
   static newInstance(props: UserVoteProps): UserVote {
     return new UserVote(props);
   }

@@ -44,7 +44,9 @@ export class Vote extends Domain {
       throw new InsufficientVoteItemException();
     }
   }
+}
 
+export class VoteFactory {
   static newInstance(voteProps: VoteProps): Vote {
     return new Vote(voteProps);
   }

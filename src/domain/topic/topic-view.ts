@@ -27,7 +27,9 @@ export class TopicView extends Domain {
 
     Object.assign(this, topicViewProps);
   }
+}
 
+export class TopicViewFactory {
   static newInstance(topicViewProps: TopicViewProps): TopicView {
     return new TopicView(topicViewProps);
   }
