@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 import { Document } from 'mongoose';
 
 export class VoteItemEntity extends Document {
@@ -16,10 +16,10 @@ export class VoteItemEntity extends Document {
 
   @ApiProperty({
     required: true,
-    type: 'string',
+    type: 'number',
     description: '투표 항목의 순서',
     example: 2,
   })
-  @IsString()
-  index: string;
+  @IsNumber()
+  index: number;
 }

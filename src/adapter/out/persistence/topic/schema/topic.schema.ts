@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
 import { Theme } from '@domain/topic/topic';
 import { UserEntity } from '@adapter/out/persistence/user/schema/user.schema';
-import { Image } from '@domain/topic/image';
 import { ImageEntity } from '@adapter/out/persistence/topic/schema/image.schema';
 import { Document } from 'mongoose';
 import { GeometryEntity } from '@adapter/out/persistence/user/schema/geometry.schema';
@@ -48,11 +47,12 @@ export class TopicEntity extends Document {
   @ApiProperty({
     required: true,
     isArray: true,
-    type: () => [ImageEntity],
+    type: () => ImageEntity,
     description: '이미지 URL',
   })
+  @IsArray()
   @IsOptional()
-  images?: Image[];
+  images?: ImageEntity[];
 
   @ApiProperty({
     required: true,

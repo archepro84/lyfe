@@ -38,7 +38,6 @@ export class TopicController {
     await this.createTopicUsecase.exec({
       ...dto,
       user: req.user as User,
-      geometry: dto.geometry,
     });
 
     return 'success';
