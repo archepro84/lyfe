@@ -4,7 +4,7 @@ import { User } from '@domain/user/user';
 import { UserRepository } from '@application/port/out/user/user.repository';
 import { NotFoundException } from '@common/exception/not-found.exception';
 import { UserInfo } from '@domain/user/user-info';
-import { Region } from '@domain/region/region';
+import { Region, RegionFactory } from '@domain/region/region';
 import { RegionRepository } from '@application/port/out/region/region.repository';
 import { Transactional } from '@common/decorator/transactional.decorator';
 import { CreateRegionUsecase } from '@application/port/in/region/create-region.usecase';
@@ -43,7 +43,7 @@ export class UpdateUserInfoService implements UpdateUserInfoUsecase {
     if (command.nickname) user.setNickname(command.nickname);
     if (command.region)
       userInfo.setRegion(
-        await this.findOrCreateRegion(Region.fromObject(command.region)),
+        await this.findOrCreateRegion(RegionFactory.fromObject(command.region)),
       );
     if (command.gender) userInfo.setGender(command.gender);
     if (command.birth) userInfo.setBirth(command.birth);
@@ -54,11 +54,11 @@ export class UpdateUserInfoService implements UpdateUserInfoUsecase {
   private async findOrCreateRegion(regionProps: Region): Promise<Region> {
     let region = await this.getRegion(regionProps);
 
-    if (!region || !region.checkLoaded()) {
+    if (!region) {
       region = await this.createRegionUsecase.exec({
-        city: regionProps.getCity(),
-        district: regionProps.getDistrict(),
-        neighborhood: regionProps.getNeighborhood(),
+        city: regionProps.city,
+        district: regionProps.district,
+        neighborhood: regionProps.neighborhood,
       });
     }
 
@@ -67,9 +67,9 @@ export class UpdateUserInfoService implements UpdateUserInfoUsecase {
 
   private async getRegion(regionProps: Region): Promise<Region> {
     return await this.regionRepository.find({
-      city: regionProps.getCity(),
-      district: regionProps.getDistrict(),
-      neighborhood: regionProps.getNeighborhood(),
+      city: regionProps.city,
+      district: regionProps.district,
+      neighborhood: regionProps.neighborhood,
     });
   }
 }

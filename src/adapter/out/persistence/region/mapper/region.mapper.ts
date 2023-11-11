@@ -14,12 +14,11 @@ export class RegionMapper implements MapperPort<RegionEntity, Region> {
   public toDomain(regionEntity: RegionEntity): Region {
     if (!regionEntity) return null;
 
-    const region = new Region(
-      regionEntity.id,
-      regionEntity.city,
-      regionEntity.district,
-      regionEntity.neighborhood,
-    );
+    const region = new Region({
+      city: regionEntity.city,
+      district: regionEntity.district,
+      neighborhood: regionEntity.neighborhood,
+    });
 
     return region;
   }
@@ -30,10 +29,9 @@ export class RegionMapper implements MapperPort<RegionEntity, Region> {
 
   public toPersistence(region: Region): RegionEntity {
     return new this.model({
-      id: region.id,
-      city: region.getCity(),
-      district: region.getDistrict(),
-      neighborhood: region.getNeighborhood(),
+      city: region.city,
+      district: region.district,
+      neighborhood: region.neighborhood,
     });
   }
 }

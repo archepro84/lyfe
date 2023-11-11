@@ -28,8 +28,9 @@ export class RegionPresenter {
 
   constructor(region: Region) {
     this.id = region.id;
-    this.city = region.getCity();
-    this.district = region.getDistrict();
-    this.neighborhood = region.getNeighborhood();
+
+    this.city = region.city;
+    this.district = region.district;
+    this.neighborhood = region.neighborhood;
   }
 }

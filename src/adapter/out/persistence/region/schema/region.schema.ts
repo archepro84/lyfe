@@ -4,8 +4,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
 export class RegionEntity extends Document {
-  id: string;
-
   @ApiProperty({
     required: true,
     type: 'string',
@@ -33,15 +31,9 @@ export class RegionEntity extends Document {
   @IsString()
   neighborhood: string;
 
-  constructor(
-    id: string,
-    city: string,
-    district: string,
-    neighborhood: string,
-  ) {
+  constructor(city: string, district: string, neighborhood: string) {
     super();
 
-    this.id = id;
     this.city = city;
     this.district = district;
     this.neighborhood = neighborhood;
