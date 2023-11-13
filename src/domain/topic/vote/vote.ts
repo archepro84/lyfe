@@ -10,7 +10,7 @@ export enum VoteType {
 export type VoteRequiredProps = Readonly<
   Required<{
     id: string;
-    voidItem: VoteItem[];
+    voteItem: VoteItem[];
     voteType: VoteType;
   }>
 >;
@@ -26,7 +26,7 @@ export type VoteProps = VoteRequiredProps & VoteOptionalProps;
 
 export class Vote extends Domain {
   public readonly id: string;
-  public readonly voidItem: VoteItem[];
+  public readonly voteItem: VoteItem[];
   public readonly voteType: VoteType;
   public readonly createdAt: Date = new Date();
   public readonly updatedAt: Date = new Date();
@@ -40,7 +40,7 @@ export class Vote extends Domain {
   }
 
   checkVoteItem(): void {
-    if (this.voidItem.length <= 0) {
+    if (this.voteItem.length <= 0) {
       throw new InsufficientVoteItemException();
     }
   }
