@@ -7,6 +7,14 @@ export enum Gender {
   OTHER = 'OTHER',
 }
 
+export type UserInfoProps = Readonly<
+  Partial<{
+    gender: Gender;
+    birth: string;
+    region: Region;
+  }>
+>;
+
 export class UserInfo {
   private gender?: Gender;
   private birth?: string;
@@ -55,5 +63,11 @@ export class UserInfo {
   static fromObject(obj: any): UserInfo {
     if (!obj) return new UserInfo();
     return new UserInfo(obj.gender, obj.birth, obj.region);
+  }
+}
+
+export class UserInfoFactory {
+  static newInstance(props: UserInfoProps): UserInfo {
+    return new UserInfo(props.gender, props.birth, props.region);
   }
 }

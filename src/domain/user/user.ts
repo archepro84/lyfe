@@ -5,6 +5,29 @@ import { InvalidPhoneNumberFormatException } from '@domain/user/exception/invali
 import { Accountable } from '@domain/auth/accountable';
 import { Domain } from '@domain/domain';
 
+export type UserRequiredProps = Readonly<
+  Required<{
+    id: string;
+    nickname: string;
+    userInfo: UserInfo;
+    phoneNumber: string;
+  }>
+>;
+
+export type UserOptionalProps = Readonly<
+  Partial<{
+    location: Geometry;
+    locationUpdatedAt: Date;
+    verifiedAt: Date;
+    authToken: AuthToken;
+    deletedAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
+  }>
+>;
+
+export type UserProps = UserRequiredProps & UserOptionalProps;
+
 export class User extends Domain implements Accountable {
   readonly id?: string;
   readonly phoneNumber: string;
@@ -105,5 +128,16 @@ export class User extends Domain implements Accountable {
     phoneNumber: string,
   ): User {
     return new User(null, nickname, userInfo, phoneNumber);
+  }
+}
+
+export class UserFactory {
+  static newInstance(props: UserProps): User {
+    return new User(
+      props.id ?? null,
+      props.nickname,
+      props.userInfo,
+      props.phoneNumber,
+    );
   }
 }
