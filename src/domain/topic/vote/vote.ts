@@ -16,7 +16,7 @@ export type VoteRequiredProps = Readonly<
 >;
 
 export type VoteOptionalProps = Readonly<
-  Required<{
+  Partial<{
     createdAt: Date;
     updatedAt: Date;
   }>
