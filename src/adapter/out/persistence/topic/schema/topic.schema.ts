@@ -70,9 +70,17 @@ export class TopicEntity extends Document {
   @IsOptional()
   vote?: VoteEntity;
 
+  viewCount?: number;
+
+  likeCount?: number;
+
+  commentCount?: number;
+
   createdAt?: Date;
 
   updatedAt?: Date;
+
+  deletedAt?: Date;
 }
 
 @Schema({ collection: 'topics', _id: false })
