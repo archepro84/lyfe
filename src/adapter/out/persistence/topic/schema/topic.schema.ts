@@ -5,7 +5,7 @@ import { UserEntity } from '@adapter/out/persistence/user/schema/user.schema';
 import { ImageEntity } from '@adapter/out/persistence/topic/schema/image.schema';
 import { Document } from 'mongoose';
 import { GeometryEntity } from '@adapter/out/persistence/user/schema/geometry.schema';
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { VoteEntity } from '@adapter/out/persistence/topic/schema/vote.schema';
 
 export class TopicEntity extends Document {
@@ -115,3 +115,5 @@ export class TopicMongoSchema {
   @Prop({ select: false })
   deletedAt?: Date;
 }
+
+export const TopicSchema = SchemaFactory.createForClass(TopicMongoSchema);
