@@ -1,12 +1,10 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Geometry } from '@domain/user/geometry';
 import { Document } from 'mongoose';
 import { AuthToken } from '@domain/user/auth-token';
 import { UserInfo } from '@domain/user/user-info';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 import { UserInfoEntity } from '@adapter/out/persistence/user/schema/user-info.schema';
-import { GeometryEntity } from '@adapter/out/persistence/user/schema/geometry.schema';
 
 export class UserEntity extends Document {
   _id: string;
@@ -40,15 +38,6 @@ export class UserEntity extends Document {
 
   updatedAt: Date;
 
-  @ApiProperty({
-    required: true,
-    type: () => GeometryEntity,
-    description: '유저의 위치 정보',
-  })
-  location?: GeometryEntity;
-
-  locationUpdatedAt?: Date;
-
   verifiedAt?: Date;
 
   authToken?: AuthToken;
@@ -62,8 +51,6 @@ export class UserEntity extends Document {
     phoneNumber: string,
     createdAt: Date,
     updatedAt: Date,
-    location: GeometryEntity = null,
-    locationUpdatedAt = null,
     verifiedAt: Date = null,
     authToken: AuthToken = null,
     deletedAt: Date = null,
@@ -77,8 +64,6 @@ export class UserEntity extends Document {
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
 
-    this.location = location;
-    this.locationUpdatedAt = locationUpdatedAt;
     this.verifiedAt = verifiedAt;
     this.authToken = authToken;
     this.deletedAt = deletedAt;
@@ -95,12 +80,6 @@ export class UserMongoSchema {
 
   @Prop({ required: true, unique: true })
   phoneNumber: string;
-
-  @Prop()
-  location: Geometry;
-
-  @Prop()
-  locationUpdatedAt: Date;
 
   @Prop()
   verifiedAt: Date;

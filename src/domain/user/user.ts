@@ -15,7 +15,6 @@ export type UserRequiredProps = Readonly<
 
 export type UserOptionalProps = Readonly<
   Partial<{
-    locationUpdatedAt: Date;
     verifiedAt: Date;
     authToken: AuthToken;
     deletedAt: Date;
@@ -34,7 +33,6 @@ export class User extends Domain implements Accountable {
 
   private nickname: string;
   private userInfo: UserInfo;
-  private locationUpdatedAt?: Date = new Date();
   private verifiedAt: Date = new Date();
   private authToken?: AuthToken;
   private deletedAt: Date = new Date();
@@ -77,14 +75,6 @@ export class User extends Domain implements Accountable {
 
   getUserInfo(): UserInfo {
     return this.userInfo;
-  }
-
-  setLocationUpdatedAt(locationUpdatedAt: Date) {
-    this.locationUpdatedAt = locationUpdatedAt;
-  }
-
-  getLocationUpdatedAt(): Date {
-    return this.locationUpdatedAt;
   }
 
   setVerifiedAt(verifiedAt: Date) {

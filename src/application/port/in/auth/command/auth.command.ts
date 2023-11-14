@@ -8,32 +8,15 @@ export class SignUpCommand {
 
   invitationCode: string;
 
-  location?: Geometry;
-
-  locationUpdatedAt?: Date;
-
-  constructor(
-    nickname: string,
-    phoneNumber: string,
-    invitationCode: string,
-    location: Geometry = null,
-    locationUpdatedAt = null,
-  ) {
+  constructor(nickname: string, phoneNumber: string, invitationCode: string) {
     this.nickname = nickname;
     this.phoneNumber = phoneNumber;
     this.invitationCode = invitationCode;
-    this.location = location;
-    this.locationUpdatedAt = locationUpdatedAt;
   }
 }
 
 export class SignUpDetails {
-  constructor(
-    readonly nickname: string,
-    readonly phoneNumber: string,
-    readonly location?: Geometry,
-    readonly locationUpdatedAt?: Date,
-  ) {}
+  constructor(readonly nickname: string, readonly phoneNumber: string) {}
 }
 
 export class SignInCommand {

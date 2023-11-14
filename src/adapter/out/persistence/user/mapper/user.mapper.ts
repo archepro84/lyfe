@@ -26,7 +26,6 @@ export class UserMapper implements MapperPort<UserEntity, User> {
 
       userEntity.authToken,
     );
-    user.setLocationUpdatedAt(userEntity.locationUpdatedAt);
     user.setVerifiedAt(userEntity.verifiedAt);
     user.setDeletedAt(userEntity.deletedAt);
 
@@ -46,7 +45,6 @@ export class UserMapper implements MapperPort<UserEntity, User> {
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
 
-      locationUpdatedAt: user.getLocationUpdatedAt(),
       verifiedAt: user.getVerifiedAt(),
       authToken: user.getAuthToken(),
       deletedAt: user.getDeletedAt(),
