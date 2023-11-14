@@ -26,16 +26,11 @@ export class TopicMapper implements MapperPort<TopicEntity, Topic> {
       ...topicEntity.user.userInfo,
       region: RegionFactory.newInstance(topicEntity.user.userInfo.region),
     });
-    const location = new Geometry({
-      ...topicEntity.user.location,
-      region: RegionFactory.newInstance(topicEntity.user.location.region),
-    });
 
     const user = UserFactory.newInstance({
       ...topicEntity.user,
       id: topicEntity!._id,
       userInfo,
-      location,
     });
 
     const vote = VoteFactory.newInstance({

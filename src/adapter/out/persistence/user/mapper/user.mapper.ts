@@ -46,7 +46,6 @@ export class UserMapper implements MapperPort<UserEntity, User> {
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
 
-      location: user.getLocation(),
       locationUpdatedAt: user.getLocationUpdatedAt(),
       verifiedAt: user.getVerifiedAt(),
       authToken: user.getAuthToken(),

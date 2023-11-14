@@ -1,4 +1,3 @@
-import { Geometry } from './geometry';
 import { AuthToken } from '@domain/user/auth-token';
 import { UserInfo } from '@domain/user/user-info';
 import { InvalidPhoneNumberFormatException } from '@domain/user/exception/invalid-phone-number-format.exception';
@@ -16,7 +15,6 @@ export type UserRequiredProps = Readonly<
 
 export type UserOptionalProps = Readonly<
   Partial<{
-    location: Geometry;
     locationUpdatedAt: Date;
     verifiedAt: Date;
     authToken: AuthToken;
@@ -36,7 +34,6 @@ export class User extends Domain implements Accountable {
 
   private nickname: string;
   private userInfo: UserInfo;
-  private location: Geometry = null;
   private locationUpdatedAt?: Date = new Date();
   private verifiedAt: Date = new Date();
   private authToken?: AuthToken;
@@ -80,14 +77,6 @@ export class User extends Domain implements Accountable {
 
   getUserInfo(): UserInfo {
     return this.userInfo;
-  }
-
-  setLocation(location: Geometry) {
-    this.location = location;
-  }
-
-  getLocation(): Geometry {
-    return this.location;
   }
 
   setLocationUpdatedAt(locationUpdatedAt: Date) {
