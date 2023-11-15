@@ -1,9 +1,11 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { CREATE_TOPIC_USECASE } from '@application/port/in/topic/create-topic.usecase';
 import { CreateTopicService } from '@application/service/topic/create-topic.service';
+import { RepositoriesModule } from '@adapter/out/persistence/repositories.module';
+import { TopicMongoRepository } from '@adapter/out/persistence/topic/topic.mongo.repository';
 
 @Module({
-  imports: [],
+  imports: [RepositoriesModule],
 })
 export class TopicServiceProxyModule {
   static register(): DynamicModule {
@@ -11,9 +13,10 @@ export class TopicServiceProxyModule {
       module: TopicServiceProxyModule,
       providers: [
         {
-          inject: [],
+          inject: [TopicMongoRepository],
           provide: CREATE_TOPIC_USECASE,
-          useFactory: () => new CreateTopicService(),
+          useFactory: (topicRepository: TopicMongoRepository) =>
+            new CreateTopicService(topicRepository),
         },
       ],
       exports: [CREATE_TOPIC_USECASE],
