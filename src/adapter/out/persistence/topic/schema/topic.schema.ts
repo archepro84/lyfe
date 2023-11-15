@@ -83,7 +83,7 @@ export class TopicEntity extends Document {
   deletedAt?: Date;
 }
 
-@Schema({ collection: 'topics', _id: false })
+@Schema({ collection: 'topics', _id: true })
 export class TopicMongoSchema {
   @Prop({ required: true })
   title: string;
