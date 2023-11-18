@@ -7,6 +7,7 @@ import { Transactional } from '@common/decorator/transactional.decorator';
 import { UpdateTopicUsecase } from '@application/port/in/topic/update-topic.usecase';
 import { UpdateTopicCommand } from '@application/port/in/topic/command/update-topic.command';
 import { UnauthorizedException } from '@common/exception/unauthorized.exception';
+import { NotFoundException } from '@common/exception/not-found.exception';
 
 export class UpdateTopicService implements UpdateTopicUsecase {
   constructor(private readonly topicRepository: TopicRepository) {}
@@ -15,6 +16,7 @@ export class UpdateTopicService implements UpdateTopicUsecase {
   async exec(command: UpdateTopicCommand): Promise<void> {
     const topic = await this.topicRepository.findById(command.id);
 
+    if (!topic) throw new NotFoundException('게시글이 존재하지 않습니다.');
     if (!this.isTopicPermission(topic.user.id, command.user.id))
       throw new UnauthorizedException('게시글의 권한이 존재하지 않습니다.');
 

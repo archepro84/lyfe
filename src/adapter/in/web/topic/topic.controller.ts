@@ -6,6 +6,7 @@ import {
   Post,
   Inject,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@common/guard/jwt-auth.guard';
@@ -17,10 +18,15 @@ import {
 } from '@application/port/in/topic/create-topic.usecase';
 import { User } from '@domain/user/user';
 import { UpdateTopicDto } from '@adapter/in/web/topic/dto/update-topic.dto';
+import { DeleteTopicDto } from '@adapter/in/web/topic/dto/delete-topic.dto';
 import {
   UPDATE_TOPIC_USECASE,
   UpdateTopicUsecase,
 } from '@application/port/in/topic/update-topic.usecase';
+import {
+  DELETE_TOPIC_USECASE,
+  DeleteTopicUsecase,
+} from '@application/port/in/topic/delete-topic.usecase';
 
 @Controller('topic')
 @ApiTags('topic')
@@ -31,6 +37,8 @@ export class TopicController {
     private readonly createTopicUsecase: CreateTopicUsecase,
     @Inject(UPDATE_TOPIC_USECASE)
     private readonly updateTopicUsecase: UpdateTopicUsecase,
+    @Inject(DELETE_TOPIC_USECASE)
+    private readonly deleteTopicUsecase: DeleteTopicUsecase,
   ) {}
 
   @Post()
@@ -62,6 +70,24 @@ export class TopicController {
   })
   async updateTopic(@Request() req: any, @Body() dto: UpdateTopicDto) {
     await this.updateTopicUsecase.exec({
+      ...dto,
+      user: req.user as User,
+    });
+
+    return 'success';
+  }
+
+  @Delete()
+  @UseGuards(JwtAuthGuard)
+  @AccessTokenHeader()
+  @ApiOperation({ summary: 'Delete Topic' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return success',
+    type: String,
+  })
+  async deleteTopic(@Request() req: any, @Body() dto: DeleteTopicDto) {
+    await this.deleteTopicUsecase.exec({
       ...dto,
       user: req.user as User,
     });
