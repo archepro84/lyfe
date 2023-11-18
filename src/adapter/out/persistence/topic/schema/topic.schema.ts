@@ -7,6 +7,7 @@ import { Document } from 'mongoose';
 import { GeometryEntity } from '@adapter/out/persistence/user/schema/geometry.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { VoteEntity } from '@adapter/out/persistence/topic/schema/vote.schema';
+import { TopicUserEntity } from '@adapter/out/persistence/topic/schema/topic-user.schema';
 
 export class TopicEntity extends Document {
   _id?: string;
@@ -39,10 +40,10 @@ export class TopicEntity extends Document {
 
   @ApiProperty({
     required: true,
-    type: () => UserEntity,
-    description: '게시글 테마',
+    type: () => TopicUserEntity,
+    description: '게시글 작성자정보',
   })
-  user: UserEntity;
+  user: TopicUserEntity;
 
   @ApiProperty({
     required: true,
@@ -95,7 +96,7 @@ export class TopicMongoSchema {
   theme: Theme;
 
   @Prop({ required: true })
-  user: UserEntity;
+  user: TopicUserEntity;
 
   @Prop()
   images?: ImageEntity[];

@@ -22,6 +22,10 @@ export class CreateTopicService implements CreateTopicUsecase {
         command.images.length > 0
           ? command.images.map((image) => new Image(image))
           : undefined,
+      user: {
+        id: command.user.id,
+        nickname: command.user.getNickname(),
+      },
       geometry: command.geometry
         ? new Geometry({
             ...command.geometry,

@@ -1,9 +1,9 @@
-import { User } from '@domain/user/user';
 import { Geometry } from '@domain/user/geometry';
 import { Image } from '@domain/topic/image';
 import { Vote } from '@domain/topic/vote/vote';
 import { TooManyImageException } from '@domain/topic/exception/too-many-image.exception';
 import { Domain } from '@domain/domain';
+import { TopicUser } from '@domain/topic/topic-user';
 
 const MAX_IMAGE_COUNT = 10;
 
@@ -20,7 +20,7 @@ export type TopicRequiredProps = Readonly<
     id: string;
     title: string;
     content: string;
-    user: User;
+    user: TopicUser;
     theme: Theme;
   }>
 >;
@@ -49,7 +49,7 @@ export class Topic extends Domain {
   readonly title: string;
   readonly content: string;
   readonly theme: Theme;
-  readonly user: User;
+  readonly user: TopicUser;
 
   readonly images?: Image[];
   readonly geometry?: Geometry;

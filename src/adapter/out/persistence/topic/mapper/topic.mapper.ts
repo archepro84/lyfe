@@ -4,13 +4,12 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { TopicEntity } from '@adapter/out/persistence/topic/schema/topic.schema';
 import { Topic, TopicFactory } from '@domain/topic/topic';
-import { UserFactory } from '@domain/user/user';
-import { UserInfoFactory } from '@domain/user/user-info';
 import { RegionFactory } from '@domain/region/region';
 import { Geometry } from '@domain/user/geometry';
 import { Image } from '@domain/topic/image';
 import { VoteFactory } from '@domain/topic/vote/vote';
 import { VoteItem } from '@domain/topic/vote/vote-item';
+import { TopicUser } from '@domain/topic/topic-user';
 
 @Injectable()
 export class TopicMapper implements MapperPort<TopicEntity, Topic> {
@@ -21,18 +20,6 @@ export class TopicMapper implements MapperPort<TopicEntity, Topic> {
   // FIXME: Entity to Mapper가 하위 Mapper를 참조하도록 수정 필요.
   public toDomain(topicEntity: TopicEntity): Topic {
     if (!topicEntity) return null;
-
-    const userInfo = UserInfoFactory.newInstance({
-      ...topicEntity.user.userInfo,
-      region: RegionFactory.newInstance(topicEntity.user.userInfo.region),
-    });
-
-    const user = UserFactory.newInstance({
-      ...topicEntity.user,
-      id: topicEntity!._id,
-      userInfo,
-    });
-
     const vote = VoteFactory.newInstance({
       ...topicEntity.vote,
       id: topicEntity.vote._id ?? null,
@@ -49,7 +36,10 @@ export class TopicMapper implements MapperPort<TopicEntity, Topic> {
       id: topicEntity._id,
       title: topicEntity.title,
       content: topicEntity.content,
-      user: user,
+      user: new TopicUser({
+        id: topicEntity.user._id,
+        nickname: topicEntity.user.nickname,
+      }),
       images: topicEntity.images.map((image) => new Image(image)),
       geometry: new Geometry({
         ...topicEntity.geometry,
@@ -78,7 +68,10 @@ export class TopicMapper implements MapperPort<TopicEntity, Topic> {
       title: topic.title,
       content: topic.content,
       theme: topic.theme,
-      user: topic.user,
+      user: {
+        _id: topic.user.id,
+        nickname: topic.user.nickname,
+      },
       images: topic.images,
       geometry: topic.geometry,
       vote: topic.vote,
