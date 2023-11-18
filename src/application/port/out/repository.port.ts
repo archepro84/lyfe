@@ -39,5 +39,7 @@ export interface RepositoryPort<DomainType extends Domain> {
 
   delete(domain: DomainType): Promise<boolean>;
 
+  softDelete(domain: DomainType): Promise<boolean>;
+
   save(domain: DomainType): Promise<void>;
 }

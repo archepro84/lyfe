@@ -24,18 +24,37 @@ export abstract class Repository<
   }
 
   async findById(id: any): Promise<DomainType> {
-    return this.mapper.toDomain(await this.model.findById(id).exec());
+    return this.mapper.toDomain(
+      await this.model
+        .findOne({
+          _id: id,
+          deletedAt: { $exists: false },
+        })
+        .session(this.getSession())
+        .exec(),
+    );
   }
 
   async findMany(): Promise<DomainType[]> {
-    return this.mapper.toDomains(await this.model.find({}).limit(10).exec());
+    return this.mapper.toDomains(
+      await this.model
+        .find({ deletedAt: { $exists: false } })
+        .limit(10)
+        .session(this.getSession())
+        .exec(),
+    );
   }
 
   async findManyPaginated(
     params: PaginatedQueryParams,
   ): Promise<Paginated<DomainType>> {
     const domains = this.mapper.toDomains(
-      await this.model.find({}).skip(params.page).limit(params.limit).exec(),
+      await this.model
+        .find({ deletedAt: { $exists: false } })
+        .skip(params.page)
+        .limit(params.limit)
+        .session(this.getSession())
+        .exec(),
     );
 
     return new Paginated({
@@ -51,8 +70,18 @@ export abstract class Repository<
   }
 
   async delete(DomainType: DomainType): Promise<boolean> {
-    const result = await this.model.deleteOne({ _id: DomainType.id });
+    const result = await this.model
+      .deleteOne({ _id: DomainType.id })
+      .session(this.getSession());
     return result.deletedCount > 0;
+  }
+
+  async softDelete(DomainType: DomainType): Promise<boolean> {
+    const result = await this.model
+      .updateOne({ _id: DomainType.id }, { deletedAt: new Date() })
+      .session(this.getSession());
+
+    return result.modifiedCount > 0;
   }
 
   async save(DomainType: DomainType): Promise<void> {
