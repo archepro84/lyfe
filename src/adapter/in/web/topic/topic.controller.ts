@@ -5,6 +5,7 @@ import {
   Request,
   Post,
   Inject,
+  Put,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@common/guard/jwt-auth.guard';
@@ -15,6 +16,11 @@ import {
   CreateTopicUsecase,
 } from '@application/port/in/topic/create-topic.usecase';
 import { User } from '@domain/user/user';
+import { UpdateTopicDto } from '@adapter/in/web/topic/dto/update-topic.dto';
+import {
+  UPDATE_TOPIC_USECASE,
+  UpdateTopicUsecase,
+} from '@application/port/in/topic/update-topic.usecase';
 
 @Controller('topic')
 @ApiTags('topic')
@@ -23,6 +29,8 @@ export class TopicController {
   constructor(
     @Inject(CREATE_TOPIC_USECASE)
     private readonly createTopicUsecase: CreateTopicUsecase,
+    @Inject(UPDATE_TOPIC_USECASE)
+    private readonly updateTopicUsecase: UpdateTopicUsecase,
   ) {}
 
   @Post()
@@ -36,6 +44,24 @@ export class TopicController {
   })
   async createTopic(@Request() req: any, @Body() dto: CreateTopicDto) {
     await this.createTopicUsecase.exec({
+      ...dto,
+      user: req.user as User,
+    });
+
+    return 'success';
+  }
+
+  @Put()
+  @UseGuards(JwtAuthGuard)
+  @AccessTokenHeader()
+  @ApiOperation({ summary: 'Update Topic' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return success',
+    type: String,
+  })
+  async updateTopic(@Request() req: any, @Body() dto: UpdateTopicDto) {
+    await this.updateTopicUsecase.exec({
       ...dto,
       user: req.user as User,
     });
