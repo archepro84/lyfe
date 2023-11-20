@@ -7,6 +7,8 @@ import { UPDATE_TOPIC_USECASE } from '@application/port/in/topic/update-topic.us
 import { DELETE_TOPIC_USECASE } from '@application/port/in/topic/delete-topic.usecase';
 import { UpdateTopicService } from '@application/service/topic/update-topic.service';
 import { DeleteTopicService } from '@application/service/topic/delete-topic.service';
+import { FIND_ALL_TOPIC_USECASE } from '@application/port/in/topic/find-all-topic.usecase';
+import { FindAllTopicService } from '@application/service/topic/find-all-topic.service';
 
 @Module({
   imports: [RepositoriesModule],
@@ -34,11 +36,18 @@ export class TopicServiceProxyModule {
           useFactory: (topicRepository: TopicMongoRepository) =>
             new DeleteTopicService(topicRepository),
         },
+        {
+          inject: [TopicMongoRepository],
+          provide: FIND_ALL_TOPIC_USECASE,
+          useFactory: (topicRepository: TopicMongoRepository) =>
+            new FindAllTopicService(topicRepository),
+        },
       ],
       exports: [
         CREATE_TOPIC_USECASE,
         UPDATE_TOPIC_USECASE,
         DELETE_TOPIC_USECASE,
+        FIND_ALL_TOPIC_USECASE,
       ],
     };
   }

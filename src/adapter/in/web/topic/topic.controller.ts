@@ -7,6 +7,9 @@ import {
   Inject,
   Put,
   Delete,
+  Get,
+  Param,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@common/guard/jwt-auth.guard';
@@ -27,6 +30,11 @@ import {
   DELETE_TOPIC_USECASE,
   DeleteTopicUsecase,
 } from '@application/port/in/topic/delete-topic.usecase';
+import { PaginatedQueryParams } from '@application/port/out/repository.port';
+import {
+  FIND_ALL_TOPIC_USECASE,
+  FindAllTopicUsecase,
+} from '@application/port/in/topic/find-all-topic.usecase';
 
 @Controller('topic')
 @ApiTags('topic')
@@ -39,6 +47,8 @@ export class TopicController {
     private readonly updateTopicUsecase: UpdateTopicUsecase,
     @Inject(DELETE_TOPIC_USECASE)
     private readonly deleteTopicUsecase: DeleteTopicUsecase,
+    @Inject(FIND_ALL_TOPIC_USECASE)
+    private readonly findAllTopicUsecase: FindAllTopicUsecase,
   ) {}
 
   @Post()
@@ -93,5 +103,16 @@ export class TopicController {
     });
 
     return 'success';
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Find All Topic' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return success',
+    type: String,
+  })
+  async findAllTopic(@Query() query: PaginatedQueryParams) {
+    return await this.findAllTopicUsecase.exec(query);
   }
 }
