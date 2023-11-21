@@ -9,7 +9,6 @@ export enum VoteType {
 
 export type VoteRequiredProps = Readonly<
   Required<{
-    id: string;
     voteItem: VoteItem[];
     voteType: VoteType;
   }>
@@ -17,6 +16,7 @@ export type VoteRequiredProps = Readonly<
 
 export type VoteOptionalProps = Readonly<
   Partial<{
+    id: string;
     createdAt: Date;
     updatedAt: Date;
   }>
@@ -25,7 +25,7 @@ export type VoteOptionalProps = Readonly<
 export type VoteProps = VoteRequiredProps & VoteOptionalProps;
 
 export class Vote extends Domain {
-  public readonly id: string;
+  public readonly id?: string;
   public readonly voteItem: VoteItem[];
   public readonly voteType: VoteType;
   public readonly createdAt: Date = new Date();

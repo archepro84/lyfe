@@ -17,7 +17,6 @@ export class CreateTopicService implements CreateTopicUsecase {
     // FIXME: Topic 비즈니스 로직이 난잡하므로, 수정이필요함.
     const topic = TopicFactory.newInstance({
       ...command,
-      id: null,
       images:
         command.images.length > 0
           ? command.images.map((image) => new Image(image))
@@ -35,9 +34,8 @@ export class CreateTopicService implements CreateTopicUsecase {
       vote: command.vote
         ? VoteFactory.newInstance({
             ...command.vote,
-            id: null,
             voteItem: command.vote.voteItem.map(
-              (voteItem) => new VoteItem({ ...voteItem, id: null }),
+              (voteItem) => new VoteItem({ ...voteItem }),
             ),
           })
         : undefined,

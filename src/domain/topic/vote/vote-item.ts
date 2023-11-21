@@ -1,13 +1,20 @@
-export type VoteItemProps = Readonly<
+export type VoteItemRequireProp = Readonly<
   Required<{
-    id: string;
     title: string;
     index: number;
   }>
 >;
 
+export type VoteItemOptionalProps = Readonly<
+  Partial<{
+    id: string;
+  }>
+>;
+
+export type VoteItemProps = VoteItemRequireProp & VoteItemOptionalProps;
+
 export class VoteItem {
-  public readonly id: string;
+  public readonly id?: string;
   public readonly title: string;
   public readonly index: number;
 

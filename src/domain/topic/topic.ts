@@ -17,7 +17,6 @@ export enum Theme {
 
 export type TopicRequiredProps = Readonly<
   Required<{
-    id: string;
     title: string;
     content: string;
     user: TopicUser;
@@ -27,6 +26,7 @@ export type TopicRequiredProps = Readonly<
 
 export type TopicOptionalProps = Readonly<
   Partial<{
+    id: string;
     images: Image[];
     geometry: Geometry;
     vote: Vote;
@@ -42,7 +42,7 @@ export type TopicOptionalProps = Readonly<
 export type TopicProps = TopicRequiredProps & TopicOptionalProps;
 
 export class Topic extends Domain {
-  readonly id: string;
+  readonly id?: string;
   readonly createdAt: Date = new Date();
   readonly updatedAt: Date = new Date();
 
