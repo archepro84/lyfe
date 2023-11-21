@@ -2,8 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum } from 'class-validator';
 import { Document } from 'mongoose';
 import { VoteType } from '@domain/topic/vote/vote';
-import { Prop, Schema } from '@nestjs/mongoose';
-import { VoteItemEntity } from '@adapter/out/persistence/topic/schema/vote-item.schema';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import {
+  VoteItemEntity,
+  VoteItemMongoSchema,
+  VoteItemSchema,
+} from '@adapter/out/persistence/topic/schema/vote-item.schema';
 
 export class VoteEntity extends Document {
   _id?: string;
@@ -29,10 +33,10 @@ export class VoteEntity extends Document {
   updatedAt?: Date;
 }
 
-@Schema({ collection: 'topics', _id: false })
+@Schema({ _id: true })
 export class VoteMongoSchema {
-  @Prop({ required: true })
-  voteItem: VoteItemEntity[];
+  @Prop({ required: true, _id: true, type: [VoteItemSchema] })
+  voteItem: VoteItemMongoSchema[];
 
   @Prop({ required: true })
   voteType: VoteType;
@@ -43,3 +47,5 @@ export class VoteMongoSchema {
   @Prop({ required: true, default: Date.now })
   updatedAt: Date;
 }
+
+export const VoteSchema = SchemaFactory.createForClass(VoteMongoSchema);

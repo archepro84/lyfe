@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString } from 'class-validator';
 import { Document } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export class VoteItemEntity extends Document {
   _id?: string;
@@ -23,3 +24,14 @@ export class VoteItemEntity extends Document {
   @IsNumber()
   index: number;
 }
+
+@Schema({ _id: true })
+export class VoteItemMongoSchema {
+  @Prop({ required: true })
+  title: string;
+
+  @Prop({ required: true })
+  index: number;
+}
+
+export const VoteItemSchema = SchemaFactory.createForClass(VoteItemMongoSchema);

@@ -1,12 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
 import { Theme } from '@domain/topic/topic';
-import { UserEntity } from '@adapter/out/persistence/user/schema/user.schema';
 import { ImageEntity } from '@adapter/out/persistence/topic/schema/image.schema';
 import { Document } from 'mongoose';
 import { GeometryEntity } from '@adapter/out/persistence/user/schema/geometry.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { VoteEntity } from '@adapter/out/persistence/topic/schema/vote.schema';
+import {
+  VoteEntity,
+  VoteMongoSchema,
+  VoteSchema,
+} from '@adapter/out/persistence/topic/schema/vote.schema';
 import { TopicUserEntity } from '@adapter/out/persistence/topic/schema/topic-user.schema';
 
 export class TopicEntity extends Document {
@@ -104,8 +107,8 @@ export class TopicMongoSchema {
   @Prop()
   geometry?: GeometryEntity;
 
-  @Prop()
-  vote?: VoteEntity;
+  @Prop({ type: VoteSchema, _id: true })
+  vote?: VoteMongoSchema;
 
   @Prop({ required: true, default: Date.now })
   createdAt: Date;
