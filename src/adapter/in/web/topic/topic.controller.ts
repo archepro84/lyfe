@@ -8,7 +8,6 @@ import {
   Put,
   Delete,
   Get,
-  Param,
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -35,6 +34,7 @@ import {
   FIND_ALL_TOPIC_USECASE,
   FindAllTopicUsecase,
 } from '@application/port/in/topic/find-all-topic.usecase';
+import { PaginatedTopicPresenter } from '@adapter/in/web/topic/presenter/topic.presenter';
 
 @Controller('topic')
 @ApiTags('topic')
@@ -110,9 +110,11 @@ export class TopicController {
   @ApiResponse({
     status: 200,
     description: 'Return success',
-    type: String,
+    type: PaginatedTopicPresenter,
   })
-  async findAllTopic(@Query() query: PaginatedQueryParams) {
+  async findAllTopic(
+    @Query() query: PaginatedQueryParams,
+  ): Promise<PaginatedTopicPresenter> {
     return await this.findAllTopicUsecase.exec(query);
   }
 }
