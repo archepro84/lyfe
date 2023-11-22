@@ -27,25 +27,29 @@ export class TopicMapper implements MapperPort<TopicEntity, Topic> {
 
     if (topicEntity.vote)
       vote = VoteFactory.newInstance({
-        ...topicEntity.vote,
-        id: topicEntity.vote?._id ?? null,
-        voteItem: topicEntity.vote?.voteItem?.map(
+        id: topicEntity.vote._id,
+        voteType: topicEntity.vote.voteType,
+        createdAt: topicEntity.vote.createdAt,
+        updatedAt: topicEntity.vote.updatedAt,
+        voteItem: topicEntity.vote.voteItem.map(
           (voteItem) =>
             new VoteItem({
-              ...voteItem,
-              id: voteItem._id ?? null,
+              id: voteItem._id,
+              title: voteItem.title,
+              index: voteItem.index,
             }),
         ),
       });
     if (topicEntity.geometry)
       geometry = new Geometry({
-        ...topicEntity.geometry,
+        latitude: topicEntity.geometry.latitude,
+        longitude: topicEntity.geometry.longitude,
         region: RegionFactory.newInstance(topicEntity.geometry.region),
       });
     if (topicEntity.images)
       images = topicEntity.images.map((image) => new Image(image));
 
-    const topic = TopicFactory.newInstance({
+    return TopicFactory.newInstance({
       id: topicEntity._id,
       title: topicEntity.title,
       content: topicEntity.content,
@@ -64,8 +68,6 @@ export class TopicMapper implements MapperPort<TopicEntity, Topic> {
       updatedAt: topicEntity.updatedAt,
       deletedAt: topicEntity.deletedAt,
     });
-
-    return topic;
   }
 
   public toDomains(userEntities: TopicEntity[]): Topic[] {
