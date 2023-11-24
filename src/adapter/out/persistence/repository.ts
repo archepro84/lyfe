@@ -1,5 +1,8 @@
 import { ClientSession, Document, Model } from 'mongoose';
 import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  MAX_LIMIT,
   Paginated,
   PaginatedQueryParams,
   RepositoryPort,
@@ -48,11 +51,15 @@ export abstract class Repository<
   async findManyPaginated(
     params: PaginatedQueryParams,
   ): Promise<Paginated<DomainType>> {
+    const page = params.page ?? DEFAULT_PAGE;
+    const limit =
+      !params.limit || params.limit > MAX_LIMIT ? DEFAULT_LIMIT : params.limit;
+
     const domains = this.mapper.toDomains(
       await this.model
         .find({ deletedAt: { $exists: false } })
-        .skip(params.page)
-        .limit(params.limit)
+        .skip(page)
+        .limit(limit)
         .session(this.getSession())
         .exec(),
     );
@@ -60,8 +67,8 @@ export abstract class Repository<
     return new Paginated({
       data: domains,
       count: domains.length,
-      limit: params.limit,
-      page: params.page,
+      limit: limit,
+      page: page,
     });
   }
 
