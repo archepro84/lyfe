@@ -1,10 +1,8 @@
 import { Domain } from '@domain/domain';
 
 export type PaginatedQueryParams = {
-  page: number;
-  limit: number;
-  offset: number;
-  count: number;
+  page?: number;
+  limit?: number;
 };
 
 export class Paginated<T> {
