@@ -35,6 +35,7 @@ import {
   FindAllTopicUsecase,
 } from '@application/port/in/topic/find-all-topic.usecase';
 import { PaginatedTopicPresenter } from '@adapter/in/web/topic/presenter/topic.presenter';
+import { PaginatedDto } from '@adapter/common/swagger/dto/paginated.dto';
 
 @Controller('topic')
 @ApiTags('topic')
@@ -113,7 +114,7 @@ export class TopicController {
     type: PaginatedTopicPresenter,
   })
   async findAllTopic(
-    @Query() query: PaginatedQueryParams,
+    @Query() query: PaginatedDto,
   ): Promise<PaginatedTopicPresenter> {
     return await this.findAllTopicUsecase.exec(query);
   }
