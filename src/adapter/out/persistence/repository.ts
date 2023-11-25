@@ -58,7 +58,7 @@ export abstract class Repository<
     const domains = this.mapper.toDomains(
       await this.model
         .find({ deletedAt: { $exists: false } })
-        .skip(page)
+        .skip((page - 1) * limit)
         .limit(limit)
         .session(this.getSession())
         .exec(),
