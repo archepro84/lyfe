@@ -120,4 +120,6 @@ export class TopicMongoSchema {
   deletedAt?: Date;
 }
 
-export const TopicSchema = SchemaFactory.createForClass(TopicMongoSchema);
+export const TopicSchema = SchemaFactory.createForClass(TopicMongoSchema).index(
+  { title: 'text', content: 'text' },
+);
