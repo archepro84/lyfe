@@ -29,13 +29,17 @@ import {
   DELETE_TOPIC_USECASE,
   DeleteTopicUsecase,
 } from '@application/port/in/topic/delete-topic.usecase';
-import { PaginatedQueryParams } from '@application/port/out/repository.port';
 import {
   FIND_ALL_TOPIC_USECASE,
   FindAllTopicUsecase,
 } from '@application/port/in/topic/find-all-topic.usecase';
 import { PaginatedTopicPresenter } from '@adapter/in/web/topic/presenter/topic.presenter';
 import { PaginatedDto } from '@adapter/common/swagger/dto/paginated.dto';
+import { SearchTopicDto } from '@adapter/in/web/topic/dto/search-topic.dto';
+import {
+  SEARCH_TOPIC_USECASE,
+  SearchTopicUsecase,
+} from '@application/port/in/topic/search-topic.usecase';
 
 @Controller('topic')
 @ApiTags('topic')
@@ -50,6 +54,8 @@ export class TopicController {
     private readonly deleteTopicUsecase: DeleteTopicUsecase,
     @Inject(FIND_ALL_TOPIC_USECASE)
     private readonly findAllTopicUsecase: FindAllTopicUsecase,
+    @Inject(SEARCH_TOPIC_USECASE)
+    private readonly searchTopicUsecase: SearchTopicUsecase,
   ) {}
 
   @Post()
@@ -117,5 +123,18 @@ export class TopicController {
     @Query() query: PaginatedDto,
   ): Promise<PaginatedTopicPresenter> {
     return await this.findAllTopicUsecase.exec(query);
+  }
+
+  @Get('/search')
+  @ApiOperation({ summary: 'Search Topic' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return success',
+    type: PaginatedTopicPresenter,
+  })
+  async searchTopic(
+    @Query() query: SearchTopicDto,
+  ): Promise<PaginatedTopicPresenter> {
+    return await this.searchTopicUsecase.exec(query);
   }
 }
