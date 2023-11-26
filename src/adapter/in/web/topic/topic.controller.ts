@@ -9,6 +9,7 @@ import {
   Delete,
   Get,
   Query,
+  Param,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@common/guard/jwt-auth.guard';
@@ -33,13 +34,22 @@ import {
   FIND_ALL_TOPIC_USECASE,
   FindAllTopicUsecase,
 } from '@application/port/in/topic/find-all-topic.usecase';
-import { PaginatedTopicPresenter } from '@adapter/in/web/topic/presenter/topic.presenter';
+import {
+  PaginatedTopicPresenter,
+  TopicPresenter,
+} from '@adapter/in/web/topic/presenter/topic.presenter';
 import { PaginatedDto } from '@adapter/common/swagger/dto/paginated.dto';
 import { SearchTopicDto } from '@adapter/in/web/topic/dto/search-topic.dto';
 import {
   SEARCH_TOPIC_USECASE,
   SearchTopicUsecase,
 } from '@application/port/in/topic/search-topic.usecase';
+import { FindByIdDto } from '@adapter/common/swagger/dto/find-by-id.dto';
+import {
+  FIND_TOPIC_USECASE,
+  FindTopicUsecase,
+} from '@application/port/in/topic/find-topic.usecase';
+import { Topic } from '@domain/topic/topic';
 
 @Controller('topic')
 @ApiTags('topic')
@@ -52,6 +62,8 @@ export class TopicController {
     private readonly updateTopicUsecase: UpdateTopicUsecase,
     @Inject(DELETE_TOPIC_USECASE)
     private readonly deleteTopicUsecase: DeleteTopicUsecase,
+    @Inject(FIND_TOPIC_USECASE)
+    private readonly findTopicUsecase: FindTopicUsecase,
     @Inject(FIND_ALL_TOPIC_USECASE)
     private readonly findAllTopicUsecase: FindAllTopicUsecase,
     @Inject(SEARCH_TOPIC_USECASE)
@@ -136,5 +148,16 @@ export class TopicController {
     @Query() query: SearchTopicDto,
   ): Promise<PaginatedTopicPresenter> {
     return await this.searchTopicUsecase.exec(query);
+  }
+
+  @Get('/:id')
+  @ApiOperation({ summary: 'Find Topic By Id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return success',
+    type: TopicPresenter,
+  })
+  async findTopic(@Param() params: FindByIdDto): Promise<TopicPresenter> {
+    return await this.findTopicUsecase.exec(params);
   }
 }

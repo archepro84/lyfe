@@ -11,6 +11,8 @@ import { FIND_ALL_TOPIC_USECASE } from '@application/port/in/topic/find-all-topi
 import { FindAllTopicService } from '@application/service/topic/find-all-topic.service';
 import { SEARCH_TOPIC_USECASE } from '@application/port/in/topic/search-topic.usecase';
 import { SearchTopicService } from '@application/service/topic/search-topic.service';
+import { FIND_TOPIC_USECASE } from '@application/port/in/topic/find-topic.usecase';
+import { FindTopicService } from '@application/service/topic/find-topic.service';
 
 @Module({
   imports: [RepositoriesModule],
@@ -40,6 +42,12 @@ export class TopicServiceProxyModule {
         },
         {
           inject: [TopicMongoRepository],
+          provide: FIND_TOPIC_USECASE,
+          useFactory: (topicRepository: TopicMongoRepository) =>
+            new FindTopicService(topicRepository),
+        },
+        {
+          inject: [TopicMongoRepository],
           provide: FIND_ALL_TOPIC_USECASE,
           useFactory: (topicRepository: TopicMongoRepository) =>
             new FindAllTopicService(topicRepository),
@@ -55,6 +63,7 @@ export class TopicServiceProxyModule {
         CREATE_TOPIC_USECASE,
         UPDATE_TOPIC_USECASE,
         DELETE_TOPIC_USECASE,
+        FIND_TOPIC_USECASE,
         FIND_ALL_TOPIC_USECASE,
         SEARCH_TOPIC_USECASE,
       ],
