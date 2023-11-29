@@ -22,3 +22,9 @@ export class VoteItem {
     Object.assign(this, props);
   }
 }
+
+export class VoteItemFactory {
+  public static newInstance(props: VoteItemProps): VoteItem {
+    return new VoteItem(props);
+  }
+}
