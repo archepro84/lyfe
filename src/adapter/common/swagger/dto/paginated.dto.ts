@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class PaginatedDto {
@@ -11,6 +11,14 @@ export class PaginatedDto {
   @IsNumber()
   @IsOptional()
   readonly page?: number;
+
+  @ApiProperty({
+    example: '649ce793f331996dcc3cddab',
+    description: '커서 위치',
+  })
+  @IsString()
+  @IsOptional()
+  readonly cursor?: string;
 
   @ApiProperty({
     example: 10,

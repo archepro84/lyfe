@@ -5,6 +5,7 @@ export const DEFAULT_LIMIT = 10;
 export const MAX_LIMIT = 50;
 
 export type PaginatedQueryParams = {
+  cursor?: string;
   page?: number;
   limit?: number;
 };
@@ -12,13 +13,15 @@ export type PaginatedQueryParams = {
 export class Paginated<T> {
   readonly count: number;
   readonly limit: number;
-  readonly page: number;
+  readonly page?: number;
+  readonly cursor?: string;
   readonly data: readonly T[];
 
   constructor(props: Paginated<T>) {
     this.count = props.count;
     this.limit = props.limit;
     this.page = props.page;
+    this.cursor = props.cursor;
     this.data = props.data;
   }
 }
@@ -34,6 +37,10 @@ export interface RepositoryPort<DomainType extends Domain> {
   findMany(): Promise<DomainType[]>;
 
   findManyPaginated(
+    params: PaginatedQueryParams,
+  ): Promise<Paginated<DomainType>>;
+
+  findCursorPaginated(
     params: PaginatedQueryParams,
   ): Promise<Paginated<DomainType>>;
 

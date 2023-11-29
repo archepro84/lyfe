@@ -53,7 +53,7 @@ export abstract class Repository<
   ): Promise<Paginated<DomainType>> {
     const page = params.page ?? DEFAULT_PAGE;
     const limit =
-      !params.limit || params.limit > MAX_LIMIT ? DEFAULT_LIMIT : params.limit;
+      params.limit && params.limit <= MAX_LIMIT ? params.limit : DEFAULT_LIMIT;
 
     const domains = this.mapper.toDomains(
       await this.model
@@ -69,6 +69,27 @@ export abstract class Repository<
       count: domains.length,
       limit: limit,
       page: page,
+    });
+  }
+
+  async findCursorPaginated(
+    params: PaginatedQueryParams,
+  ): Promise<Paginated<DomainType>> {
+    const limit =
+      params.limit && params.limit <= MAX_LIMIT ? params.limit : DEFAULT_LIMIT;
+
+    const entities = await this.model
+      .find({ _id: { $gt: params.cursor }, deletedAt: { $exists: false } })
+      .limit(limit)
+      .session(this.getSession())
+      .exec();
+
+    return new Paginated({
+      data: this.mapper.toDomains(entities),
+      count: entities.length,
+      limit: limit,
+      cursor:
+        entities.length === limit ? entities[entities.length - 1]._id : null,
     });
   }
 

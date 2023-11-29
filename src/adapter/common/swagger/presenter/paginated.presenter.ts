@@ -18,7 +18,13 @@ export class PaginatedPresenter<T> extends Paginated<T> {
     example: 1,
     description: '현재 페이지',
   })
-  readonly page: number;
+  readonly page?: number;
+
+  @ApiProperty({
+    example: '649ce793f331996dcc3cddab',
+    description: '커서 위치',
+  })
+  readonly cursor?: string;
 
   readonly data: readonly T[];
 }
