@@ -7,17 +7,17 @@ import { Topic, TopicFactory } from '@domain/topic/topic';
 import { RegionFactory } from '@domain/region/region';
 import { Geometry } from '@domain/user/geometry';
 import { Image } from '@domain/topic/image';
-import { Vote, VoteFactory } from '@domain/topic/vote/vote';
-import { VoteItem } from '@domain/topic/vote/vote-item';
+import { Vote } from '@domain/topic/vote/vote';
 import { TopicUser } from '@domain/topic/topic-user';
+import { VoteMapper } from '@adapter/out/persistence/topic/mapper/vote.mapper';
 
 @Injectable()
 export class TopicMapper implements MapperPort<TopicEntity, Topic> {
   constructor(
     @InjectModel(Topic.name) private readonly model: Model<TopicEntity>,
+    private readonly voteMapper: VoteMapper,
   ) {}
 
-  // FIXME: Entity to Mapper가 하위 Mapper를 참조하도록 수정 필요.
   public toDomain(topicEntity: TopicEntity): Topic {
     if (!topicEntity) return null;
 
@@ -25,21 +25,7 @@ export class TopicMapper implements MapperPort<TopicEntity, Topic> {
     let geometry: Geometry;
     let images: Image[];
 
-    if (topicEntity.vote)
-      vote = VoteFactory.newInstance({
-        id: topicEntity.vote._id,
-        voteType: topicEntity.vote.voteType,
-        createdAt: topicEntity.vote.createdAt,
-        updatedAt: topicEntity.vote.updatedAt,
-        voteItem: topicEntity.vote.voteItem.map(
-          (voteItem) =>
-            new VoteItem({
-              id: voteItem._id,
-              title: voteItem.title,
-              index: voteItem.index,
-            }),
-        ),
-      });
+    if (topicEntity.vote) vote = this.voteMapper.toDomain(topicEntity.vote);
     if (topicEntity.geometry)
       geometry = new Geometry({
         latitude: topicEntity.geometry.latitude,
@@ -71,7 +57,7 @@ export class TopicMapper implements MapperPort<TopicEntity, Topic> {
   }
 
   public toDomains(userEntities: TopicEntity[]): Topic[] {
-    return userEntities.map((topicEntity) => this.toDomain(topicEntity));
+    return userEntities.map(this.toDomain);
   }
 
   public toPersistence(topic: Topic): TopicEntity {
