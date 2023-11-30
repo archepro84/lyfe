@@ -31,6 +31,9 @@ import { Topic } from '@domain/topic/topic';
 import { TopicSchema } from '@adapter/out/persistence/topic/schema/topic.schema';
 import { TopicMongoRepository } from '@adapter/out/persistence/topic/topic.mongo.repository';
 import { TopicMapper } from '@adapter/out/persistence/topic/mapper/topic.mapper';
+import { VoteMapper } from '@adapter/out/persistence/topic/mapper/vote.mapper';
+import { Vote } from '@domain/topic/vote/vote';
+import { VoteSchema } from '@adapter/out/persistence/topic/schema/vote.schema';
 
 @Module({
   imports: [
@@ -49,6 +52,7 @@ import { TopicMapper } from '@adapter/out/persistence/topic/mapper/topic.mapper'
       { name: Invitation.name, schema: InvitationSchema },
       { name: Region.name, schema: RegionSchema },
       { name: Topic.name, schema: TopicSchema },
+      { name: Vote.name, schema: VoteSchema },
     ]),
   ],
   providers: [
@@ -66,6 +70,7 @@ import { TopicMapper } from '@adapter/out/persistence/topic/mapper/topic.mapper'
     RegionMapper,
     RegionMongoRepository,
     TopicMapper,
+    VoteMapper,
     TopicMongoRepository,
   ],
   exports: [
