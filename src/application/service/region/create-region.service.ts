@@ -1,7 +1,7 @@
 import { CreateRegionUsecase } from '@application/port/in/region/create-region.usecase';
 import { RegionRepository } from '@application/port/out/region/region.repository';
 import { CreateRegionCommand } from '@application/port/in/region/region.command';
-import { Region } from '@domain/region/region';
+import { Region, RegionFactory } from '@domain/region/region';
 import { AlreadyExistsException } from '@common/exception/already-exists.exception';
 import { Transactional } from '@common/decorator/transactional.decorator';
 
@@ -15,11 +15,11 @@ export class CreateRegionService implements CreateRegionUsecase {
       throw new AlreadyExistsException('해당 지역이 이미 존재합니다.');
 
     await this.regionRepository.insert(
-      Region.newInstanceWithDetails(
-        createRegionCommand.city,
-        createRegionCommand.district,
-        createRegionCommand.neighborhood,
-      ),
+      RegionFactory.newInstance({
+        city: createRegionCommand.city,
+        district: createRegionCommand.district,
+        neighborhood: createRegionCommand.neighborhood,
+      }),
     );
 
     const newRegion = await this.regionRepository.find(createRegionCommand);

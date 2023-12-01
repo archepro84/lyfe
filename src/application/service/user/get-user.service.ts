@@ -6,6 +6,7 @@ export class GetUserService implements GetUserQuery {
   constructor(private readonly userRepository: UserRepository) {}
 
   getUserByPhoneNumber(phoneNumber: string): Promise<User> {
+    console.log(phoneNumber);
     return Promise.resolve(undefined);
   }
 }

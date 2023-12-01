@@ -5,6 +5,7 @@ import { UserServiceProxyModule } from '@adapter/in/web/service-proxy/user.servi
 import { AdminServiceProxyModule } from '@adapter/in/web/service-proxy/admin.service-proxy.module';
 import { InvitationServiceProxyModule } from '@adapter/in/web/service-proxy/invitation.service-proxy.module';
 import { RegionServiceProxyModule } from '@adapter/in/web/service-proxy/region.service-proxy.module';
+import { TopicServiceProxyModule } from '@adapter/in/web/service-proxy/topic.service-proxy.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { RegionServiceProxyModule } from '@adapter/in/web/service-proxy/region.s
     InvitationServiceProxyModule.register(),
     AdminServiceProxyModule.register(),
     RegionServiceProxyModule.register(),
+    TopicServiceProxyModule.register(),
   ],
   exports: [
     AuthServiceProxyModule.register(),
@@ -20,6 +22,7 @@ import { RegionServiceProxyModule } from '@adapter/in/web/service-proxy/region.s
     InvitationServiceProxyModule.register(),
     AdminServiceProxyModule.register(),
     RegionServiceProxyModule.register(),
+    TopicServiceProxyModule.register(),
   ],
 })
 export class ServiceProxyModule {}

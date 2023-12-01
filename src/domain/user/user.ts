@@ -1,9 +1,29 @@
-import { Geometry } from './geometry';
 import { AuthToken } from '@domain/user/auth-token';
 import { UserInfo } from '@domain/user/user-info';
 import { InvalidPhoneNumberFormatException } from '@domain/user/exception/invalid-phone-number-format.exception';
 import { Accountable } from '@domain/auth/accountable';
 import { Domain } from '@domain/domain';
+
+export type UserRequiredProps = Readonly<
+  Required<{
+    id: string;
+    nickname: string;
+    userInfo: UserInfo;
+    phoneNumber: string;
+  }>
+>;
+
+export type UserOptionalProps = Readonly<
+  Partial<{
+    verifiedAt: Date;
+    authToken: AuthToken;
+    deletedAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
+  }>
+>;
+
+export type UserProps = UserRequiredProps & UserOptionalProps;
 
 export class User extends Domain implements Accountable {
   readonly id?: string;
@@ -13,8 +33,6 @@ export class User extends Domain implements Accountable {
 
   private nickname: string;
   private userInfo: UserInfo;
-  private location: Geometry = null;
-  private locationUpdatedAt?: Date = new Date();
   private verifiedAt: Date = new Date();
   private authToken?: AuthToken;
   private deletedAt: Date = new Date();
@@ -59,22 +77,6 @@ export class User extends Domain implements Accountable {
     return this.userInfo;
   }
 
-  setLocation(location: Geometry) {
-    this.location = location;
-  }
-
-  getLocation(): Geometry {
-    return this.location;
-  }
-
-  setLocationUpdatedAt(locationUpdatedAt: Date) {
-    this.locationUpdatedAt = locationUpdatedAt;
-  }
-
-  getLocationUpdatedAt(): Date {
-    return this.locationUpdatedAt;
-  }
-
   setVerifiedAt(verifiedAt: Date) {
     this.verifiedAt = verifiedAt;
   }
@@ -105,5 +107,16 @@ export class User extends Domain implements Accountable {
     phoneNumber: string,
   ): User {
     return new User(null, nickname, userInfo, phoneNumber);
+  }
+}
+
+export class UserFactory {
+  static newInstance(props: UserProps): User {
+    return new User(
+      props.id ?? null,
+      props.nickname,
+      props.userInfo,
+      props.phoneNumber,
+    );
   }
 }

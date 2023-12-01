@@ -27,6 +27,13 @@ import { RegionMongoRepository } from '@adapter/out/persistence/region/region.mo
 import { Region } from '@domain/region/region';
 import { RegionSchema } from '@adapter/out/persistence/region/schema/region.schema';
 import { TransactionManager } from '@adapter/out/persistence/common/transaction/transaction.manager';
+import { Topic } from '@domain/topic/topic';
+import { TopicSchema } from '@adapter/out/persistence/topic/schema/topic.schema';
+import { TopicMongoRepository } from '@adapter/out/persistence/topic/topic.mongo.repository';
+import { TopicMapper } from '@adapter/out/persistence/topic/mapper/topic.mapper';
+import { VoteMapper } from '@adapter/out/persistence/topic/mapper/vote.mapper';
+import { Vote } from '@domain/topic/vote/vote';
+import { VoteSchema } from '@adapter/out/persistence/topic/schema/vote.schema';
 
 @Module({
   imports: [
@@ -44,6 +51,8 @@ import { TransactionManager } from '@adapter/out/persistence/common/transaction/
       { name: Admin.name, schema: AdminSchema },
       { name: Invitation.name, schema: InvitationSchema },
       { name: Region.name, schema: RegionSchema },
+      { name: Topic.name, schema: TopicSchema },
+      { name: Vote.name, schema: VoteSchema },
     ]),
   ],
   providers: [
@@ -60,6 +69,9 @@ import { TransactionManager } from '@adapter/out/persistence/common/transaction/
     AdminMongoRepository,
     RegionMapper,
     RegionMongoRepository,
+    TopicMapper,
+    VoteMapper,
+    TopicMongoRepository,
   ],
   exports: [
     UserMongoRepository,
@@ -68,6 +80,7 @@ import { TransactionManager } from '@adapter/out/persistence/common/transaction/
     InvitationMongoRepository,
     AdminMongoRepository,
     RegionMongoRepository,
+    TopicMongoRepository,
   ],
 })
 export class RepositoriesModule {}

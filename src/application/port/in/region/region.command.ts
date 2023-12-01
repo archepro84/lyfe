@@ -1,15 +1,21 @@
+export class RegionCommand {
+  public readonly city: string;
+  public readonly district: string;
+  public readonly neighborhood: string;
+}
+
 export class CreateRegionCommand {
   constructor(
-    readonly city: string,
-    readonly district: string,
-    readonly neighborhood: string,
+    public readonly city: string,
+    public readonly district: string,
+    public readonly neighborhood: string,
   ) {}
 }
 
 export class GetRegionExactLocationCommand {
   constructor(
-    readonly city: string,
-    readonly district: string,
-    readonly neighborhood: string,
+    public readonly city: string,
+    public readonly district: string,
+    public readonly neighborhood: string,
   ) {}
 }

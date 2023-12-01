@@ -1,0 +1,31 @@
+service: lyfe-sls
+frameworkVersion: '3' #
+
+plugins:
+  - serverless-plugin-typescript
+package:
+  individually: true
+  exclude:
+    - .git/**/*
+    - .github/**/*
+    - .build/**/*
+    - terraform/**/*
+    - test/**/*
+    - docker/**/*
+
+
+provider:
+  name: aws
+  region: ap-northeast-2
+  runtime: nodejs18.x
+
+functions:
+  lambda:
+    handler: src/lambda.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: '{proxy+}'

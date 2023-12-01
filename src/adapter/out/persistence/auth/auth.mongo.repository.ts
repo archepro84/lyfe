@@ -45,6 +45,7 @@ export class AuthMongoRepository
   }
 
   async updateAuth(authId: string, auth: Auth): Promise<Auth> {
+    console.log(authId, auth);
     return Promise.resolve(undefined);
   }
 

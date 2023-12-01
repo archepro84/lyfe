@@ -56,6 +56,7 @@ export class UserMongoRepository
   }
 
   async userSignIn(phoneNumber: string): Promise<User> {
+    console.log(phoneNumber);
     return Promise.resolve(undefined);
   }
 

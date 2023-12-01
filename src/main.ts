@@ -42,7 +42,11 @@ function initApplication(app: INestApplication): void {
   app.useGlobalFilters(new HttpExceptionFilter(new LoggerAdapter()));
 
   // Pipe
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true, // DTO 인스턴스로 자동 변환 활성화
+    }),
+  );
 }
 
 function initInterceptors(app: INestApplication): void {
