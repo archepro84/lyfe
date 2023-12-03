@@ -3,11 +3,11 @@ import { TopicFactory } from '@domain/topic/topic';
 import { Image } from '@domain/topic/image';
 import { Geometry } from '@domain/user/geometry';
 import { RegionFactory } from '@domain/region/region';
-import { Transactional } from '@common/decorator/transactional.decorator';
+import { Transactional } from '@infrastructure/common/decorator/transactional.decorator';
 import { UpdateTopicUsecase } from '@application/port/in/topic/update-topic.usecase';
 import { UpdateTopicCommand } from '@application/port/in/topic/command/update-topic.command';
-import { UnauthorizedException } from '@common/exception/unauthorized.exception';
-import { NotFoundException } from '@common/exception/not-found.exception';
+import { UnauthorizedException } from '@domain/common/exception/unauthorized.exception';
+import { NotFoundException } from '@domain/common/exception/not-found.exception';
 
 export class UpdateTopicService implements UpdateTopicUsecase {
   constructor(private readonly topicRepository: TopicRepository) {}

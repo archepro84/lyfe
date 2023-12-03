@@ -7,7 +7,7 @@ import { Geometry } from '@domain/user/geometry';
 import { RegionFactory } from '@domain/region/region';
 import { Vote, VoteFactory } from '@domain/topic/vote/vote';
 import { VoteItemFactory } from '@domain/topic/vote/vote-item';
-import { Transactional } from '@common/decorator/transactional.decorator';
+import { Transactional } from '@infrastructure/common/decorator/transactional.decorator';
 import { ImageCommand } from '@application/port/in/topic/command/image.command';
 import { TopicUser } from '@domain/topic/topic-user';
 import { User } from '@domain/user/user';

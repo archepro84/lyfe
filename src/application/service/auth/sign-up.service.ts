@@ -11,10 +11,10 @@ import { TokenUsecase } from '@application/port/in/auth/token/token.usecase';
 import { SignInUsecase } from '@application/port/in/auth/sign-in.usecase';
 import { User } from '@domain/user/user';
 import { InvitationRepository } from '@application/port/out/auth/invitation/invitation.repository';
-import { NotFoundException } from '@common/exception/not-found.exception';
+import { NotFoundException } from '@domain/common/exception/not-found.exception';
 import { Invitation, InvitationStatus } from '@domain/auth/invitation';
 import { Auth } from '@domain/auth/auth';
-import { Transactional } from '@common/decorator/transactional.decorator';
+import { Transactional } from '@infrastructure/common/decorator/transactional.decorator';
 
 export class SignUpService<T> implements SignUpUsecase {
   constructor(
