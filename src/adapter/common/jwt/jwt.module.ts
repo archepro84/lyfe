@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule as Jwt } from '@nestjs/jwt';
 import { EnvironmentConfigModule } from '@adapter/config/environment-config.module';
 import { EnvironmentConfigService } from '@adapter/config/environment-config.service';
-import { JwtAdapter } from '@adapter/security/jwt/jwt.adapter';
+import { JwtAdapter } from '@adapter/common/jwt/jwt.adapter';
 
 @Module({
   imports: [

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { BcryptPort } from '@application/port/security/bcrypt/bcrypt.port';
+import { BcryptPort } from '@application/port/common/bcrypt/bcrypt.port';
 
 @Injectable()
 export class BcryptAdapter implements BcryptPort {

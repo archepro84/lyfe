@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   JwtPort,
   JwtServicePayload,
-} from '@application/port/security/jwt/jwt.port';
+} from '@application/port/common/jwt/jwt.port';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()

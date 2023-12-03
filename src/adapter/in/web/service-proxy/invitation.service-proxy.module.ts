@@ -1,6 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { RepositoriesModule } from '@adapter/out/persistence/repositories.module';
-import { BcryptModule } from '@adapter/security/bcrypt/bcrypt.module';
+import { BcryptModule } from '@adapter/common/bcrypt/bcrypt.module';
 import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
 import { LoggerModule } from '@adapter/common/logger/logger.module';
 import { IssueInvitationService } from '@application/service/auth/invitation/issue-invitation.service';
