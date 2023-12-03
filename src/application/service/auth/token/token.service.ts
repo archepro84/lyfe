@@ -1,5 +1,5 @@
 import { TokenUsecase } from '@application/port/in/auth/token/token.usecase';
-import { JwtConfig } from '@domain/config/jwt.config';
+import { JwtConfig } from '@application/port/common/config/jwt.config';
 import {
   JwtPort,
   JwtServicePayload,

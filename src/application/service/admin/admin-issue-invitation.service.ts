@@ -3,7 +3,7 @@ import { AdminIssueInvitationUsecase } from '@application/port/in/admin/admin-is
 import { IssueInvitationUsecase } from '@application/port/in/auth/invitation/issue-invitation.usecase';
 import { AdminRepository } from '@application/port/out/admin/admin.repository';
 import { AdminIssueInvitationCommand } from '@application/port/in/admin/command/admin-issue-invitation.command';
-import { NotFoundException } from '@common/exception/not-found.exception';
+import { NotFoundException } from '@domain/common/exception/not-found.exception';
 
 export class AdminIssueInvitationService
   implements AdminIssueInvitationUsecase

@@ -7,13 +7,17 @@ import {
   ADMIN_TOKEN_USECASE,
   TokenUsecase,
 } from '@application/port/in/auth/token/token.usecase';
-import { EnvironmentConfigService } from '@common/config/environment-config.service';
+import { EnvironmentConfigService } from '@adapter/config/environment-config.service';
 import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
+import { AuthToken } from '@domain/user/auth-token';
 import { Admin } from '@domain/admin/admin';
-import { UnauthorizedException } from '@common/exception/unauthorized.exception';
+import { UnauthorizedException } from '@domain/common/exception/unauthorized.exception';
 
 @Injectable()
-export class JwtAdminStrategy extends PassportStrategy(Strategy, 'jwt-admin') {
+export class JwtAdminRefreshStrategy extends PassportStrategy(
+  Strategy,
+  'jwt-admin-refresh',
+) {
   constructor(
     @Inject(ADMIN_TOKEN_USECASE)
     private readonly tokenUsecase: TokenUsecase<Admin>,
@@ -23,17 +27,21 @@ export class JwtAdminStrategy extends PassportStrategy(Strategy, 'jwt-admin') {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
-          return request?.cookies?.AccessToken;
+          return request?.cookies?.RefreshToken;
         },
       ]),
-      secretOrKey: configService.getJwtSecret(),
+      secretOrKey: configService.getJwtRefreshSecretKey(),
       passReqToCallback: true,
     });
   }
 
   // FIXME: Admin Environment Key 추가하기
   async validate(request: Request, payload: JwtServicePayload) {
-    const admin = await this.tokenUsecase.getAccountable(payload);
+    const refreshToken = request.cookies?.RefreshToken;
+    const admin = await this.tokenUsecase.getAccountableIfRefreshTokenMatches(
+      AuthToken.newInstance(refreshToken),
+      payload,
+    );
 
     if (!admin) {
       this.logger.warn('JwtStrategy', 'Admin not found or hash not correct.');
@@ -41,6 +49,7 @@ export class JwtAdminStrategy extends PassportStrategy(Strategy, 'jwt-admin') {
         '관리자를 찾을 수 없거나, 인증에 실패하였습니다.',
       );
     }
+
     return admin;
   }
 }

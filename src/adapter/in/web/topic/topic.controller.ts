@@ -12,8 +12,8 @@ import {
   Param,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@common/guard/jwt-auth.guard';
-import { AccessTokenHeader } from '@common/decorator/access-token-header.decorator';
+import { JwtAuthGuard } from '@adapter/common/guard/jwt-auth.guard';
+import { AccessTokenHeader } from '@adapter/common/decorator/access-token-header.decorator';
 import { CreateTopicDto } from '@adapter/in/web/topic/dto/create-topic.dto';
 import {
   CREATE_TOPIC_USECASE,

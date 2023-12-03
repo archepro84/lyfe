@@ -1,4 +1,4 @@
-import { BaseException } from '@common/exception/base.exception';
+import { BaseException } from '@domain/common/exception/base.exception';
 
 export class VerificationCodeExpiredException extends BaseException {
   constructor(

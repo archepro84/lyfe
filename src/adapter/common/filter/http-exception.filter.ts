@@ -6,7 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { BaseException } from '@common/exception/base.exception';
+import { BaseException } from '@domain/common/exception/base.exception';
 import { LoggerPort } from '@application/port/common/logger/logger.port';
 
 @Catch()

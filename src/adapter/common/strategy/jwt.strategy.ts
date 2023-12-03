@@ -7,17 +7,13 @@ import {
   TOKEN_USECASE,
   TokenUsecase,
 } from '@application/port/in/auth/token/token.usecase';
-import { EnvironmentConfigService } from '@common/config/environment-config.service';
+import { EnvironmentConfigService } from '@adapter/config/environment-config.service';
 import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
-import { AuthToken } from '@domain/user/auth-token';
 import { User } from '@domain/user/user';
-import { UnauthorizedException } from '@common/exception/unauthorized.exception';
+import { UnauthorizedException } from '@domain/common/exception/unauthorized.exception';
 
 @Injectable()
-export class JwtRefreshStrategy extends PassportStrategy(
-  Strategy,
-  'jwt-refresh',
-) {
+export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     @Inject(TOKEN_USECASE)
     private readonly tokenUsecase: TokenUsecase<User>,
@@ -27,20 +23,16 @@ export class JwtRefreshStrategy extends PassportStrategy(
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
-          return request?.cookies?.RefreshToken;
+          return request?.cookies?.AccessToken;
         },
       ]),
-      secretOrKey: configService.getJwtRefreshSecretKey(),
+      secretOrKey: configService.getJwtSecret(),
       passReqToCallback: true,
     });
   }
 
   async validate(request: Request, payload: JwtServicePayload) {
-    const authToken = request.cookies?.RefreshToken;
-    const user = await this.tokenUsecase.getAccountableIfRefreshTokenMatches(
-      AuthToken.newInstance(authToken),
-      payload,
-    );
+    const user = await this.tokenUsecase.getAccountable(payload);
 
     if (!user) {
       this.logger.warn('JwtStrategy', 'User not found or hash not correct.');

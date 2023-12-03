@@ -4,7 +4,7 @@ import { Invitation } from '@domain/auth/invitation';
 import { InvitationRepository } from '@application/port/out/auth/invitation/invitation.repository';
 import { LoggerPort } from '@application/port/common/logger/logger.port';
 import { InvitationCodeCreationFailedException } from '@application/service/auth/invitation/exception/invitation-code-creation-failed.exception';
-import { NotFoundException } from '@common/exception/not-found.exception';
+import { NotFoundException } from '@domain/common/exception/not-found.exception';
 import { UserRepository } from '@application/port/out/user/user.repository';
 
 const MAX_LOOP_COUNT = 3;

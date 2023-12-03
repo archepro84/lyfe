@@ -1,9 +1,9 @@
 import { TopicRepository } from '@application/port/out/topic/topic.repository';
-import { Transactional } from '@common/decorator/transactional.decorator';
+import { Transactional } from '@adapter/common/decorator/transactional.decorator';
 import { DeleteTopicUsecase } from '@application/port/in/topic/delete-topic.usecase';
 import { DeleteTopicCommand } from '@application/port/in/topic/command/delete-topic.command';
-import { UnauthorizedException } from '@common/exception/unauthorized.exception';
-import { NotFoundException } from '@common/exception/not-found.exception';
+import { UnauthorizedException } from '@domain/common/exception/unauthorized.exception';
+import { NotFoundException } from '@domain/common/exception/not-found.exception';
 
 export class DeleteTopicService implements DeleteTopicUsecase {
   constructor(private readonly topicRepository: TopicRepository) {}

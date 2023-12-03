@@ -2,11 +2,11 @@ import { UpdateUserInfoUsecase } from '@application/port/in/user/update-user-inf
 import { UpdateUserInfoCommand } from '@application/port/in/user/command/update-user-info.command';
 import { User } from '@domain/user/user';
 import { UserRepository } from '@application/port/out/user/user.repository';
-import { NotFoundException } from '@common/exception/not-found.exception';
+import { NotFoundException } from '@domain/common/exception/not-found.exception';
 import { UserInfo } from '@domain/user/user-info';
 import { Region, RegionFactory } from '@domain/region/region';
 import { RegionRepository } from '@application/port/out/region/region.repository';
-import { Transactional } from '@common/decorator/transactional.decorator';
+import { Transactional } from '@adapter/common/decorator/transactional.decorator';
 import { CreateRegionUsecase } from '@application/port/in/region/create-region.usecase';
 
 export class UpdateUserInfoService implements UpdateUserInfoUsecase {

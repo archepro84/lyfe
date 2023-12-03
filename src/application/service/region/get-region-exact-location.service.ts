@@ -2,7 +2,7 @@ import { RegionRepository } from '@application/port/out/region/region.repository
 import { GetRegionExactLocationCommand } from '@application/port/in/region/region.command';
 import { Region } from '@domain/region/region';
 import { GetRegionExactLocationQuery } from '@application/port/in/region/get-region-exact-location.query';
-import { NotFoundException } from '@common/exception/not-found.exception';
+import { NotFoundException } from '@domain/common/exception/not-found.exception';
 
 export class GetRegionExactLocationService
   implements GetRegionExactLocationQuery

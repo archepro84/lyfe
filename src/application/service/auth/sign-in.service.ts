@@ -1,6 +1,6 @@
 import { SignInUsecase } from '@application/port/in/auth/sign-in.usecase';
 import { UserRepository } from '@application/port/out/user/user.repository';
-import { NotFoundException } from '@common/exception/not-found.exception';
+import { NotFoundException } from '@domain/common/exception/not-found.exception';
 import {
   AuthVerificationResponseCommand,
   SignInCommand,

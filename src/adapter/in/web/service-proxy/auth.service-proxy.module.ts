@@ -13,11 +13,11 @@ import { UserMongoRepository } from '@adapter/out/persistence/user/user.mongo.re
 import { SignUpService } from '@application/service/auth/sign-up.service';
 import { BcryptAdapter } from '@adapter/security/bcrypt/bcrypt.adapter';
 import { BcryptModule } from '@adapter/security/bcrypt/bcrypt.module';
-import { EnvironmentConfigService } from '@common/config/environment-config.service';
+import { EnvironmentConfigService } from '@adapter/config/environment-config.service';
 import { JwtAdapter } from '@adapter/security/jwt/jwt.adapter';
 import { TOKEN_USECASE } from '@application/port/in/auth/token/token.usecase';
 import { TokenService } from '@application/service/auth/token/token.service';
-import { EnvironmentConfigModule } from '@common/config/environment-config.module';
+import { EnvironmentConfigModule } from '@adapter/config/environment-config.module';
 import { JwtModule } from '@adapter/security/jwt/jwt.module';
 import { SIGN_IN_USECASE } from '@application/port/in/auth/sign-in.usecase';
 import { SignInService } from '@application/service/auth/sign-in.service';

@@ -1,6 +1,6 @@
 import { IsEnum, IsNumber, IsString, validateSync } from 'class-validator';
 import { plainToClass } from 'class-transformer';
-import { InvalidEnvironmentVariableException } from '@common/config/exception/invalid-environment-variable.exception';
+import { InvalidEnvironmentVariableException } from '@adapter/config/exception/invalid-environment-variable.exception';
 
 export enum EnvironmentStatus {
   Production = 'production',

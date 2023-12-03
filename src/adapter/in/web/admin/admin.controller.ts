@@ -32,10 +32,10 @@ import {
   TokenUsecase,
 } from '@application/port/in/auth/token/token.usecase';
 import { Admin } from '@domain/admin/admin';
-import { RefreshTokenHeader } from '@common/decorator/refresh-token-header.decorator';
-import { JwtAdminRefreshGuard } from '@common/guard/jwt-admin-refresh.guard';
-import { AccessTokenHeader } from '@common/decorator/access-token-header.decorator';
-import { JwtAdminGuard } from '@common/guard/jwt-admin.guard';
+import { RefreshTokenHeader } from '@adapter/common/decorator/refresh-token-header.decorator';
+import { JwtAdminRefreshGuard } from '@adapter/common/guard/jwt-admin-refresh.guard';
+import { AccessTokenHeader } from '@adapter/common/decorator/access-token-header.decorator';
+import { JwtAdminGuard } from '@adapter/common/guard/jwt-admin.guard';
 
 // TODO: Admin 도메인은 추후 별도의 서버리스 서비스로 분리될 예정.
 @Controller('admin')

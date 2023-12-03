@@ -3,11 +3,11 @@ import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { HttpExceptionFilter } from '@common/filter/http-exception.filter';
-import { LoggerInterceptor } from '@common/interceptor/logger.interceptor';
+import { HttpExceptionFilter } from '@adapter/common/filter/http-exception.filter';
+import { LoggerInterceptor } from '@adapter/common/interceptor/logger.interceptor';
 import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
-import { ResponseInterceptor } from '@common/interceptor/response.interceptor';
-import { EnvironmentStatus } from '@common/config/environment-config.validation';
+import { ResponseInterceptor } from '@adapter/common/interceptor/response.interceptor';
+import { EnvironmentStatus } from '@adapter/config/environment-config.validation';
 import { getConnectionToken } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 

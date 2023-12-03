@@ -36,7 +36,7 @@ import {
   SIGN_UP_USECASE,
   SignUpUsecase,
 } from '@application/port/in/auth/sign-up.usecase';
-import { JwtAuthGuard } from '@common/guard/jwt-auth.guard';
+import { JwtAuthGuard } from '@adapter/common/guard/jwt-auth.guard';
 import {
   GET_INVITATION_QUERY,
   GetInvitationQuery,
@@ -46,9 +46,9 @@ import {
   TokenUsecase,
 } from '@application/port/in/auth/token/token.usecase';
 import { User } from '@domain/user/user';
-import { JwtAuthRefreshGuard } from '@common/guard/jwt-auth-refresh.guard';
-import { AccessTokenHeader } from '@common/decorator/access-token-header.decorator';
-import { RefreshTokenHeader } from '@common/decorator/refresh-token-header.decorator';
+import { JwtAuthRefreshGuard } from '@adapter/common/guard/jwt-auth-refresh.guard';
+import { AccessTokenHeader } from '@adapter/common/decorator/access-token-header.decorator';
+import { RefreshTokenHeader } from '@adapter/common/decorator/refresh-token-header.decorator';
 
 @Controller('auth')
 @ApiTags('auth')
