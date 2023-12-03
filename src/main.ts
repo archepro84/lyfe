@@ -3,7 +3,6 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { getConnectionToken } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
-
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from '@infrastructure/common/filter/http-exception.filter';

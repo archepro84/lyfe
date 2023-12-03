@@ -29,9 +29,6 @@
       ],
       "@infrastructure/*": [
         "src/infrastructure/*"
-      ],
-      "@common/*": [
-        "src/common/*"
       ]
     }
   }
