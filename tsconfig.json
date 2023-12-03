@@ -27,8 +27,8 @@
       "@domain/*": [
         "src/domain/*"
       ],
-      "@adapter/*": [
-        "src/adapter/*"
+      "@infrastructure/*": [
+        "src/infrastructure/*"
       ],
       "@common/*": [
         "src/common/*"

@@ -14,7 +14,7 @@ import { InvitationRepository } from '@application/port/out/auth/invitation/invi
 import { NotFoundException } from '@domain/common/exception/not-found.exception';
 import { Invitation, InvitationStatus } from '@domain/auth/invitation';
 import { Auth } from '@domain/auth/auth';
-import { Transactional } from '@adapter/common/decorator/transactional.decorator';
+import { Transactional } from '@infrastructure/common/decorator/transactional.decorator';
 
 export class SignUpService<T> implements SignUpUsecase {
   constructor(

@@ -3,7 +3,7 @@ import { RegionRepository } from '@application/port/out/region/region.repository
 import { CreateRegionCommand } from '@application/port/in/region/region.command';
 import { Region, RegionFactory } from '@domain/region/region';
 import { AlreadyExistsException } from '@domain/common/exception/already-exists.exception';
-import { Transactional } from '@adapter/common/decorator/transactional.decorator';
+import { Transactional } from '@infrastructure/common/decorator/transactional.decorator';
 
 export class CreateRegionService implements CreateRegionUsecase {
   constructor(private readonly regionRepository: RegionRepository) {}

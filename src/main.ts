@@ -1,15 +1,16 @@
 import { NestFactory } from '@nestjs/core';
-import * as cookieParser from 'cookie-parser';
-import { AppModule } from './app.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { HttpExceptionFilter } from '@adapter/common/filter/http-exception.filter';
-import { LoggerInterceptor } from '@adapter/common/interceptor/logger.interceptor';
-import { LoggerAdapter } from '@adapter/common/logger/logger.adapter';
-import { ResponseInterceptor } from '@adapter/common/interceptor/response.interceptor';
-import { EnvironmentStatus } from '@adapter/config/environment-config.validation';
 import { getConnectionToken } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
+
+import * as cookieParser from 'cookie-parser';
+import { AppModule } from './app.module';
+import { HttpExceptionFilter } from '@infrastructure/common/filter/http-exception.filter';
+import { LoggerInterceptor } from '@infrastructure/common/interceptor/logger.interceptor';
+import { LoggerAdapter } from '@infrastructure/common/logger/logger.adapter';
+import { ResponseInterceptor } from '@infrastructure/common/interceptor/response.interceptor';
+import { EnvironmentStatus } from '@infrastructure/common/config/environment-config.validation';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

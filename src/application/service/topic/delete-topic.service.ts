@@ -1,5 +1,5 @@
 import { TopicRepository } from '@application/port/out/topic/topic.repository';
-import { Transactional } from '@adapter/common/decorator/transactional.decorator';
+import { Transactional } from '@infrastructure/common/decorator/transactional.decorator';
 import { DeleteTopicUsecase } from '@application/port/in/topic/delete-topic.usecase';
 import { DeleteTopicCommand } from '@application/port/in/topic/command/delete-topic.command';
 import { UnauthorizedException } from '@domain/common/exception/unauthorized.exception';

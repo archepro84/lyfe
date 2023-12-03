@@ -3,7 +3,7 @@ import { TopicFactory } from '@domain/topic/topic';
 import { Image } from '@domain/topic/image';
 import { Geometry } from '@domain/user/geometry';
 import { RegionFactory } from '@domain/region/region';
-import { Transactional } from '@adapter/common/decorator/transactional.decorator';
+import { Transactional } from '@infrastructure/common/decorator/transactional.decorator';
 import { UpdateTopicUsecase } from '@application/port/in/topic/update-topic.usecase';
 import { UpdateTopicCommand } from '@application/port/in/topic/command/update-topic.command';
 import { UnauthorizedException } from '@domain/common/exception/unauthorized.exception';

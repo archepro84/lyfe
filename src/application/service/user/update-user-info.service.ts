@@ -6,7 +6,7 @@ import { NotFoundException } from '@domain/common/exception/not-found.exception'
 import { UserInfo } from '@domain/user/user-info';
 import { Region, RegionFactory } from '@domain/region/region';
 import { RegionRepository } from '@application/port/out/region/region.repository';
-import { Transactional } from '@adapter/common/decorator/transactional.decorator';
+import { Transactional } from '@infrastructure/common/decorator/transactional.decorator';
 import { CreateRegionUsecase } from '@application/port/in/region/create-region.usecase';
 
 export class UpdateUserInfoService implements UpdateUserInfoUsecase {
