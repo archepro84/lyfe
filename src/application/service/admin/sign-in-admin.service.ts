@@ -1,5 +1,5 @@
 import { AdminRepository } from '@application/port/out/admin/admin.repository';
-import { BcryptPort } from '@application/port/common/bcrypt/bcrypt.port';
+import { BcryptPort } from '@application/common/bcrypt/bcrypt.port';
 import { Admin } from '@domain/admin/admin';
 import { SignInAdminUsecase } from '@application/port/in/admin/sign-in-admin.usecase';
 import { SignInAdminCommand } from '@application/port/in/admin/command/sign-in-admin.command';

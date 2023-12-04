@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ServiceConfig } from '@application/port/common/config/service.config';
-import { DatabaseConfig } from '@application/port/common/config/database.config';
-import { JwtConfig } from '@application/port/common/config/jwt.config';
-import { SnsConfig } from '@application/port/common/config/sns.config';
+import { ServiceConfig } from '@application/common/config/service.config';
+import { DatabaseConfig } from '@application/common/config/database.config';
+import { JwtConfig } from '@application/common/config/jwt.config';
+import { SnsConfig } from '@application/common/config/sns.config';
 
 @Injectable()
 export class EnvironmentConfigService

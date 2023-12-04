@@ -1,5 +1,5 @@
 import { AuthToken } from '@domain/user/auth-token';
-import { JwtServicePayload } from '@application/port/common/jwt/jwt.port';
+import { JwtServicePayload } from '@application/common/jwt/jwt.port';
 
 export interface TokenUsecase<T> {
   getAccountable(payload: JwtServicePayload): Promise<T>;

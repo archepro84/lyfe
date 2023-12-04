@@ -3,7 +3,7 @@ import { VerificationAuthCodeUsecase } from '@application/port/in/auth/verificat
 import { InvalidVerificationCodeException } from '@application/service/auth/exception/invalid-verification-code.exception';
 import { AuthSendLogRepository } from '@application/port/out/auth/auth-send-log.repository';
 import { VerificationCodeExpiredException } from '@application/service/auth/exception/verification-code-expired.exception';
-import { BcryptPort } from '@application/port/common/bcrypt/bcrypt.port';
+import { BcryptPort } from '@application/common/bcrypt/bcrypt.port';
 import { UserRepository } from '@application/port/out/user/user.repository';
 import { AuthSendLog } from '@domain/auth/auth-send-log';
 import { TokenUsecase } from '@application/port/in/auth/token/token.usecase';

@@ -8,7 +8,7 @@ import { AdminIssueInvitationService } from '@application/service/admin/admin-is
 import { InvitationServiceProxyModule } from '@infrastructure/adapter/in/web/service-proxy/invitation.service-proxy.module';
 import { SIGN_UP_ADMIN_USECASE } from '@application/port/in/admin/sign-up-admin.usecase';
 import { BcryptAdapter } from '@infrastructure/common/bcrypt/bcrypt.adapter';
-import { BcryptPort } from '@application/port/common/bcrypt/bcrypt.port';
+import { BcryptPort } from '@application/common/bcrypt/bcrypt.port';
 import { SignUpAdminService } from '@application/service/admin/sign-up-admin.service';
 import { BcryptModule } from '@infrastructure/common/bcrypt/bcrypt.module';
 import { EnvironmentConfigService } from '@infrastructure/common/config/environment-config.service';

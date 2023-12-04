@@ -1,11 +1,8 @@
 import { TokenUsecase } from '@application/port/in/auth/token/token.usecase';
-import { JwtConfig } from '@application/port/common/config/jwt.config';
-import {
-  JwtPort,
-  JwtServicePayload,
-} from '@application/port/common/jwt/jwt.port';
+import { JwtConfig } from '@application/common/config/jwt.config';
+import { JwtPort, JwtServicePayload } from '@application/common/jwt/jwt.port';
 import { AuthToken } from '@domain/user/auth-token';
-import { BcryptPort } from '@application/port/common/bcrypt/bcrypt.port';
+import { BcryptPort } from '@application/common/bcrypt/bcrypt.port';
 import { TokenRepository } from '@application/port/out/auth/token.repository';
 import { Accountable } from '@domain/auth/accountable';
 

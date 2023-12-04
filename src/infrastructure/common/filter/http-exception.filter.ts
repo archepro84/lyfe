@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { BaseException } from '@domain/common/exception/base.exception';
-import { LoggerPort } from '@application/port/common/logger/logger.port';
+import { LoggerPort } from '@application/common/logger/logger.port';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter<Error> {

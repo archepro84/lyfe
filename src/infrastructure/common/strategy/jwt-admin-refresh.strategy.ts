@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
-import { JwtServicePayload } from '@application/port/common/jwt/jwt.port';
+import { JwtServicePayload } from '@application/common/jwt/jwt.port';
 import {
   ADMIN_TOKEN_USECASE,
   TokenUsecase,

@@ -3,8 +3,8 @@ import { SendVerificationPort } from '@application/port/out/auth/send-verificati
 import { AuthRepository } from '@application/port/out/auth/auth.repository';
 import { AuthSendLogRepository } from '@application/port/out/auth/auth-send-log.repository';
 import { VerificationLimitExceededException } from '@application/service/auth/exception/verification-limit-exceeded.exception';
-import { BcryptPort } from '@application/port/common/bcrypt/bcrypt.port';
-import { LoggerPort } from '@application/port/common/logger/logger.port';
+import { BcryptPort } from '@application/common/bcrypt/bcrypt.port';
+import { LoggerPort } from '@application/common/logger/logger.port';
 
 const VERIFICATION_LIMIT = 3;
 
