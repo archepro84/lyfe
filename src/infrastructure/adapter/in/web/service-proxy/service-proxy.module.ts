@@ -1,0 +1,28 @@
+import { Module } from '@nestjs/common';
+
+import { AuthServiceProxyModule } from '@infrastructure/adapter/in/web/service-proxy/auth.service-proxy.module';
+import { UserServiceProxyModule } from '@infrastructure/adapter/in/web/service-proxy/user.service-proxy.module';
+import { AdminServiceProxyModule } from '@infrastructure/adapter/in/web/service-proxy/admin.service-proxy.module';
+import { InvitationServiceProxyModule } from '@infrastructure/adapter/in/web/service-proxy/invitation.service-proxy.module';
+import { RegionServiceProxyModule } from '@infrastructure/adapter/in/web/service-proxy/region.service-proxy.module';
+import { TopicServiceProxyModule } from '@infrastructure/adapter/in/web/service-proxy/topic.service-proxy.module';
+
+@Module({
+  imports: [
+    AuthServiceProxyModule.register(),
+    UserServiceProxyModule.register(),
+    InvitationServiceProxyModule.register(),
+    AdminServiceProxyModule.register(),
+    RegionServiceProxyModule.register(),
+    TopicServiceProxyModule.register(),
+  ],
+  exports: [
+    AuthServiceProxyModule.register(),
+    UserServiceProxyModule.register(),
+    InvitationServiceProxyModule.register(),
+    AdminServiceProxyModule.register(),
+    RegionServiceProxyModule.register(),
+    TopicServiceProxyModule.register(),
+  ],
+})
+export class ServiceProxyModule {}
