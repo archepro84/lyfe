@@ -34,6 +34,10 @@ import { TopicMapper } from '@infrastructure/adapter/out/persistence/topic/mappe
 import { VoteMapper } from '@infrastructure/adapter/out/persistence/topic/mapper/vote.mapper';
 import { Vote } from '@domain/topic/vote/vote';
 import { VoteSchema } from '@infrastructure/adapter/out/persistence/topic/schema/vote.schema';
+import { CommentSchema } from '@infrastructure/adapter/out/persistence/topic/comment/schema/comment.schema';
+import { Comment } from '@domain/topic/comment/comment';
+import { CommentMapper } from '@infrastructure/adapter/out/persistence/topic/comment/mapper/comment.mapper';
+import { CommentMongoRepository } from '@infrastructure/adapter/out/persistence/topic/comment/comment.mongo.repository';
 
 @Module({
   imports: [
@@ -53,6 +57,7 @@ import { VoteSchema } from '@infrastructure/adapter/out/persistence/topic/schema
       { name: Region.name, schema: RegionSchema },
       { name: Topic.name, schema: TopicSchema },
       { name: Vote.name, schema: VoteSchema },
+      { name: Comment.name, schema: CommentSchema },
     ]),
   ],
   providers: [
@@ -72,6 +77,8 @@ import { VoteSchema } from '@infrastructure/adapter/out/persistence/topic/schema
     TopicMapper,
     VoteMapper,
     TopicMongoRepository,
+    CommentMapper,
+    CommentMongoRepository,
   ],
   exports: [
     UserMongoRepository,
@@ -81,6 +88,7 @@ import { VoteSchema } from '@infrastructure/adapter/out/persistence/topic/schema
     AdminMongoRepository,
     RegionMongoRepository,
     TopicMongoRepository,
+    CommentMongoRepository,
   ],
 })
 export class RepositoriesModule {}

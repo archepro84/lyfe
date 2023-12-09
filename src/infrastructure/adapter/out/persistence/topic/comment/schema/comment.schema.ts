@@ -1,15 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
-import { Theme } from '@domain/topic/topic';
-import { ImageEntity } from '@infrastructure/adapter/out/persistence/topic/schema/image.schema';
+import { IsOptional, IsString } from 'class-validator';
 import { Document } from 'mongoose';
-import { GeometryEntity } from '@infrastructure/adapter/out/persistence/user/schema/geometry.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import {
-  VoteEntity,
-  VoteMongoSchema,
-  VoteSchema,
-} from '@infrastructure/adapter/out/persistence/topic/schema/vote.schema';
 import { TopicUserEntity } from '@infrastructure/adapter/out/persistence/topic/schema/topic-user.schema';
 
 export class CommentEntity extends Document {

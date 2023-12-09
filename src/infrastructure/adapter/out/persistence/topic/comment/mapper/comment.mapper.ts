@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { MapperPort } from '@application/port/out/mapper.port';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { RegionFactory } from '@domain/region/region';
-import { Geometry } from '@domain/user/geometry';
 import { CommentEntity } from '@infrastructure/adapter/out/persistence/topic/comment/schema/comment.schema';
 import { Comment, CommentFactory } from '@domain/topic/comment/comment';
 import { TopicUser } from '@domain/topic/topic-user';
