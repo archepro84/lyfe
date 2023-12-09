@@ -8,6 +8,7 @@ import { ServiceProxyModule } from '@infrastructure/adapter/in/web/service-proxy
 import { AdminController } from '@infrastructure/adapter/in/web/admin/admin.controller';
 import { RegionController } from '@infrastructure/adapter/in/web/region/region.controller';
 import { TopicController } from '@infrastructure/adapter/in/web/topic/topic.controller';
+import { CommentController } from '@infrastructure/adapter/in/web/topic/comment/comment.controller';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { TopicController } from '@infrastructure/adapter/in/web/topic/topic.cont
     UserController,
     AdminController,
     RegionController,
+    CommentController,
     TopicController,
   ],
   providers: [],
