@@ -17,6 +17,8 @@ import { CREATE_COMMENT_USECASE } from '@application/port/in/topic/comment/useca
 import { CreateCommentService } from '@application/service/topic/comment/create-comment.service';
 import { CommentMongoSchema } from '@infrastructure/adapter/out/persistence/topic/comment/schema/comment.schema';
 import { CommentMongoRepository } from '@infrastructure/adapter/out/persistence/topic/comment/comment.mongo.repository';
+import { FIND_COMMENT_USECASE } from '@application/port/in/topic/comment/usecase/find-comment.usecase';
+import { FindCommentService } from '@application/service/topic/comment/find-comment.service';
 
 @Module({
   imports: [RepositoriesModule],
@@ -70,6 +72,14 @@ export class TopicServiceProxyModule {
             commentRepository: CommentMongoRepository,
           ) => new CreateCommentService(topicRepository, commentRepository),
         },
+        {
+          inject: [TopicMongoRepository, CommentMongoRepository],
+          provide: FIND_COMMENT_USECASE,
+          useFactory: (
+            topicRepository: TopicMongoRepository,
+            commentRepository: CommentMongoRepository,
+          ) => new FindCommentService(topicRepository, commentRepository),
+        },
       ],
       exports: [
         CREATE_TOPIC_USECASE,
@@ -79,6 +89,7 @@ export class TopicServiceProxyModule {
         FIND_ALL_TOPIC_USECASE,
         SEARCH_TOPIC_USECASE,
         CREATE_COMMENT_USECASE,
+        FIND_COMMENT_USECASE,
       ],
     };
   }
