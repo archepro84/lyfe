@@ -19,6 +19,9 @@ import { CommentMongoSchema } from '@infrastructure/adapter/out/persistence/topi
 import { CommentMongoRepository } from '@infrastructure/adapter/out/persistence/topic/comment/comment.mongo.repository';
 import { FIND_COMMENT_USECASE } from '@application/port/in/topic/comment/usecase/find-comment.usecase';
 import { FindCommentService } from '@application/service/topic/comment/find-comment.service';
+import { CREATE_REPLY_USECASE } from '@application/port/in/topic/comment/usecase/create-reply.usecase';
+import { CreateReplyService } from '@application/service/topic/comment/create-reply.service';
+import { ReplyMongoRepository } from '@infrastructure/adapter/out/persistence/topic/comment/reply.mongo.repository';
 
 @Module({
   imports: [RepositoriesModule],
@@ -65,12 +68,40 @@ export class TopicServiceProxyModule {
             new SearchTopicService(topicRepository),
         },
         {
-          inject: [TopicMongoRepository, CommentMongoRepository],
+          inject: [
+            TopicMongoRepository,
+            CommentMongoRepository,
+            ReplyMongoRepository,
+          ],
+          provide: CREATE_REPLY_USECASE,
+          useFactory: (
+            topicRepository: TopicMongoRepository,
+            commentRepository: CommentMongoRepository,
+            replyMongoRepository: ReplyMongoRepository,
+          ) =>
+            new CreateReplyService(
+              topicRepository,
+              commentRepository,
+              replyMongoRepository,
+            ),
+        },
+        {
+          inject: [
+            TopicMongoRepository,
+            CommentMongoRepository,
+            CREATE_REPLY_USECASE,
+          ],
           provide: CREATE_COMMENT_USECASE,
           useFactory: (
             topicRepository: TopicMongoRepository,
             commentRepository: CommentMongoRepository,
-          ) => new CreateCommentService(topicRepository, commentRepository),
+            createReplyService: CreateReplyService,
+          ) =>
+            new CreateCommentService(
+              topicRepository,
+              commentRepository,
+              createReplyService,
+            ),
         },
         {
           inject: [TopicMongoRepository, CommentMongoRepository],
@@ -90,6 +121,7 @@ export class TopicServiceProxyModule {
         SEARCH_TOPIC_USECASE,
         CREATE_COMMENT_USECASE,
         FIND_COMMENT_USECASE,
+        CREATE_REPLY_USECASE,
       ],
     };
   }
