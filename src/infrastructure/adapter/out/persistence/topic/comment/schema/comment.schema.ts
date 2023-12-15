@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { TopicUserEntity } from '@infrastructure/adapter/out/persistence/topic/schema/topic-user.schema';
@@ -32,16 +32,6 @@ export class CommentEntity extends Document {
   @IsString()
   content: string;
 
-  @ApiProperty({
-    required: true,
-    type: 'string',
-    description: '부모 댓글 id',
-    example: '649ce793f331996dcc3cddab',
-  })
-  @IsOptional()
-  @IsString()
-  patentId?: string;
-
   createdAt?: Date;
 
   updatedAt?: Date;
@@ -59,9 +49,6 @@ export class CommentMongoSchema {
 
   @Prop({ required: true })
   content: string;
-
-  @Prop({ required: false })
-  patent?: string;
 
   @Prop({ required: true, default: Date.now })
   createdAt: Date;

@@ -3,7 +3,7 @@ import { TopicUser } from '@domain/topic/topic-user';
 import { EmptyContentException } from '@domain/topic/exception/empty-content.exception';
 import { ContentLengthExceededException } from '@domain/topic/exception/content-length-exceeded.exception';
 
-const MAX_CONTENT_LENGTH = 500;
+export const MAX_CONTENT_LENGTH = 500;
 
 export type CommentRequiredProps = Readonly<
   Required<{
@@ -19,7 +19,6 @@ export type CommentOptionalProps = Readonly<
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date;
-    parentId: string;
   }>
 >;
 
@@ -34,8 +33,6 @@ export class Comment extends Domain {
   readonly topicId: string;
   readonly user: TopicUser;
   readonly content: string;
-
-  readonly parentId?: string;
 
   constructor(props: CommentProps) {
     super();

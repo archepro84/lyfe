@@ -18,7 +18,6 @@ export class CommentMapper implements MapperPort<CommentEntity, Comment> {
     return CommentFactory.newInstance({
       id: commentEntity._id,
       topicId: commentEntity.topicId,
-      parentId: commentEntity.patentId ?? undefined,
       content: commentEntity.content,
       user: new TopicUser({
         id: commentEntity.user._id,
@@ -38,7 +37,6 @@ export class CommentMapper implements MapperPort<CommentEntity, Comment> {
     return new this.model({
       id: comment.id,
       topicId: comment.topicId,
-      patentId: comment.parentId,
       content: comment.content,
       user: {
         _id: comment.user.id,
