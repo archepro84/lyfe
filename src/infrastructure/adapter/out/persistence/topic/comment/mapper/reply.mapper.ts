@@ -1,0 +1,52 @@
+import { Injectable } from '@nestjs/common';
+import { MapperPort } from '@application/port/out/mapper.port';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { TopicUser } from '@domain/topic/topic-user';
+import { ReplyEntity } from '@infrastructure/adapter/out/persistence/topic/comment/schema/reply.schema';
+import { Reply, ReplyFactory } from '@domain/topic/comment/reply';
+
+@Injectable()
+export class ReplyMapper implements MapperPort<ReplyEntity, Reply> {
+  constructor(
+    @InjectModel(Reply.name) private readonly model: Model<ReplyEntity>,
+  ) {}
+
+  public toDomain(replyEntity: ReplyEntity): Reply {
+    if (!replyEntity) return null;
+
+    return ReplyFactory.newInstance({
+      id: replyEntity._id,
+      topicId: replyEntity.topicId,
+      parentId: replyEntity.parentId,
+      content: replyEntity.content,
+      user: new TopicUser({
+        id: replyEntity.user._id,
+        nickname: replyEntity.user.nickname,
+      }),
+      createdAt: replyEntity.createdAt,
+      updatedAt: replyEntity.updatedAt,
+      deletedAt: replyEntity.deletedAt,
+    });
+  }
+
+  public toDomains(replyEntities: ReplyEntity[]): Reply[] {
+    return replyEntities.map(this.toDomain);
+  }
+
+  public toPersistence(reply: Reply): ReplyEntity {
+    return new this.model({
+      id: reply.id,
+      topicId: reply.topicId,
+      parentId: reply.parentId,
+      content: reply.content,
+      user: {
+        _id: reply.user.id,
+        nickname: reply.user.nickname,
+      },
+      createdAt: reply.createdAt,
+      updatedAt: reply.updatedAt,
+      deletedAt: reply.deletedAt,
+    });
+  }
+}

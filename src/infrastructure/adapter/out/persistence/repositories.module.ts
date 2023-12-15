@@ -38,6 +38,10 @@ import { CommentSchema } from '@infrastructure/adapter/out/persistence/topic/com
 import { Comment } from '@domain/topic/comment/comment';
 import { CommentMapper } from '@infrastructure/adapter/out/persistence/topic/comment/mapper/comment.mapper';
 import { CommentMongoRepository } from '@infrastructure/adapter/out/persistence/topic/comment/comment.mongo.repository';
+import { ReplyMapper } from '@infrastructure/adapter/out/persistence/topic/comment/mapper/reply.mapper';
+import { ReplyMongoRepository } from '@infrastructure/adapter/out/persistence/topic/comment/reply.mongo.repository';
+import { Reply } from '@domain/topic/comment/reply';
+import { ReplySchema } from '@infrastructure/adapter/out/persistence/topic/comment/schema/reply.schema';
 
 @Module({
   imports: [
@@ -58,6 +62,7 @@ import { CommentMongoRepository } from '@infrastructure/adapter/out/persistence/
       { name: Topic.name, schema: TopicSchema },
       { name: Vote.name, schema: VoteSchema },
       { name: Comment.name, schema: CommentSchema },
+      { name: Reply.name, schema: ReplySchema },
     ]),
   ],
   providers: [
@@ -79,6 +84,8 @@ import { CommentMongoRepository } from '@infrastructure/adapter/out/persistence/
     TopicMongoRepository,
     CommentMapper,
     CommentMongoRepository,
+    ReplyMapper,
+    ReplyMongoRepository,
   ],
   exports: [
     UserMongoRepository,
@@ -89,6 +96,7 @@ import { CommentMongoRepository } from '@infrastructure/adapter/out/persistence/
     RegionMongoRepository,
     TopicMongoRepository,
     CommentMongoRepository,
+    ReplyMongoRepository,
   ],
 })
 export class RepositoriesModule {}
