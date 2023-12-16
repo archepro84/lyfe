@@ -30,7 +30,7 @@ export class ReplyMapper implements MapperPort<ReplyEntity, Reply> {
   }
 
   public toDomains(replyEntities: ReplyEntity[]): Reply[] {
-    return replyEntities.map(this.toDomain);
+    return replyEntities.map((entity) => this.toDomain(entity));
   }
 
   public toPersistence(reply: Reply): ReplyEntity {

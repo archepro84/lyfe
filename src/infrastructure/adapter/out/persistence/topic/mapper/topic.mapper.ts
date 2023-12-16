@@ -57,7 +57,7 @@ export class TopicMapper implements MapperPort<TopicEntity, Topic> {
   }
 
   public toDomains(userEntities: TopicEntity[]): Topic[] {
-    return userEntities.map(this.toDomain);
+    return userEntities.map((entity) => this.toDomain(entity));
   }
 
   public toPersistence(topic: Topic): TopicEntity {

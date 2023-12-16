@@ -33,7 +33,7 @@ export class CommentMapper implements MapperPort<CommentEntity, Comment> {
   }
 
   public toDomains(commentEntities: CommentEntity[]): Comment[] {
-    return commentEntities.map(this.toDomain);
+    return commentEntities.map((entity) => this.toDomain(entity));
   }
 
   public toPersistence(comment: Comment): CommentEntity {

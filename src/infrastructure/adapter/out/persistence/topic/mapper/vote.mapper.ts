@@ -32,7 +32,7 @@ export class VoteMapper implements MapperPort<VoteEntity, Vote> {
   }
 
   public toDomains(voteEntities: VoteEntity[]): Vote[] {
-    return voteEntities.map(this.toDomain);
+    return voteEntities.map((entity) => this.toDomain(entity));
   }
 
   public toPersistence(vote: Vote): VoteEntity {
