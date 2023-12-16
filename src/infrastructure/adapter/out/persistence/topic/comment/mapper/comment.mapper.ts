@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MapperPort } from '@application/port/out/mapper.port';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CommentEntity } from '@infrastructure/adapter/out/persistence/topic/comment/schema/comment.schema';
 import { Comment, CommentFactory } from '@domain/topic/comment/comment';
@@ -36,10 +36,10 @@ export class CommentMapper implements MapperPort<CommentEntity, Comment> {
   public toPersistence(comment: Comment): CommentEntity {
     return new this.model({
       id: comment.id,
-      topicId: comment.topicId,
+      topicId: new Types.ObjectId(comment.topicId),
       content: comment.content,
       user: {
-        _id: comment.user.id,
+        _id: new Types.ObjectId(comment.user.id),
         nickname: comment.user.nickname,
       },
       createdAt: comment.createdAt,

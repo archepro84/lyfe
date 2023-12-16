@@ -3,7 +3,7 @@ import { InvitationEntity } from '@infrastructure/adapter/out/persistence/auth/i
 import { Injectable } from '@nestjs/common';
 import { MapperPort } from '@application/port/out/mapper.port';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class InvitationMapper
@@ -40,7 +40,7 @@ export class InvitationMapper
     return new this.model({
       id: invitation.id,
       invitationType: invitation.invitationType,
-      inviterId: invitation.inviterId,
+      inviterId: new Types.ObjectId(invitation.inviterId),
       invitationCode: invitation.invitationCode,
       inviteePhoneNumber: invitation.inviteePhoneNumber,
       invitationStatus: invitation.getInvitationStatus(),

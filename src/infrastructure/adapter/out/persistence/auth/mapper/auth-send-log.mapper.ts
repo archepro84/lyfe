@@ -2,7 +2,7 @@ import { AuthSendLogEntity } from '@infrastructure/adapter/out/persistence/auth/
 import { AuthSendLog } from '@domain/auth/auth-send-log';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { MapperPort } from '@application/port/out/mapper.port';
 
 @Injectable()
@@ -36,7 +36,7 @@ export class AuthSendLogMapper
   public toPersistence(authSendLog: AuthSendLog): AuthSendLogEntity {
     return new this.model({
       id: authSendLog.id,
-      authId: authSendLog.authId,
+      authId: new Types.ObjectId(authSendLog.authId),
       phoneNumber: authSendLog.phoneNumber,
       sentAt: authSendLog.sentAt,
     });

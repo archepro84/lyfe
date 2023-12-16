@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MapperPort } from '@application/port/out/mapper.port';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { TopicUser } from '@domain/topic/topic-user';
 import { ReplyEntity } from '@infrastructure/adapter/out/persistence/topic/comment/schema/reply.schema';
@@ -37,11 +37,11 @@ export class ReplyMapper implements MapperPort<ReplyEntity, Reply> {
   public toPersistence(reply: Reply): ReplyEntity {
     return new this.model({
       id: reply.id,
-      topicId: reply.topicId,
-      parentId: reply.parentId,
+      topicId: new Types.ObjectId(reply.topicId),
+      parentId: new Types.ObjectId(reply.parentId),
       content: reply.content,
       user: {
-        _id: reply.user.id,
+        _id: new Types.ObjectId(reply.user.id),
         nickname: reply.user.nickname,
       },
       createdAt: reply.createdAt,

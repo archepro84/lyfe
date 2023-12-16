@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MapperPort } from '@application/port/out/mapper.port';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { TopicEntity } from '@infrastructure/adapter/out/persistence/topic/schema/topic.schema';
 import { Topic, TopicFactory } from '@domain/topic/topic';
@@ -67,7 +67,7 @@ export class TopicMapper implements MapperPort<TopicEntity, Topic> {
       content: topic.content,
       theme: topic.theme,
       user: {
-        _id: topic.user.id,
+        _id: new Types.ObjectId(topic.user.id),
         nickname: topic.user.nickname,
       },
       images: topic.images,
