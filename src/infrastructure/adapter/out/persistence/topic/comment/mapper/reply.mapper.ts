@@ -25,7 +25,6 @@ export class ReplyMapper implements MapperPort<ReplyEntity, Reply> {
         nickname: replyEntity.user.nickname,
       }),
       createdAt: replyEntity.createdAt,
-      updatedAt: replyEntity.updatedAt,
       deletedAt: replyEntity.deletedAt,
     });
   }

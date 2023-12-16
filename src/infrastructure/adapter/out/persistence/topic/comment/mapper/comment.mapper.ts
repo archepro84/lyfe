@@ -5,11 +5,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CommentEntity } from '@infrastructure/adapter/out/persistence/topic/comment/schema/comment.schema';
 import { Comment, CommentFactory } from '@domain/topic/comment/comment';
 import { TopicUser } from '@domain/topic/topic-user';
+import { ReplyMapper } from '@infrastructure/adapter/out/persistence/topic/comment/mapper/reply.mapper';
 
 @Injectable()
 export class CommentMapper implements MapperPort<CommentEntity, Comment> {
   constructor(
     @InjectModel(Comment.name) private readonly model: Model<CommentEntity>,
+    private readonly replyMapper: ReplyMapper,
   ) {}
 
   public toDomain(commentEntity: CommentEntity): Comment {
@@ -23,6 +25,7 @@ export class CommentMapper implements MapperPort<CommentEntity, Comment> {
         id: commentEntity.user._id,
         nickname: commentEntity.user.nickname,
       }),
+      replies: commentEntity.replies?.map(this.replyMapper.toDomain),
       createdAt: commentEntity.createdAt,
       updatedAt: commentEntity.updatedAt,
       deletedAt: commentEntity.deletedAt,

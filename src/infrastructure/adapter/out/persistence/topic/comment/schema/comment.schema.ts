@@ -3,6 +3,7 @@ import { IsString } from 'class-validator';
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { TopicUserEntity } from '@infrastructure/adapter/out/persistence/topic/schema/topic-user.schema';
+import { ReplyEntity } from '@infrastructure/adapter/out/persistence/topic/comment/schema/reply.schema';
 
 export class CommentEntity extends Document {
   _id?: string;
@@ -31,6 +32,8 @@ export class CommentEntity extends Document {
   })
   @IsString()
   content: string;
+
+  replies?: ReplyEntity[];
 
   createdAt?: Date;
 
