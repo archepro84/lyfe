@@ -104,12 +104,22 @@ export class TopicServiceProxyModule {
             ),
         },
         {
-          inject: [TopicMongoRepository, CommentMongoRepository],
+          inject: [
+            TopicMongoRepository,
+            CommentMongoRepository,
+            ReplyMongoRepository,
+          ],
           provide: FIND_COMMENT_USECASE,
           useFactory: (
             topicRepository: TopicMongoRepository,
             commentRepository: CommentMongoRepository,
-          ) => new FindCommentService(topicRepository, commentRepository),
+            replyMongoRepository: ReplyMongoRepository,
+          ) =>
+            new FindCommentService(
+              topicRepository,
+              commentRepository,
+              replyMongoRepository,
+            ),
         },
       ],
       exports: [

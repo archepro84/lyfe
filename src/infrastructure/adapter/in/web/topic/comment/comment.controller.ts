@@ -7,6 +7,7 @@ import {
   Request,
   Param,
   Get,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CREATE_TOPIC_USECASE } from '@application/port/in/topic/create-topic.usecase';
@@ -68,11 +69,11 @@ export class CommentController {
   async findComment(
     @Request() req: any,
     @Param('id') topicId: string,
-    @Body() dto: PaginatedDto,
+    @Query() query: PaginatedDto,
   ) {
     return await this.findCommentUsecase.exec({
-      ...dto,
-      topicId: topicId,
+      ...query,
+      topicId,
     });
   }
 }
