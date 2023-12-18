@@ -37,7 +37,7 @@ export class CommentMongoRepository
       !query.limit || query.limit > MAX_LIMIT ? DEFAULT_LIMIT : query.limit;
 
     const aggregation = [
-      { $match: { topicId: query.topicId, deletedAt: { $exists: false } } },
+      { $match: { topicId: query.topicId } },
       { $skip: (page - 1) * limit },
       { $limit: limit },
       {
@@ -77,7 +77,6 @@ export class CommentMongoRepository
         $match: {
           _id: { $gt: new Types.ObjectId(query.cursor) },
           topicId: query.topicId,
-          deletedAt: { $exists: false },
         },
       },
       { $limit: limit },

@@ -4,7 +4,7 @@ import { FindCommentQuery } from '@application/port/in/topic/comment/query/find-
 import { FindCommentUsecase } from '@application/port/in/topic/comment/usecase/find-comment.usecase';
 import { CommentRepository } from '@application/port/out/topic/comment/comment.repository';
 import { Paginated } from '@application/port/out/repository.port';
-import { Comment } from '@domain/topic/comment/comment';
+import { Comment, CommentFactory } from '@domain/topic/comment/comment';
 import { NotFoundException } from '@domain/common/exception/not-found.exception';
 import { ReplyRepository } from '@application/port/out/topic/comment/reply.repository';
 
@@ -31,6 +31,21 @@ export class FindCommentService implements FindCommentUsecase {
         query,
       );
 
-    return paginatedComments;
+    return {
+      ...paginatedComments,
+      data: paginatedComments.data.map(this.convertDeletedCommentToNull),
+    };
+  }
+
+  private convertDeletedCommentToNull(comment: Comment): Comment {
+    if (!comment.deletedAt) return comment;
+
+    return Object.assign(comment, {
+      content: '',
+      user: {
+        id: '',
+        nickname: '삭제된 사용자입니다.',
+      },
+    });
   }
 }
