@@ -21,6 +21,16 @@ export class FindCommentService implements FindCommentUsecase {
     if (!isExistTopic)
       throw new NotFoundException('해당하는 게시글을 찾을 수 없습니다.');
 
-    return await this.commentRepository.findCommentWithReply(query);
+    let paginatedComments: Paginated<Comment>;
+
+    if (query.cursor)
+      paginatedComments =
+        await this.commentRepository.findCommentWithReplyByCursor(query);
+    else
+      paginatedComments = await this.commentRepository.findCommentWithReply(
+        query,
+      );
+
+    return paginatedComments;
   }
 }

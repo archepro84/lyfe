@@ -1,5 +1,5 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { Repository } from '@infrastructure/adapter/out/persistence/repository';
 import { transactionSessionStorage } from '@infrastructure/adapter/out/persistence/common/transaction/transaction.session.storage';
@@ -52,13 +52,59 @@ export class CommentMongoRepository
         },
       },
     ];
-    const comments = await this.commentModel.aggregate(aggregation).exec();
+
+    const entities = await this.commentModel
+      .aggregate(aggregation)
+      .session(this.getSession())
+      .exec();
 
     return {
-      count: comments.length,
+      count: entities.length,
       page,
       limit,
-      data: this.commentMapper.toDomains(comments),
+      data: this.commentMapper.toDomains(entities),
+    };
+  }
+
+  async findCommentWithReplyByCursor(
+    query: FindCommentQuery,
+  ): Promise<Paginated<Comment>> {
+    const limit =
+      !query.limit || query.limit > MAX_LIMIT ? DEFAULT_LIMIT : query.limit;
+
+    const aggregation = [
+      {
+        $match: {
+          _id: { $gt: new Types.ObjectId(query.cursor) },
+          topicId: query.topicId,
+          deletedAt: { $exists: false },
+        },
+      },
+      { $limit: limit },
+      {
+        $lookup: {
+          from: 'replies',
+          let: { commentId: '$_id' },
+          pipeline: [
+            { $match: { $expr: { $eq: ['$parentId', '$$commentId'] } } },
+            { $limit: DEFAULT_REPLY_LIMIT },
+          ],
+          as: 'replies',
+        },
+      },
+    ];
+
+    const entities = await this.commentModel
+      .aggregate(aggregation)
+      .session(this.getSession())
+      .exec();
+
+    return {
+      count: entities.length,
+      cursor:
+        entities.length === limit ? entities[entities.length - 1]._id : null,
+      limit,
+      data: this.commentMapper.toDomains(entities),
     };
   }
 }

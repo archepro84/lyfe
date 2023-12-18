@@ -7,4 +7,8 @@ import { FindCommentQuery } from '@application/port/in/topic/comment/query/find-
 
 export interface CommentRepository extends RepositoryPort<Comment> {
   findCommentWithReply(query: FindCommentQuery): Promise<Paginated<Comment>>;
+
+  findCommentWithReplyByCursor(
+    query: FindCommentQuery,
+  ): Promise<Paginated<Comment>>;
 }
