@@ -4,7 +4,7 @@ import { FindCommentQuery } from '@application/port/in/topic/comment/query/find-
 import { FindCommentUsecase } from '@application/port/in/topic/comment/usecase/find-comment.usecase';
 import { CommentRepository } from '@application/port/out/topic/comment/comment.repository';
 import { Paginated } from '@application/port/out/repository.port';
-import { Comment, CommentFactory } from '@domain/topic/comment/comment';
+import { Comment } from '@domain/topic/comment/comment';
 import { NotFoundException } from '@domain/common/exception/not-found.exception';
 import { ReplyRepository } from '@application/port/out/topic/comment/reply.repository';
 
