@@ -38,7 +38,7 @@ export class InvitationMapper
 
   public toPersistence(invitation: Invitation): InvitationEntity {
     return new this.model({
-      id: invitation.id,
+      _id: new Types.ObjectId(invitation.id),
       invitationType: invitation.invitationType,
       inviterId: new Types.ObjectId(invitation.inviterId),
       invitationCode: invitation.invitationCode,

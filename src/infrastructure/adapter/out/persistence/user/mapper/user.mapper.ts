@@ -3,7 +3,7 @@ import { UserEntity } from '@infrastructure/adapter/out/persistence/user/schema/
 import { UserInfo } from '@domain/user/user-info';
 import { Injectable } from '@nestjs/common';
 import { MapperPort } from '@application/port/out/mapper.port';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 // TODO Mapper가 과연 Injectable하게 선언되어야하는가?
@@ -38,7 +38,7 @@ export class UserMapper implements MapperPort<UserEntity, User> {
 
   public toPersistence(user: User): UserEntity {
     return new this.model({
-      id: user.id,
+      _id: new Types.ObjectId(user.id),
       nickname: user.getNickname(),
       userInfo: user.getUserInfo(),
       phoneNumber: user.phoneNumber,

@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { AuthEntity } from '@infrastructure/adapter/out/persistence/auth/schema/auth.schema';
 import { Auth } from '@domain/auth/auth';
@@ -32,7 +32,7 @@ export class AuthMapper implements MapperPort<AuthEntity, Auth> {
 
   public toPersistence(auth: Auth): AuthEntity {
     return new this.model({
-      id: auth.id,
+      _id: new Types.ObjectId(auth.id),
       phoneNumber: auth.phoneNumber,
       authCode: auth.authCode,
       createdAt: auth.createdAt,

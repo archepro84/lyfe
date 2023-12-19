@@ -38,7 +38,7 @@ export class CommentMapper implements MapperPort<CommentEntity, Comment> {
 
   public toPersistence(comment: Comment): CommentEntity {
     return new this.model({
-      id: comment.id,
+      _id: new Types.ObjectId(comment.id),
       topicId: new Types.ObjectId(comment.topicId),
       content: comment.content,
       user: {

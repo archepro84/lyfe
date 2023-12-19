@@ -62,7 +62,7 @@ export class TopicMapper implements MapperPort<TopicEntity, Topic> {
 
   public toPersistence(topic: Topic): TopicEntity {
     return new this.model({
-      id: topic.id,
+      _id: new Types.ObjectId(topic.id),
       title: topic.title,
       content: topic.content,
       theme: topic.theme,

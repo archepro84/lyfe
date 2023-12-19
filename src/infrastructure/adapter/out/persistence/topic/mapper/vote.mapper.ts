@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MapperPort } from '@application/port/out/mapper.port';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { VoteEntity } from '@infrastructure/adapter/out/persistence/topic/schema/vote.schema';
 import { Vote, VoteFactory } from '@domain/topic/vote/vote';
@@ -36,6 +36,16 @@ export class VoteMapper implements MapperPort<VoteEntity, Vote> {
   }
 
   public toPersistence(vote: Vote): VoteEntity {
-    return new this.model(vote);
+    return new this.model({
+      _id: new Types.ObjectId(vote.id),
+      voteType: vote.voteType,
+      createdAt: vote.createdAt,
+      updatedAt: vote.updatedAt,
+      voteItem: vote.voteItem.map((voteItem) => ({
+        _id: new Types.ObjectId(voteItem.id),
+        title: voteItem.title,
+        index: voteItem.index,
+      })),
+    });
   }
 }

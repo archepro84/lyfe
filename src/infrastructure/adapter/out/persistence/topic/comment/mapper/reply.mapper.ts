@@ -35,7 +35,7 @@ export class ReplyMapper implements MapperPort<ReplyEntity, Reply> {
 
   public toPersistence(reply: Reply): ReplyEntity {
     return new this.model({
-      id: reply.id,
+      _id: new Types.ObjectId(reply.id),
       topicId: new Types.ObjectId(reply.topicId),
       parentId: new Types.ObjectId(reply.parentId),
       content: reply.content,

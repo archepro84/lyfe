@@ -35,7 +35,7 @@ export class AuthSendLogMapper
 
   public toPersistence(authSendLog: AuthSendLog): AuthSendLogEntity {
     return new this.model({
-      id: authSendLog.id,
+      _id: new Types.ObjectId(authSendLog.id),
       authId: new Types.ObjectId(authSendLog.authId),
       phoneNumber: authSendLog.phoneNumber,
       sentAt: authSendLog.sentAt,

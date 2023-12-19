@@ -4,6 +4,7 @@ import { Document, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { TopicUserEntity } from '@infrastructure/adapter/out/persistence/topic/schema/topic-user.schema';
 import { CommentMongoSchema } from '@infrastructure/adapter/out/persistence/topic/comment/schema/comment.schema';
+import { TopicMongoSchema } from '@infrastructure/adapter/out/persistence/topic/schema/topic.schema';
 
 export class ReplyEntity extends Document {
   _id?: string;
@@ -51,7 +52,7 @@ export class ReplyEntity extends Document {
 
 @Schema({ collection: 'replies', _id: true })
 export class ReplyMongoSchema {
-  @Prop({ required: true, type: 'string' })
+  @Prop({ required: true, type: Types.ObjectId, ref: TopicMongoSchema.name })
   topicId: string;
 
   @Prop({ required: true })

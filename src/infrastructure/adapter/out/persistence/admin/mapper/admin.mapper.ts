@@ -3,7 +3,7 @@ import { AdminEntity } from '@infrastructure/adapter/out/persistence/admin/schem
 import { MapperPort } from '@application/port/out/mapper.port';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class AdminMapper implements MapperPort<AdminEntity, Admin> {
@@ -32,7 +32,7 @@ export class AdminMapper implements MapperPort<AdminEntity, Admin> {
 
   public toPersistence(admin: Admin): AdminEntity {
     return new this.model({
-      id: admin.id,
+      _id: new Types.ObjectId(admin.id),
       email: admin.email,
       password: admin.password,
       createdAt: admin.createdAt,
