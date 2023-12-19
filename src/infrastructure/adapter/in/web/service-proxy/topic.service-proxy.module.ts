@@ -15,13 +15,14 @@ import { FIND_TOPIC_USECASE } from '@application/port/in/topic/find-topic.usecas
 import { FindTopicService } from '@application/service/topic/find-topic.service';
 import { CREATE_COMMENT_USECASE } from '@application/port/in/topic/comment/usecase/create-comment.usecase';
 import { CreateCommentService } from '@application/service/topic/comment/create-comment.service';
-import { CommentMongoSchema } from '@infrastructure/adapter/out/persistence/topic/comment/schema/comment.schema';
 import { CommentMongoRepository } from '@infrastructure/adapter/out/persistence/topic/comment/comment.mongo.repository';
 import { FIND_COMMENT_USECASE } from '@application/port/in/topic/comment/usecase/find-comment.usecase';
 import { FindCommentService } from '@application/service/topic/comment/find-comment.service';
 import { CREATE_REPLY_USECASE } from '@application/port/in/topic/comment/usecase/create-reply.usecase';
 import { CreateReplyService } from '@application/service/topic/comment/create-reply.service';
 import { ReplyMongoRepository } from '@infrastructure/adapter/out/persistence/topic/comment/reply.mongo.repository';
+import { FIND_REPLY_USECASE } from '@application/port/in/topic/comment/usecase/find-reply.usecase';
+import { FindReplyService } from '@application/service/topic/comment/find-reply.service';
 
 @Module({
   imports: [RepositoriesModule],
@@ -121,6 +122,24 @@ export class TopicServiceProxyModule {
               replyMongoRepository,
             ),
         },
+        {
+          inject: [
+            TopicMongoRepository,
+            CommentMongoRepository,
+            ReplyMongoRepository,
+          ],
+          provide: FIND_REPLY_USECASE,
+          useFactory: (
+            topicRepository: TopicMongoRepository,
+            commentRepository: CommentMongoRepository,
+            replyMongoRepository: ReplyMongoRepository,
+          ) =>
+            new FindReplyService(
+              topicRepository,
+              commentRepository,
+              replyMongoRepository,
+            ),
+        },
       ],
       exports: [
         CREATE_TOPIC_USECASE,
@@ -132,6 +151,7 @@ export class TopicServiceProxyModule {
         CREATE_COMMENT_USECASE,
         FIND_COMMENT_USECASE,
         CREATE_REPLY_USECASE,
+        FIND_REPLY_USECASE,
       ],
     };
   }

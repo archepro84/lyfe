@@ -10,7 +10,6 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CREATE_TOPIC_USECASE } from '@application/port/in/topic/create-topic.usecase';
 import { User } from '@domain/user/user';
 import {
   CREATE_COMMENT_USECASE,
@@ -24,6 +23,10 @@ import {
   FindCommentUsecase,
 } from '@application/port/in/topic/comment/usecase/find-comment.usecase';
 import { PaginatedDto } from '@infrastructure/common/swagger/dto/paginated.dto';
+import {
+  FIND_REPLY_USECASE,
+  FindReplyUsecase,
+} from '@application/port/in/topic/comment/usecase/find-reply.usecase';
 
 @Controller('topic/:id/comment')
 @ApiTags('Comment')
@@ -34,6 +37,8 @@ export class CommentController {
     private readonly createCommentUsecase: CreateCommentUsecase,
     @Inject(FIND_COMMENT_USECASE)
     private readonly findCommentUsecase: FindCommentUsecase,
+    @Inject(FIND_REPLY_USECASE)
+    private readonly findReplyUsecase: FindReplyUsecase,
   ) {}
 
   @Post()
@@ -67,13 +72,31 @@ export class CommentController {
     type: String,
   })
   async findComment(
-    @Request() req: any,
     @Param('id') topicId: string,
     @Query() query: PaginatedDto,
   ) {
     return await this.findCommentUsecase.exec({
       ...query,
       topicId,
+    });
+  }
+
+  @Get('/:commentId/reply')
+  @ApiOperation({ summary: 'Find Paginated Reply' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return success',
+    type: String,
+  })
+  async findReply(
+    @Param('id') topicId: string,
+    @Param('commentId') commentId: string,
+    @Query() query: PaginatedDto,
+  ) {
+    return await this.findReplyUsecase.exec({
+      ...query,
+      topicId,
+      commentId,
     });
   }
 }
