@@ -23,6 +23,8 @@ import { CreateReplyService } from '@application/service/topic/comment/create-re
 import { ReplyMongoRepository } from '@infrastructure/adapter/out/persistence/topic/comment/reply.mongo.repository';
 import { FIND_REPLY_USECASE } from '@application/port/in/topic/comment/usecase/find-reply.usecase';
 import { FindReplyService } from '@application/service/topic/comment/find-reply.service';
+import { UPDATE_COMMENT_USECASE } from '@application/port/in/topic/comment/usecase/update-comment.usecase';
+import { UpdateCommentService } from '@application/service/topic/comment/update-comment.service';
 
 @Module({
   imports: [RepositoriesModule],
@@ -140,6 +142,24 @@ export class TopicServiceProxyModule {
               replyMongoRepository,
             ),
         },
+        {
+          inject: [
+            TopicMongoRepository,
+            CommentMongoRepository,
+            ReplyMongoRepository,
+          ],
+          provide: UPDATE_COMMENT_USECASE,
+          useFactory: (
+            topicRepository: TopicMongoRepository,
+            commentRepository: CommentMongoRepository,
+            replyMongoRepository: ReplyMongoRepository,
+          ) =>
+            new UpdateCommentService(
+              topicRepository,
+              commentRepository,
+              replyMongoRepository,
+            ),
+        },
       ],
       exports: [
         CREATE_TOPIC_USECASE,
@@ -152,6 +172,7 @@ export class TopicServiceProxyModule {
         FIND_COMMENT_USECASE,
         CREATE_REPLY_USECASE,
         FIND_REPLY_USECASE,
+        UPDATE_COMMENT_USECASE,
       ],
     };
   }

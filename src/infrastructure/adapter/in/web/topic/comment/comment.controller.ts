@@ -8,6 +8,7 @@ import {
   Param,
   Get,
   Query,
+  Put,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '@domain/user/user';
@@ -27,6 +28,10 @@ import {
   FIND_REPLY_USECASE,
   FindReplyUsecase,
 } from '@application/port/in/topic/comment/usecase/find-reply.usecase';
+import {
+  UPDATE_COMMENT_USECASE,
+  UpdateCommentUsecase,
+} from '@application/port/in/topic/comment/usecase/update-comment.usecase';
 
 @Controller('topic/:id/comment')
 @ApiTags('Comment')
@@ -39,6 +44,8 @@ export class CommentController {
     private readonly findCommentUsecase: FindCommentUsecase,
     @Inject(FIND_REPLY_USECASE)
     private readonly findReplyUsecase: FindReplyUsecase,
+    @Inject(UPDATE_COMMENT_USECASE)
+    private readonly updateCommentUsecase: UpdateCommentUsecase,
   ) {}
 
   @Post()
@@ -97,6 +104,29 @@ export class CommentController {
       ...query,
       topicId,
       commentId,
+    });
+  }
+
+  @Put('/:commentId')
+  @UseGuards(JwtAuthGuard)
+  @AccessTokenHeader()
+  @ApiOperation({ summary: 'Update Comment / Reply' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return success',
+    type: String,
+  })
+  async UpdateCommentWithReply(
+    @Request() req: any,
+    @Param('id') topicId: string,
+    @Param('commentId') commentId: string,
+    @Body() dto: CreateCommentDto,
+  ) {
+    return await this.updateCommentUsecase.exec({
+      ...dto,
+      topicId,
+      commentId,
+      user: req.user as User,
     });
   }
 }
