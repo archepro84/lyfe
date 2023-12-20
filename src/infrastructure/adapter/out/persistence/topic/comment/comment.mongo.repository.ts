@@ -75,7 +75,7 @@ export class CommentMongoRepository
     const aggregation = [
       {
         $match: {
-          _id: { $gt: new Types.ObjectId(query.cursor) },
+          _id: { $gte: new Types.ObjectId(query.cursor) },
           topicId: query.topicId,
         },
       },

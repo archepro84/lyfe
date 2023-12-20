@@ -63,7 +63,7 @@ export class ReplyMongoRepository
       .find({
         topicId: new Types.ObjectId(query.topicId),
         parentId: new Types.ObjectId(query.commentId),
-        _id: { $gt: new Types.ObjectId(query.cursor) },
+        _id: { $gte: new Types.ObjectId(query.cursor) },
       })
       .limit(limit)
       .session(this.getSession())
