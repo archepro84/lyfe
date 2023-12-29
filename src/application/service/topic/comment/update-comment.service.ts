@@ -32,13 +32,12 @@ export class UpdateCommentService implements UpdateCommentUsecase {
       );
 
     const updateComment = CommentFactory.newInstance({
-      user: comment.user,
+      ...comment,
       content: command.content,
-      topicId: comment.topicId,
-      id: comment.id,
+      updatedAt: new Date(),
     });
 
-    return await this.commentRepository.save(updateComment);
+    return await this.commentRepository.update(updateComment);
   }
 
   private async updateReply(command: UpdateCommentCommand): Promise<void> {
@@ -56,14 +55,12 @@ export class UpdateCommentService implements UpdateCommentUsecase {
       );
 
     const updateReply = ReplyFactory.newInstance({
-      user: reply.user,
+      ...reply,
       content: command.content,
-      parentId: reply.parentId,
-      topicId: reply.topicId,
-      id: reply.id,
+      updatedAt: new Date(),
     });
 
-    return await this.replyRepository.save(updateReply);
+    return await this.replyRepository.update(updateReply);
   }
 
   private isPermission(targetUserId: string, userId: string): boolean {
