@@ -97,6 +97,16 @@ export abstract class Repository<
     await this.save(DomainType);
   }
 
+  async update(DomainType: DomainType): Promise<void> {
+    await this.model.findByIdAndUpdate(
+      DomainType.id,
+      {
+        $set: this.mapper.toPersistence(DomainType),
+      },
+      { session: this.getSession() },
+    );
+  }
+
   async delete(DomainType: DomainType): Promise<boolean> {
     const result = await this.model
       .deleteOne({ _id: DomainType.id })

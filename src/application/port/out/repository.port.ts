@@ -46,6 +46,8 @@ export interface RepositoryPort<DomainType extends Domain> {
 
   insert(domain: DomainType): Promise<void>;
 
+  update(domain: DomainType): Promise<void>;
+
   delete(domain: DomainType): Promise<boolean>;
 
   softDelete(domain: DomainType): Promise<boolean>;
