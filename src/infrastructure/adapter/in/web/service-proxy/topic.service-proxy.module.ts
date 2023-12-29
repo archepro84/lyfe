@@ -25,6 +25,8 @@ import { FIND_REPLY_USECASE } from '@application/port/in/topic/comment/usecase/f
 import { FindReplyService } from '@application/service/topic/comment/find-reply.service';
 import { UPDATE_COMMENT_USECASE } from '@application/port/in/topic/comment/usecase/update-comment.usecase';
 import { UpdateCommentService } from '@application/service/topic/comment/update-comment.service';
+import { DELETE_COMMENT_USECASE } from '@application/port/in/topic/comment/usecase/delete-comment.usecase';
+import { DeleteCommentService } from '@application/service/topic/comment/delete-comment.service';
 
 @Module({
   imports: [RepositoriesModule],
@@ -160,6 +162,24 @@ export class TopicServiceProxyModule {
               replyMongoRepository,
             ),
         },
+        {
+          inject: [
+            TopicMongoRepository,
+            CommentMongoRepository,
+            ReplyMongoRepository,
+          ],
+          provide: DELETE_COMMENT_USECASE,
+          useFactory: (
+            topicRepository: TopicMongoRepository,
+            commentRepository: CommentMongoRepository,
+            replyMongoRepository: ReplyMongoRepository,
+          ) =>
+            new DeleteCommentService(
+              topicRepository,
+              commentRepository,
+              replyMongoRepository,
+            ),
+        },
       ],
       exports: [
         CREATE_TOPIC_USECASE,
@@ -173,6 +193,7 @@ export class TopicServiceProxyModule {
         CREATE_REPLY_USECASE,
         FIND_REPLY_USECASE,
         UPDATE_COMMENT_USECASE,
+        DELETE_COMMENT_USECASE,
       ],
     };
   }

@@ -9,6 +9,7 @@ import {
   Get,
   Query,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '@domain/user/user';
@@ -32,6 +33,10 @@ import {
   UPDATE_COMMENT_USECASE,
   UpdateCommentUsecase,
 } from '@application/port/in/topic/comment/usecase/update-comment.usecase';
+import {
+  DELETE_COMMENT_USECASE,
+  DeleteCommentUsecase,
+} from '@application/port/in/topic/comment/usecase/delete-comment.usecase';
 
 @Controller('topic/:id/comment')
 @ApiTags('Comment')
@@ -46,6 +51,8 @@ export class CommentController {
     private readonly findReplyUsecase: FindReplyUsecase,
     @Inject(UPDATE_COMMENT_USECASE)
     private readonly updateCommentUsecase: UpdateCommentUsecase,
+    @Inject(DELETE_COMMENT_USECASE)
+    private readonly deleteCommentUsecase: DeleteCommentUsecase,
   ) {}
 
   @Post()
@@ -126,6 +133,29 @@ export class CommentController {
       ...dto,
       topicId,
       commentId,
+      user: req.user as User,
+    });
+  }
+
+  @Delete('/:commentId')
+  @UseGuards(JwtAuthGuard)
+  @AccessTokenHeader()
+  @ApiOperation({ summary: 'Delete Comment / Reply' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return success',
+    type: String,
+  })
+  async DeleteComment(
+    @Request() req: any,
+    @Param('id') topicId: string,
+    @Param('commentId') commentId: string,
+    @Body('parentId') parentId?: string,
+  ) {
+    return await this.deleteCommentUsecase.exec({
+      topicId,
+      commentId,
+      parentId,
       user: req.user as User,
     });
   }
